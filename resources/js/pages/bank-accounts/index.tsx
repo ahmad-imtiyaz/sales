@@ -90,7 +90,7 @@ export default function BankAccountsIndex({ bankAccounts, filters }: BankAccount
                         <h1 className="text-3xl font-bold tracking-tight">Master Rekening</h1>
                         <p className="text-muted-foreground">Kelola data rekening bank untuk Invoice</p>
                     </div>
-                    <Link href={bankAccounts.create()}>
+                    <Link href={bankAccounts.create.url()}>
                         <Button>
                             <Plus className="mr-2 h-4 w-4" />
                             Tambah Rekening
@@ -118,7 +118,7 @@ export default function BankAccountsIndex({ bankAccounts, filters }: BankAccount
                                 </div>
                                 <Button type="submit">Cari</Button>
                                 {search && (
-                                    <Link href={bankAccounts.index()}>
+                                    <Link href={bankAccounts.index.url()}>
                                         <Button type="button" variant="outline">Reset</Button>
                                     </Link>
                                 )}
@@ -169,7 +169,7 @@ export default function BankAccountsIndex({ bankAccounts, filters }: BankAccount
                                                         </DropdownMenuTrigger>
                                                         <DropdownMenuContent align="end" className="w-48">
                                                             <DropdownMenuItem asChild>
-                                                                <Link href={bankAccounts.edit(bankAccount.id)}>
+                                                                <Link href={bankAccounts.edit(bankAccount.id).url}>
                                                                     <Edit className="mr-2 h-4 w-4" />
                                                                     Edit
                                                                 </Link>
@@ -196,7 +196,7 @@ export default function BankAccountsIndex({ bankAccounts, filters }: BankAccount
                             <Pagination
                                 currentPage={bankAccounts.current_page}
                                 totalPages={bankAccounts.last_page}
-                                baseUrl={bankAccounts.index().url}
+                                baseUrl={bankAccounts.index.url()}
                                 searchParams={{ search }}
                             />
                         )}
@@ -236,7 +236,7 @@ BankAccountsIndex.layout = {
         },
         {
             title: 'Rekening',
-            href: bankAccounts.index(),
+            href: bankAccounts.index.url(),
         },
     ],
 };

@@ -87,7 +87,7 @@ export default function ProductsIndex({ products, filters }: ProductsIndexProps)
                         <h1 className="text-3xl font-bold tracking-tight">Master Barang</h1>
                         <p className="text-muted-foreground">Kelola data barang untuk Delivery Note dan Invoice</p>
                     </div>
-                    <Link href={products.create()}>
+                    <Link href={products.create.url()}>
                         <Button>
                             <Plus className="mr-2 h-4 w-4" />
                             Tambah Barang
@@ -115,7 +115,7 @@ export default function ProductsIndex({ products, filters }: ProductsIndexProps)
                                 </div>
                                 <Button type="submit">Cari</Button>
                                 {search && (
-                                    <Link href={products.index()}>
+                                    <Link href={products.index.url()}>
                                         <Button type="button" variant="outline">Reset</Button>
                                     </Link>
                                 )}
@@ -166,7 +166,7 @@ export default function ProductsIndex({ products, filters }: ProductsIndexProps)
                                                         </DropdownMenuTrigger>
                                                         <DropdownMenuContent align="end" className="w-48">
                                                             <DropdownMenuItem asChild>
-                                                                <Link href={products.edit(product.id)}>
+                                                                <Link href={products.edit(product.id).url}>
                                                                     <Edit className="mr-2 h-4 w-4" />
                                                                     Edit
                                                                 </Link>
@@ -193,7 +193,7 @@ export default function ProductsIndex({ products, filters }: ProductsIndexProps)
                             <Pagination
                                 currentPage={products.current_page}
                                 totalPages={products.last_page}
-                                baseUrl={products.index().url}
+                                baseUrl={products.index.url()}
                                 searchParams={{ search }}
                             />
                         )}
@@ -233,7 +233,7 @@ ProductsIndex.layout = {
         },
         {
             title: 'Barang',
-            href: products.index(),
+            href: products.index.url(),
         },
     ],
 };

@@ -28,22 +28,22 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Master Perusahaan',
-        href: companies.index(),
+        href: companies.index.url(),
         icon: Building2,
     },
     {
         title: 'Master Customer',
-        href: customers.index(),
+        href: customers.index.url(),
         icon: Users,
     },
     {
         title: 'Master Barang',
-        href: products.index(),
+        href: products.index.url(),
         icon: Package,
     },
     {
         title: 'Master Rekening',
-        href: bankAccounts.index(),
+        href: bankAccounts.index.url(),
         icon: Banknote,
     },
 ];

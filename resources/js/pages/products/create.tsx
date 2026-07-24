@@ -15,7 +15,7 @@ export default function ProductsCreate() {
             <Head title="Tambah Barang" />
             <div className="max-w-2xl mx-auto space-y-6">
                 <div className="flex items-center gap-4">
-                    <Link href={products.index()}>
+                    <Link href={products.index.url()}>
                         <Button variant="ghost" size="icon" className="h-9 w-9">
                             <ArrowLeft className="h-4 w-4" />
                         </Button>
@@ -37,7 +37,7 @@ export default function ProductsCreate() {
                             method="post"
                             onSuccess={() => {
                                 toast.success('Barang berhasil ditambahkan.');
-                                router.visit(products.index());
+                                router.visit(products.index.url());
                             }}
                             onError={() => toast.error('Gagal menambahkan barang.')}
                         >
@@ -100,7 +100,7 @@ export default function ProductsCreate() {
                                     </div>
 
                                     <div className="flex justify-end gap-3 pt-4 border-t">
-                                        <Link href={products.index()}>
+                                        <Link href={products.index.url()}>
                                             <Button type="button" variant="outline">
                                                 Batal
                                             </Button>
@@ -127,11 +127,11 @@ ProductsCreate.layout = {
         },
         {
             title: 'Barang',
-            href: products.index(),
+            href: products.index.url(),
         },
         {
             title: 'Tambah',
-            href: products.create(),
+            href: products.create.url(),
         },
     ],
 };

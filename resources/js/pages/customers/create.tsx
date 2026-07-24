@@ -16,7 +16,7 @@ export default function CustomersCreate() {
             <Head title="Tambah Customer" />
             <div className="max-w-2xl mx-auto space-y-6">
                 <div className="flex items-center gap-4">
-                    <Link href={customers.index()}>
+                    <Link href={customers.index.url()}>
                         <Button variant="ghost" size="icon" className="h-9 w-9">
                             <ArrowLeft className="h-4 w-4" />
                         </Button>
@@ -38,7 +38,7 @@ export default function CustomersCreate() {
                             method="post"
                             onSuccess={() => {
                                 toast.success('Customer berhasil ditambahkan.');
-                                router.visit(customers.index());
+                                router.visit(customers.index.url());
                             }}
                             onError={() => toast.error('Gagal menambahkan customer.')}
                         >
@@ -121,7 +121,7 @@ export default function CustomersCreate() {
                                     </div>
 
                                     <div className="flex justify-end gap-3 pt-4 border-t">
-                                        <Link href={customers.index()}>
+                                        <Link href={customers.index.url()}>
                                             <Button type="button" variant="outline">
                                                 Batal
                                             </Button>
@@ -148,11 +148,11 @@ CustomersCreate.layout = {
         },
         {
             title: 'Customer',
-            href: customers.index(),
+            href: customers.index.url(),
         },
         {
             title: 'Tambah',
-            href: customers.create(),
+            href: customers.create.url(),
         },
     ],
 };

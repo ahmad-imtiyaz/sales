@@ -88,7 +88,7 @@ export default function CompaniesIndex({ companies, filters }: CompaniesIndexPro
                         <h1 className="text-3xl font-bold tracking-tight">Master Perusahaan</h1>
                         <p className="text-muted-foreground">Kelola data perusahaan untuk Delivery Note dan Invoice</p>
                     </div>
-                    <Link href={companies.create()}>
+                    <Link href={companies.create.url()}>
                         <Button>
                             <Plus className="mr-2 h-4 w-4" />
                             Tambah Perusahaan
@@ -116,7 +116,7 @@ export default function CompaniesIndex({ companies, filters }: CompaniesIndexPro
                                 </div>
                                 <Button type="submit">Cari</Button>
                                 {search && (
-                                    <Link href={companies.index()}>
+                                    <Link href={companies.index.url()}>
                                         <Button type="button" variant="outline">Reset</Button>
                                     </Link>
                                 )}
@@ -173,7 +173,7 @@ export default function CompaniesIndex({ companies, filters }: CompaniesIndexPro
                                                         </DropdownMenuTrigger>
                                                         <DropdownMenuContent align="end" className="w-48">
                                                             <DropdownMenuItem asChild>
-                                                                <Link href={companies.edit(company.id)}>
+                                                                <Link href={companies.edit(company.id).url}>
                                                                     <Edit className="mr-2 h-4 w-4" />
                                                                     Edit
                                                                 </Link>
@@ -200,7 +200,7 @@ export default function CompaniesIndex({ companies, filters }: CompaniesIndexPro
                             <Pagination
                                 currentPage={companies.current_page}
                                 totalPages={companies.last_page}
-                                baseUrl={companies.index().url}
+                                baseUrl={companies.index.url()}
                                 searchParams={{ search }}
                             />
                         )}
@@ -240,7 +240,7 @@ CompaniesIndex.layout = {
         },
         {
             title: 'Perusahaan',
-            href: companies.index(),
+            href: companies.index.url(),
         },
     ],
 };

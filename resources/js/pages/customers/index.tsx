@@ -89,7 +89,7 @@ export default function CustomersIndex({ customers, filters }: CustomersIndexPro
                         <h1 className="text-3xl font-bold tracking-tight">Master Customer</h1>
                         <p className="text-muted-foreground">Kelola data customer untuk Delivery Note dan Invoice</p>
                     </div>
-                    <Link href={customers.create()}>
+                    <Link href={customers.create.url()}>
                         <Button>
                             <Plus className="mr-2 h-4 w-4" />
                             Tambah Customer
@@ -117,7 +117,7 @@ export default function CustomersIndex({ customers, filters }: CustomersIndexPro
                                 </div>
                                 <Button type="submit">Cari</Button>
                                 {search && (
-                                    <Link href={customers.index()}>
+                                    <Link href={customers.index.url()}>
                                         <Button type="button" variant="outline">Reset</Button>
                                     </Link>
                                 )}
@@ -166,7 +166,7 @@ export default function CustomersIndex({ customers, filters }: CustomersIndexPro
                                                         </DropdownMenuTrigger>
                                                         <DropdownMenuContent align="end" className="w-48">
                                                             <DropdownMenuItem asChild>
-                                                                <Link href={customers.edit(customer.id)}>
+                                                                <Link href={customers.edit(customer.id).url}>
                                                                     Edit
                                                                 </Link>
                                                             </DropdownMenuItem>
@@ -191,7 +191,7 @@ export default function CustomersIndex({ customers, filters }: CustomersIndexPro
                             <Pagination
                                 currentPage={customers.current_page}
                                 totalPages={customers.last_page}
-                                baseUrl={customers.index().url}
+                                baseUrl={customers.index.url()}
                                 searchParams={{ search }}
                             />
                         )}
@@ -231,7 +231,7 @@ CustomersIndex.layout = {
         },
         {
             title: 'Customer',
-            href: customers.index(),
+            href: customers.index.url(),
         },
     ],
 };

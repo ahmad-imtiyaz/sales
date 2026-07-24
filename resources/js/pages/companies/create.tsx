@@ -16,7 +16,7 @@ export default function CompaniesCreate() {
             <Head title="Tambah Perusahaan" />
             <div className="max-w-2xl mx-auto space-y-6">
                 <div className="flex items-center gap-4">
-                    <Link href={companies.index()}>
+                    <Link href={companies.index.url()}>
                         <Button variant="ghost" size="icon" className="h-9 w-9">
                             <ArrowLeft className="h-4 w-4" />
                         </Button>
@@ -38,7 +38,7 @@ export default function CompaniesCreate() {
                             method="post"
                             onSuccess={() => {
                                 toast.success('Perusahaan berhasil ditambahkan.');
-                                router.visit(companies.index());
+                                router.visit(companies.index.url());
                             }}
                             onError={() => toast.error('Gagal menambahkan perusahaan.')}
                         >
@@ -109,7 +109,7 @@ export default function CompaniesCreate() {
                                     </div>
 
                                     <div className="flex justify-end gap-3 pt-4 border-t">
-                                        <Link href={companies.index()}>
+                                        <Link href={companies.index.url()}>
                                             <Button type="button" variant="outline">
                                                 Batal
                                             </Button>
@@ -136,11 +136,11 @@ CompaniesCreate.layout = {
         },
         {
             title: 'Perusahaan',
-            href: companies.index(),
+            href: companies.index.url(),
         },
         {
             title: 'Tambah',
-            href: companies.create(),
+            href: companies.create.url(),
         },
     ],
 };
