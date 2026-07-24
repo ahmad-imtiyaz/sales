@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
 import { Plus, Search, MoreHorizontal, Edit, Trash2, Package } from 'lucide-react';
-import products from '@/routes/products';
+import productsRoutes from '@/routes/products';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -56,7 +56,7 @@ export default function ProductsIndex({ products, filters }: ProductsIndexProps)
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        products.index({ search });
+        productsRoutes.index({ search });
     };
 
     const handleDelete = (id: number) => {
@@ -66,7 +66,7 @@ export default function ProductsIndex({ products, filters }: ProductsIndexProps)
     const confirmDelete = () => {
         if (!deleteId) return;
 
-        new Form({ _method: 'delete' }).delete(products.destroy(deleteId), {
+        new Form({ _method: 'delete' }).delete(productsRoutes.destroy(deleteId), {
             onSuccess: () => {
                 toast.success('Barang berhasil dihapus.');
                 setDeleteId(null);
@@ -87,7 +87,7 @@ export default function ProductsIndex({ products, filters }: ProductsIndexProps)
                         <h1 className="text-3xl font-bold tracking-tight">Master Barang</h1>
                         <p className="text-muted-foreground">Kelola data barang untuk Delivery Note dan Invoice</p>
                     </div>
-                    <Link href={products.create.url()}>
+                    <Link href={productsRoutes.create.url()}>
                         <Button>
                             <Plus className="mr-2 h-4 w-4" />
                             Tambah Barang
@@ -115,7 +115,7 @@ export default function ProductsIndex({ products, filters }: ProductsIndexProps)
                                 </div>
                                 <Button type="submit">Cari</Button>
                                 {search && (
-                                    <Link href={products.index.url()}>
+                                    <Link href={productsRoutes.index.url()}>
                                         <Button type="button" variant="outline">Reset</Button>
                                     </Link>
                                 )}
@@ -135,17 +135,17 @@ export default function ProductsIndex({ products, filters }: ProductsIndexProps)
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {products.data.length === 0 ? (
+                                    {productsRoutes.data.length === 0 ? (
                                         <TableRow>
                                             <TableCell colSpan={6} className="text-center py-8">
                                                 <p className="text-muted-foreground">Belum ada data barang. Klik "Tambah Barang" untuk memulai.</p>
                                             </TableCell>
                                         </TableRow>
                                     ) : (
-                                        products.data.map((product, index) => (
+                                        productsRoutes.data.map((product, index) => (
                                             <TableRow key={product.id}>
                                                 <TableCell className="font-medium">
-                                                    {(products.from ?? 0) + index}
+                                                    {(productsRoutes.from ?? 0) + index}
                                                 </TableCell>
                                                 <TableCell className="font-mono font-medium">{product.kode}</TableCell>
                                                 <TableCell className="font-medium">{product.nama_barang}</TableCell>
@@ -166,7 +166,7 @@ export default function ProductsIndex({ products, filters }: ProductsIndexProps)
                                                         </DropdownMenuTrigger>
                                                         <DropdownMenuContent align="end" className="w-48">
                                                             <DropdownMenuItem asChild>
-                                                                <Link href={products.edit(product.id).url}>
+                                                                <Link href={productsRoutes.edit(product.id).url}>
                                                                     <Edit className="mr-2 h-4 w-4" />
                                                                     Edit
                                                                 </Link>
@@ -189,11 +189,11 @@ export default function ProductsIndex({ products, filters }: ProductsIndexProps)
                             </Table>
                         </div>
 
-                        {products.last_page > 1 && (
+                        {productsRoutes.last_page > 1 && (
                             <Pagination
-                                currentPage={products.current_page}
-                                totalPages={products.last_page}
-                                baseUrl={products.index.url()}
+                                currentPage={productsRoutes.current_page}
+                                totalPages={productsRoutes.last_page}
+                                baseUrl={productsRoutes.index.url()}
                                 searchParams={{ search }}
                             />
                         )}
@@ -233,7 +233,7 @@ ProductsIndex.layout = {
         },
         {
             title: 'Barang',
-            href: products.index.url(),
+            href: productsRoutes.index.url(),
         },
     ],
 };

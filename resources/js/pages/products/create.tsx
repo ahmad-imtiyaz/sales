@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { Link, router } from '@inertiajs/react';
 import { ArrowLeft, Package } from 'lucide-react';
-import products from '@/routes/products';
+import productsRoutes from '@/routes/products';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -15,7 +15,7 @@ export default function ProductsCreate() {
             <Head title="Tambah Barang" />
             <div className="max-w-2xl mx-auto space-y-6">
                 <div className="flex items-center gap-4">
-                    <Link href={products.index.url()}>
+                    <Link href={productsRoutes.index.url()}>
                         <Button variant="ghost" size="icon" className="h-9 w-9">
                             <ArrowLeft className="h-4 w-4" />
                         </Button>
@@ -33,11 +33,11 @@ export default function ProductsCreate() {
                     </CardHeader>
                     <CardContent>
                         <Form
-                            action={products.store()}
+                            action={productsRoutes.store()}
                             method="post"
                             onSuccess={() => {
                                 toast.success('Barang berhasil ditambahkan.');
-                                router.visit(products.index.url());
+                                router.visit(productsRoutes.index.url());
                             }}
                             onError={() => toast.error('Gagal menambahkan barang.')}
                         >
@@ -100,7 +100,7 @@ export default function ProductsCreate() {
                                     </div>
 
                                     <div className="flex justify-end gap-3 pt-4 border-t">
-                                        <Link href={products.index.url()}>
+                                        <Link href={productsRoutes.index.url()}>
                                             <Button type="button" variant="outline">
                                                 Batal
                                             </Button>
@@ -127,11 +127,11 @@ ProductsCreate.layout = {
         },
         {
             title: 'Barang',
-            href: products.index.url(),
+            href: productsRoutes.index.url(),
         },
         {
             title: 'Tambah',
-            href: products.create.url(),
+            href: productsRoutes.create.url(),
         },
     ],
 };

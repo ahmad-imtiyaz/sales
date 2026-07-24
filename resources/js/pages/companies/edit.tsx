@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { Link, router } from '@inertiajs/react';
 import { ArrowLeft, Building2 } from 'lucide-react';
-import companies from '@/routes/companies';
+import companiesRoutes from '@/routes/companies';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -31,7 +31,7 @@ export default function CompaniesEdit({ company }: CompaniesEditProps) {
             <Head title="Edit Perusahaan" />
             <div className="max-w-2xl mx-auto space-y-6">
                 <div className="flex items-center gap-4">
-                    <Link href={companies.index.url()}>
+                    <Link href={companiesRoutes.index.url()}>
                         <Button variant="ghost" size="icon" className="h-9 w-9">
                             <ArrowLeft className="h-4 w-4" />
                         </Button>
@@ -53,7 +53,7 @@ export default function CompaniesEdit({ company }: CompaniesEditProps) {
                             method="put"
                             onSuccess={() => {
                                 toast.success('Perusahaan berhasil diperbarui.');
-                                router.visit(companies.index.url());
+                                router.visit(companiesRoutes.index.url());
                             }}
                             onError={() => toast.error('Gagal memperbarui perusahaan.')}
                         >
@@ -129,7 +129,7 @@ export default function CompaniesEdit({ company }: CompaniesEditProps) {
                                     </div>
 
                                     <div className="flex justify-end gap-3 pt-4 border-t">
-                                        <Link href={companies.index.url()}>
+                                        <Link href={companiesRoutes.index.url()}>
                                             <Button type="button" variant="outline">
                                                 Batal
                                             </Button>
@@ -156,11 +156,11 @@ CompaniesEdit.layout = {
         },
         {
             title: 'Perusahaan',
-            href: companies.index.url(),
+            href: companiesRoutes.index.url(),
         },
         {
             title: 'Edit',
-            href: companies.edit(company.id).url,
+            href: companiesRoutes.edit(company.id).url,
         },
     ],
 };

@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { Link, router } from '@inertiajs/react';
 import { ArrowLeft, Users } from 'lucide-react';
-import customers from '@/routes/customers';
+import customersRoutes from '@/routes/customers';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -16,7 +16,7 @@ export default function CustomersCreate() {
             <Head title="Tambah Customer" />
             <div className="max-w-2xl mx-auto space-y-6">
                 <div className="flex items-center gap-4">
-                    <Link href={customers.index.url()}>
+                    <Link href={customersRoutes.index.url()}>
                         <Button variant="ghost" size="icon" className="h-9 w-9">
                             <ArrowLeft className="h-4 w-4" />
                         </Button>
@@ -34,11 +34,11 @@ export default function CustomersCreate() {
                     </CardHeader>
                     <CardContent>
                         <Form
-                            action={customers.store()}
+                            action={customersRoutes.store()}
                             method="post"
                             onSuccess={() => {
                                 toast.success('Customer berhasil ditambahkan.');
-                                router.visit(customers.index.url());
+                                router.visit(customersRoutes.index.url());
                             }}
                             onError={() => toast.error('Gagal menambahkan customer.')}
                         >
@@ -121,7 +121,7 @@ export default function CustomersCreate() {
                                     </div>
 
                                     <div className="flex justify-end gap-3 pt-4 border-t">
-                                        <Link href={customers.index.url()}>
+                                        <Link href={customersRoutes.index.url()}>
                                             <Button type="button" variant="outline">
                                                 Batal
                                             </Button>
@@ -148,11 +148,11 @@ CustomersCreate.layout = {
         },
         {
             title: 'Customer',
-            href: customers.index.url(),
+            href: customersRoutes.index.url(),
         },
         {
             title: 'Tambah',
-            href: customers.create.url(),
+            href: customersRoutes.create.url(),
         },
     ],
 };

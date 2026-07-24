@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
 import { Plus, Search, MoreHorizontal, Edit, Trash2, Building2, Banknote } from 'lucide-react';
-import bankAccounts from '@/routes/bank-accounts';
+import bankAccountsRoutes from '@/routes/bank-accounts';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -59,7 +59,7 @@ export default function BankAccountsIndex({ bankAccounts, filters }: BankAccount
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        bankAccounts.index({ search });
+        bankAccountsRoutes.index({ search });
     };
 
     const handleDelete = (id: number) => {
@@ -69,7 +69,7 @@ export default function BankAccountsIndex({ bankAccounts, filters }: BankAccount
     const confirmDelete = () => {
         if (!deleteId) return;
 
-        new Form({ _method: 'delete' }).delete(bankAccounts.destroy(deleteId), {
+        new Form({ _method: 'delete' }).delete(bankAccountsRoutes.destroy(deleteId), {
             onSuccess: () => {
                 toast.success('Rekening berhasil dihapus.');
                 setDeleteId(null);
@@ -90,7 +90,7 @@ export default function BankAccountsIndex({ bankAccounts, filters }: BankAccount
                         <h1 className="text-3xl font-bold tracking-tight">Master Rekening</h1>
                         <p className="text-muted-foreground">Kelola data rekening bank untuk Invoice</p>
                     </div>
-                    <Link href={bankAccounts.create.url()}>
+                    <Link href={bankAccountsRoutes.create.url()}>
                         <Button>
                             <Plus className="mr-2 h-4 w-4" />
                             Tambah Rekening
@@ -118,7 +118,7 @@ export default function BankAccountsIndex({ bankAccounts, filters }: BankAccount
                                 </div>
                                 <Button type="submit">Cari</Button>
                                 {search && (
-                                    <Link href={bankAccounts.index.url()}>
+                                    <Link href={bankAccountsRoutes.index.url()}>
                                         <Button type="button" variant="outline">Reset</Button>
                                     </Link>
                                 )}
@@ -139,17 +139,17 @@ export default function BankAccountsIndex({ bankAccounts, filters }: BankAccount
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {bankAccounts.data.length === 0 ? (
+                                    {bankAccountsRoutes.data.length === 0 ? (
                                         <TableRow>
                                             <TableCell colSpan={7} className="text-center py-8">
                                                 <p className="text-muted-foreground">Belum ada data rekening. Klik "Tambah Rekening" untuk memulai.</p>
                                             </TableCell>
                                         </TableRow>
                                     ) : (
-                                        bankAccounts.data.map((bankAccount, index) => (
+                                        bankAccountsRoutes.data.map((bankAccount, index) => (
                                             <TableRow key={bankAccount.id}>
                                                 <TableCell className="font-medium">
-                                                    {(bankAccounts.from ?? 0) + index}
+                                                    {(bankAccountsRoutes.from ?? 0) + index}
                                                 </TableCell>
                                                 <TableCell className="font-medium">{bankAccount.company?.nama ?? '-'}</TableCell>
                                                 <TableCell>{bankAccount.nama_bank}</TableCell>
@@ -169,7 +169,7 @@ export default function BankAccountsIndex({ bankAccounts, filters }: BankAccount
                                                         </DropdownMenuTrigger>
                                                         <DropdownMenuContent align="end" className="w-48">
                                                             <DropdownMenuItem asChild>
-                                                                <Link href={bankAccounts.edit(bankAccount.id).url}>
+                                                                <Link href={bankAccountsRoutes.edit(bankAccount.id).url}>
                                                                     <Edit className="mr-2 h-4 w-4" />
                                                                     Edit
                                                                 </Link>
@@ -192,11 +192,11 @@ export default function BankAccountsIndex({ bankAccounts, filters }: BankAccount
                             </Table>
                         </div>
 
-                        {bankAccounts.last_page > 1 && (
+                        {bankAccountsRoutes.last_page > 1 && (
                             <Pagination
-                                currentPage={bankAccounts.current_page}
-                                totalPages={bankAccounts.last_page}
-                                baseUrl={bankAccounts.index.url()}
+                                currentPage={bankAccountsRoutes.current_page}
+                                totalPages={bankAccountsRoutes.last_page}
+                                baseUrl={bankAccountsRoutes.index.url()}
                                 searchParams={{ search }}
                             />
                         )}
@@ -236,7 +236,7 @@ BankAccountsIndex.layout = {
         },
         {
             title: 'Rekening',
-            href: bankAccounts.index.url(),
+            href: bankAccountsRoutes.index.url(),
         },
     ],
 };

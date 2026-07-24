@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { Link, router } from '@inertiajs/react';
 import { ArrowLeft, Banknote } from 'lucide-react';
-import bankAccounts from '@/routes/bank-accounts';
+import bankAccountsRoutes from '@/routes/bank-accounts';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -25,7 +25,7 @@ export default function BankAccountsCreate({ companies }: BankAccountsCreateProp
             <Head title="Tambah Rekening" />
             <div className="max-w-2xl mx-auto space-y-6">
                 <div className="flex items-center gap-4">
-                    <Link href={bankAccounts.index.url()}>
+                    <Link href={bankAccountsRoutes.index.url()}>
                         <Button variant="ghost" size="icon" className="h-9 w-9">
                             <ArrowLeft className="h-4 w-4" />
                         </Button>
@@ -43,11 +43,11 @@ export default function BankAccountsCreate({ companies }: BankAccountsCreateProp
                     </CardHeader>
                     <CardContent>
                         <Form
-                            action={bankAccounts.store()}
+                            action={bankAccountsRoutes.store()}
                             method="post"
                             onSuccess={() => {
                                 toast.success('Rekening berhasil ditambahkan.');
-                                router.visit(bankAccounts.index.url());
+                                router.visit(bankAccountsRoutes.index.url());
                             }}
                             onError={() => toast.error('Gagal menambahkan rekening.')}
                         >
@@ -129,7 +129,7 @@ export default function BankAccountsCreate({ companies }: BankAccountsCreateProp
                                     </div>
 
                                     <div className="flex justify-end gap-3 pt-4 border-t">
-                                        <Link href={bankAccounts.index.url()}>
+                                        <Link href={bankAccountsRoutes.index.url()}>
                                             <Button type="button" variant="outline">
                                                 Batal
                                             </Button>
@@ -156,11 +156,11 @@ BankAccountsCreate.layout = {
         },
         {
             title: 'Rekening',
-            href: bankAccounts.index.url(),
+            href: bankAccountsRoutes.index.url(),
         },
         {
             title: 'Tambah',
-            href: bankAccounts.create.url(),
+            href: bankAccountsRoutes.create.url(),
         },
     ],
 };

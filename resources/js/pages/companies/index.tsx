@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
 import { Plus, Search, MoreHorizontal, Edit, Trash2, Building2 } from 'lucide-react';
-import companies from '@/routes/companies';
+import companiesRoutes from '@/routes/companies';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -57,7 +57,7 @@ export default function CompaniesIndex({ companies, filters }: CompaniesIndexPro
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        companies.index({ search });
+        companiesRoutes.index({ search });
     };
 
     const handleDelete = (id: number) => {
@@ -67,7 +67,7 @@ export default function CompaniesIndex({ companies, filters }: CompaniesIndexPro
     const confirmDelete = () => {
         if (!deleteId) return;
 
-        new Form({ _method: 'delete' }).delete(companies.destroy(deleteId), {
+        new Form({ _method: 'delete' }).delete(companiesRoutes.destroy(deleteId), {
             onSuccess: () => {
                 toast.success('Perusahaan berhasil dihapus.');
                 setDeleteId(null);
@@ -88,7 +88,7 @@ export default function CompaniesIndex({ companies, filters }: CompaniesIndexPro
                         <h1 className="text-3xl font-bold tracking-tight">Master Perusahaan</h1>
                         <p className="text-muted-foreground">Kelola data perusahaan untuk Delivery Note dan Invoice</p>
                     </div>
-                    <Link href={companies.create.url()}>
+                    <Link href={companiesRoutes.create.url()}>
                         <Button>
                             <Plus className="mr-2 h-4 w-4" />
                             Tambah Perusahaan
@@ -116,7 +116,7 @@ export default function CompaniesIndex({ companies, filters }: CompaniesIndexPro
                                 </div>
                                 <Button type="submit">Cari</Button>
                                 {search && (
-                                    <Link href={companies.index.url()}>
+                                    <Link href={companiesRoutes.index.url()}>
                                         <Button type="button" variant="outline">Reset</Button>
                                     </Link>
                                 )}
@@ -137,17 +137,17 @@ export default function CompaniesIndex({ companies, filters }: CompaniesIndexPro
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {companies.data.length === 0 ? (
+                                    {companiesRoutes.data.length === 0 ? (
                                         <TableRow>
                                             <TableCell colSpan={7} className="text-center py-8">
                                                 <p className="text-muted-foreground">Belum ada data perusahaan. Klik "Tambah Perusahaan" untuk memulai.</p>
                                             </TableCell>
                                         </TableRow>
                                     ) : (
-                                        companies.data.map((company, index) => (
+                                        companiesRoutes.data.map((company, index) => (
                                             <TableRow key={company.id}>
                                                 <TableCell className="font-medium">
-                                                    {(companies.from ?? 0) + index}
+                                                    {(companiesRoutes.from ?? 0) + index}
                                                 </TableCell>
                                                 <TableCell className="font-medium">{company.nama}</TableCell>
                                                 <TableCell>
@@ -173,7 +173,7 @@ export default function CompaniesIndex({ companies, filters }: CompaniesIndexPro
                                                         </DropdownMenuTrigger>
                                                         <DropdownMenuContent align="end" className="w-48">
                                                             <DropdownMenuItem asChild>
-                                                                <Link href={companies.edit(company.id).url}>
+                                                                <Link href={companiesRoutes.edit(company.id).url}>
                                                                     <Edit className="mr-2 h-4 w-4" />
                                                                     Edit
                                                                 </Link>
@@ -196,11 +196,11 @@ export default function CompaniesIndex({ companies, filters }: CompaniesIndexPro
                             </Table>
                         </div>
 
-                        {companies.last_page > 1 && (
+                        {companiesRoutes.last_page > 1 && (
                             <Pagination
-                                currentPage={companies.current_page}
-                                totalPages={companies.last_page}
-                                baseUrl={companies.index.url()}
+                                currentPage={companiesRoutes.current_page}
+                                totalPages={companiesRoutes.last_page}
+                                baseUrl={companiesRoutes.index.url()}
                                 searchParams={{ search }}
                             />
                         )}
@@ -240,7 +240,7 @@ CompaniesIndex.layout = {
         },
         {
             title: 'Perusahaan',
-            href: companies.index.url(),
+            href: companiesRoutes.index.url(),
         },
     ],
 };

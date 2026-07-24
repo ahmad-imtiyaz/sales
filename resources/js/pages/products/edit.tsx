@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { Link, router } from '@inertiajs/react';
 import { ArrowLeft, Package } from 'lucide-react';
-import products from '@/routes/products';
+import productsRoutes from '@/routes/products';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -29,7 +29,7 @@ export default function ProductsEdit({ product }: ProductsEditProps) {
             <Head title="Edit Barang" />
             <div className="max-w-2xl mx-auto space-y-6">
                 <div className="flex items-center gap-4">
-                    <Link href={products.index.url()}>
+                    <Link href={productsRoutes.index.url()}>
                         <Button variant="ghost" size="icon" className="h-9 w-9">
                             <ArrowLeft className="h-4 w-4" />
                         </Button>
@@ -47,11 +47,11 @@ export default function ProductsEdit({ product }: ProductsEditProps) {
                     </CardHeader>
                     <CardContent>
                         <Form
-                            action={products.update(product.id)}
+                            action={productsRoutes.update(product.id)}
                             method="put"
                             onSuccess={() => {
                                 toast.success('Barang berhasil diperbarui.');
-                                router.visit(products.index.url());
+                                router.visit(productsRoutes.index.url());
                             }}
                             onError={() => toast.error('Gagal memperbarui barang.')}
                         >
@@ -118,7 +118,7 @@ export default function ProductsEdit({ product }: ProductsEditProps) {
                                     </div>
 
                                     <div className="flex justify-end gap-3 pt-4 border-t">
-                                        <Link href={products.index.url()}>
+                                        <Link href={productsRoutes.index.url()}>
                                             <Button type="button" variant="outline">
                                                 Batal
                                             </Button>
@@ -145,11 +145,11 @@ ProductsEdit.layout = {
         },
         {
             title: 'Barang',
-            href: products.index.url(),
+            href: productsRoutes.index.url(),
         },
         {
             title: 'Edit',
-            href: products.edit(product.id).url,
+            href: productsRoutes.edit(product.id).url,
         },
     ],
 };

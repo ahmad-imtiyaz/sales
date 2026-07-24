@@ -1,7 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
 import { Plus, Search, MoreHorizontal, Users } from 'lucide-react';
-import customers from '@/routes/customers';
+import customersRoutes from '@/routes/customers';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -58,7 +58,7 @@ export default function CustomersIndex({ customers, filters }: CustomersIndexPro
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        customers.index({ search });
+        customersRoutes.index({ search });
     };
 
     const handleDelete = (id: number) => {
@@ -68,7 +68,7 @@ export default function CustomersIndex({ customers, filters }: CustomersIndexPro
     const confirmDelete = () => {
         if (!deleteId) return;
 
-        new Form({ _method: 'delete' }).delete(customers.destroy(deleteId), {
+        new Form({ _method: 'delete' }).delete(customersRoutes.destroy(deleteId), {
             onSuccess: () => {
                 toast.success('Customer berhasil dihapus.');
                 setDeleteId(null);
@@ -89,7 +89,7 @@ export default function CustomersIndex({ customers, filters }: CustomersIndexPro
                         <h1 className="text-3xl font-bold tracking-tight">Master Customer</h1>
                         <p className="text-muted-foreground">Kelola data customer untuk Delivery Note dan Invoice</p>
                     </div>
-                    <Link href={customers.create.url()}>
+                    <Link href={customersRoutes.create.url()}>
                         <Button>
                             <Plus className="mr-2 h-4 w-4" />
                             Tambah Customer
@@ -117,7 +117,7 @@ export default function CustomersIndex({ customers, filters }: CustomersIndexPro
                                 </div>
                                 <Button type="submit">Cari</Button>
                                 {search && (
-                                    <Link href={customers.index.url()}>
+                                    <Link href={customersRoutes.index.url()}>
                                         <Button type="button" variant="outline">Reset</Button>
                                     </Link>
                                 )}
@@ -139,17 +139,17 @@ export default function CustomersIndex({ customers, filters }: CustomersIndexPro
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {customers.data.length === 0 ? (
+                                    {customersRoutes.data.length === 0 ? (
                                         <TableRow>
                                             <TableCell colSpan={8} className="text-center py-8">
                                                 <p className="text-muted-foreground">Belum ada data customer. Klik "Tambah Customer" untuk memulai.</p>
                                             </TableCell>
                                         </TableRow>
                                     ) : (
-                                        customers.data.map((customer, index) => (
+                                        customersRoutes.data.map((customer, index) => (
                                             <TableRow key={customer.id}>
                                                 <TableCell className="font-medium">
-                                                    {(customers.from ?? 0) + index}
+                                                    {(customersRoutes.from ?? 0) + index}
                                                 </TableCell>
                                                 <TableCell className="font-medium">{customer.nama}</TableCell>
                                                 <TableCell className="max-w-xs truncate">{customer.alamat ?? '-'}</TableCell>
@@ -166,7 +166,7 @@ export default function CustomersIndex({ customers, filters }: CustomersIndexPro
                                                         </DropdownMenuTrigger>
                                                         <DropdownMenuContent align="end" className="w-48">
                                                             <DropdownMenuItem asChild>
-                                                                <Link href={customers.edit(customer.id).url}>
+                                                                <Link href={customersRoutes.edit(customer.id).url}>
                                                                     Edit
                                                                 </Link>
                                                             </DropdownMenuItem>
@@ -187,11 +187,11 @@ export default function CustomersIndex({ customers, filters }: CustomersIndexPro
                             </Table>
                         </div>
 
-                        {customers.last_page > 1 && (
+                        {customersRoutes.last_page > 1 && (
                             <Pagination
-                                currentPage={customers.current_page}
-                                totalPages={customers.last_page}
-                                baseUrl={customers.index.url()}
+                                currentPage={customersRoutes.current_page}
+                                totalPages={customersRoutes.last_page}
+                                baseUrl={customersRoutes.index.url()}
                                 searchParams={{ search }}
                             />
                         )}
@@ -231,7 +231,7 @@ CustomersIndex.layout = {
         },
         {
             title: 'Customer',
-            href: customers.index.url(),
+            href: customersRoutes.index.url(),
         },
     ],
 };
