@@ -21,4 +21,9 @@ class Company extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    public function bankAccounts()
+    {
+        return $this->hasMany(BankAccount::class);
+    }
 }
