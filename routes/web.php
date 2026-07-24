@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'welcome')->name('home');
@@ -11,6 +12,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Master Perusahaan
     Route::resource('companies', CompanyController::class)
         ->names('companies');
+
+    // Master Customer
+    Route::resource('customers', CustomerController::class)
+        ->names('customers');
 });
 
 require __DIR__.'/settings.php';
