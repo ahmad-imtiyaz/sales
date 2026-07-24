@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
@@ -21,6 +22,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Master Barang
     Route::resource('products', ProductController::class)
         ->names('products');
+
+    // Master Rekening
+    Route::resource('bank-accounts', BankAccountController::class)
+        ->names('bank-accounts');
 });
 
 require __DIR__.'/settings.php';
