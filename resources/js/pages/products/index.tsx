@@ -135,17 +135,17 @@ export default function ProductsIndex({ products, filters }: ProductsIndexProps)
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {productsRoutes.data.length === 0 ? (
+                                    {products.data.length === 0 ? (
                                         <TableRow>
                                             <TableCell colSpan={6} className="text-center py-8">
                                                 <p className="text-muted-foreground">Belum ada data barang. Klik "Tambah Barang" untuk memulai.</p>
                                             </TableCell>
                                         </TableRow>
                                     ) : (
-                                        productsRoutes.data.map((product, index) => (
+                                        products.data.map((product, index) => (
                                             <TableRow key={product.id}>
                                                 <TableCell className="font-medium">
-                                                    {(productsRoutes.from ?? 0) + index}
+                                                    {(products.from ?? 0) + index}
                                                 </TableCell>
                                                 <TableCell className="font-mono font-medium">{product.kode}</TableCell>
                                                 <TableCell className="font-medium">{product.nama_barang}</TableCell>
@@ -189,10 +189,10 @@ export default function ProductsIndex({ products, filters }: ProductsIndexProps)
                             </Table>
                         </div>
 
-                        {productsRoutes.last_page > 1 && (
+                        {products.last_page > 1 && (
                             <Pagination
-                                currentPage={productsRoutes.current_page}
-                                totalPages={productsRoutes.last_page}
+                                currentPage={products.current_page}
+                                totalPages={products.last_page}
                                 baseUrl={productsRoutes.index.url()}
                                 searchParams={{ search }}
                             />

@@ -137,17 +137,17 @@ export default function CompaniesIndex({ companies, filters }: CompaniesIndexPro
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {companiesRoutes.data.length === 0 ? (
+                                    {companies.data.length === 0 ? (
                                         <TableRow>
                                             <TableCell colSpan={7} className="text-center py-8">
                                                 <p className="text-muted-foreground">Belum ada data perusahaan. Klik "Tambah Perusahaan" untuk memulai.</p>
                                             </TableCell>
                                         </TableRow>
                                     ) : (
-                                        companiesRoutes.data.map((company, index) => (
+                                        companies.data.map((company, index) => (
                                             <TableRow key={company.id}>
                                                 <TableCell className="font-medium">
-                                                    {(companiesRoutes.from ?? 0) + index}
+                                                    {(companies.from ?? 0) + index}
                                                 </TableCell>
                                                 <TableCell className="font-medium">{company.nama}</TableCell>
                                                 <TableCell>
@@ -196,10 +196,10 @@ export default function CompaniesIndex({ companies, filters }: CompaniesIndexPro
                             </Table>
                         </div>
 
-                        {companiesRoutes.last_page > 1 && (
+                        {companies.last_page > 1 && (
                             <Pagination
-                                currentPage={companiesRoutes.current_page}
-                                totalPages={companiesRoutes.last_page}
+                                currentPage={companies.current_page}
+                                totalPages={companies.last_page}
                                 baseUrl={companiesRoutes.index.url()}
                                 searchParams={{ search }}
                             />

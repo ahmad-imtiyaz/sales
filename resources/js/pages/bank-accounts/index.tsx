@@ -139,17 +139,17 @@ export default function BankAccountsIndex({ bankAccounts, filters }: BankAccount
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {bankAccountsRoutes.data.length === 0 ? (
+                                    {bankAccounts.data.length === 0 ? (
                                         <TableRow>
                                             <TableCell colSpan={7} className="text-center py-8">
                                                 <p className="text-muted-foreground">Belum ada data rekening. Klik "Tambah Rekening" untuk memulai.</p>
                                             </TableCell>
                                         </TableRow>
                                     ) : (
-                                        bankAccountsRoutes.data.map((bankAccount, index) => (
+                                        bankAccounts.data.map((bankAccount, index) => (
                                             <TableRow key={bankAccount.id}>
                                                 <TableCell className="font-medium">
-                                                    {(bankAccountsRoutes.from ?? 0) + index}
+                                                    {(bankAccounts.from ?? 0) + index}
                                                 </TableCell>
                                                 <TableCell className="font-medium">{bankAccount.company?.nama ?? '-'}</TableCell>
                                                 <TableCell>{bankAccount.nama_bank}</TableCell>
@@ -192,10 +192,10 @@ export default function BankAccountsIndex({ bankAccounts, filters }: BankAccount
                             </Table>
                         </div>
 
-                        {bankAccountsRoutes.last_page > 1 && (
+                        {bankAccounts.last_page > 1 && (
                             <Pagination
-                                currentPage={bankAccountsRoutes.current_page}
-                                totalPages={bankAccountsRoutes.last_page}
+                                currentPage={bankAccounts.current_page}
+                                totalPages={bankAccounts.last_page}
                                 baseUrl={bankAccountsRoutes.index.url()}
                                 searchParams={{ search }}
                             />

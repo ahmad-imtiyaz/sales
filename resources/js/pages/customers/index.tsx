@@ -139,17 +139,17 @@ export default function CustomersIndex({ customers, filters }: CustomersIndexPro
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {customersRoutes.data.length === 0 ? (
+                                    {customers.data.length === 0 ? (
                                         <TableRow>
                                             <TableCell colSpan={8} className="text-center py-8">
                                                 <p className="text-muted-foreground">Belum ada data customer. Klik "Tambah Customer" untuk memulai.</p>
                                             </TableCell>
                                         </TableRow>
                                     ) : (
-                                        customersRoutes.data.map((customer, index) => (
+                                        customers.data.map((customer, index) => (
                                             <TableRow key={customer.id}>
                                                 <TableCell className="font-medium">
-                                                    {(customersRoutes.from ?? 0) + index}
+                                                    {(customers.from ?? 0) + index}
                                                 </TableCell>
                                                 <TableCell className="font-medium">{customer.nama}</TableCell>
                                                 <TableCell className="max-w-xs truncate">{customer.alamat ?? '-'}</TableCell>
@@ -187,10 +187,10 @@ export default function CustomersIndex({ customers, filters }: CustomersIndexPro
                             </Table>
                         </div>
 
-                        {customersRoutes.last_page > 1 && (
+                        {customers.last_page > 1 && (
                             <Pagination
-                                currentPage={customersRoutes.current_page}
-                                totalPages={customersRoutes.last_page}
+                                currentPage={customers.current_page}
+                                totalPages={customers.last_page}
                                 baseUrl={customersRoutes.index.url()}
                                 searchParams={{ search }}
                             />
