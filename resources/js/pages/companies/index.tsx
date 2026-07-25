@@ -181,7 +181,7 @@ export default function CompaniesIndex({ companies, filters }: CompaniesIndexPro
                                                             <DropdownMenuItem
                                                                 onClick={() => handleDelete(company.id)}
                                                                 className="text-destructive focus:text-destructive"
-                                                                insid
+                                                                inset
                                                             >
                                                                 <Trash2 className="mr-2 h-4 w-4" />
                                                                 Hapus
