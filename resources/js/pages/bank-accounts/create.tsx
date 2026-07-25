@@ -116,7 +116,7 @@ export default function BankAccountsCreate({ companies }: BankAccountsCreateProp
 
                                     <div className="space-y-2">
                                         <Label htmlFor="status">Status</Label>
-                                        <Select name="status" defaultValue="true">
+                                        <Select name="status" value="true">
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Pilih status" />
                                             </SelectTrigger>
