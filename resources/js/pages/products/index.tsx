@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { Plus, Search, MoreHorizontal, Edit, Trash2, Package } from 'lucide-react';
 import productsRoutes from '@/routes/products';
 import { Button } from '@/components/ui/button';
@@ -56,7 +56,7 @@ export default function ProductsIndex({ products, filters }: ProductsIndexProps)
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        productsRoutes.index({ search });
+        router.visit(productsRoutes.index.url({ search }));
     };
 
     const handleDelete = (id: number) => {

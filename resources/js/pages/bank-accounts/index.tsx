@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { Plus, Search, MoreHorizontal, Edit, Trash2, Building2, Banknote } from 'lucide-react';
 import bankAccountsRoutes from '@/routes/bank-accounts';
 import { Button } from '@/components/ui/button';
@@ -59,7 +59,7 @@ export default function BankAccountsIndex({ bankAccounts, filters }: BankAccount
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        bankAccountsRoutes.index({ search });
+        router.visit(bankAccountsRoutes.index.url({ search }));
     };
 
     const handleDelete = (id: number) => {

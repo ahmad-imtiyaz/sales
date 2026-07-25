@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { Plus, Search, MoreHorizontal, Users } from 'lucide-react';
 import customersRoutes from '@/routes/customers';
 import { Button } from '@/components/ui/button';
@@ -58,7 +58,7 @@ export default function CustomersIndex({ customers, filters }: CustomersIndexPro
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        customersRoutes.index({ search });
+        router.visit(customersRoutes.index.url({ search }));
     };
 
     const handleDelete = (id: number) => {

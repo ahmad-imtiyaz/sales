@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { Plus, Search, MoreHorizontal, Edit, Trash2, Building2 } from 'lucide-react';
 import companiesRoutes from '@/routes/companies';
 import { Button } from '@/components/ui/button';
@@ -57,7 +57,7 @@ export default function CompaniesIndex({ companies, filters }: CompaniesIndexPro
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        companiesRoutes.index({ search });
+        router.visit(companiesRoutes.index.url({ search }));
     };
 
     const handleDelete = (id: number) => {
