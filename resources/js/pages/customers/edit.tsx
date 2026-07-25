@@ -50,7 +50,7 @@ export default function CustomersEdit({ customer }: CustomersEditProps) {
                     </CardHeader>
                     <CardContent>
                         <Form
-                            action={customersRoutes.update(customer.id)}
+                            action={customersRoutes.update(customer.id).url()}
                             method="put"
                             onSuccess={() => {
                                 toast.success('Customer berhasil diperbarui.');

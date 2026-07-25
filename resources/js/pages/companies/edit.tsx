@@ -49,7 +49,7 @@ export default function CompaniesEdit({ company }: CompaniesEditProps) {
                     </CardHeader>
                     <CardContent>
                         <Form
-                            action={companies.update(company.id)}
+                            action={companiesRoutes.update(company.id).url()}
                             method="put"
                             onSuccess={() => {
                                 toast.success('Perusahaan berhasil diperbarui.');

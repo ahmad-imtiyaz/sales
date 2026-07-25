@@ -47,7 +47,7 @@ export default function ProductsEdit({ product }: ProductsEditProps) {
                     </CardHeader>
                     <CardContent>
                         <Form
-                            action={productsRoutes.update(product.id)}
+                            action={productsRoutes.update(product.id).url()}
                             method="put"
                             onSuccess={() => {
                                 toast.success('Barang berhasil diperbarui.');

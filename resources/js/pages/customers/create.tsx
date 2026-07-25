@@ -34,7 +34,7 @@ export default function CustomersCreate() {
                     </CardHeader>
                     <CardContent>
                         <Form
-                            action={customersRoutes.store()}
+                            action={customersRoutes.store.url()}
                             method="post"
                             onSuccess={() => {
                                 toast.success('Customer berhasil ditambahkan.');

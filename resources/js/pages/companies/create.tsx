@@ -34,7 +34,7 @@ export default function CompaniesCreate() {
                     </CardHeader>
                     <CardContent>
                         <Form
-                            action={companies.store()}
+                            action={companiesRoutes.store.url()}
                             method="post"
                             onSuccess={() => {
                                 toast.success('Perusahaan berhasil ditambahkan.');

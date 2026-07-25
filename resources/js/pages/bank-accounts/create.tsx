@@ -43,7 +43,7 @@ export default function BankAccountsCreate({ companies }: BankAccountsCreateProp
                     </CardHeader>
                     <CardContent>
                         <Form
-                            action={bankAccountsRoutes.store()}
+                            action={bankAccountsRoutes.store.url()}
                             method="post"
                             onSuccess={() => {
                                 toast.success('Rekening berhasil ditambahkan.');

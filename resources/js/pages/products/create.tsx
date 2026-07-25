@@ -33,7 +33,7 @@ export default function ProductsCreate() {
                     </CardHeader>
                     <CardContent>
                         <Form
-                            action={productsRoutes.store()}
+                            action={productsRoutes.store.url()}
                             method="post"
                             onSuccess={() => {
                                 toast.success('Barang berhasil ditambahkan.');

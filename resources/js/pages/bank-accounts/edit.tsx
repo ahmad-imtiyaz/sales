@@ -56,7 +56,7 @@ export default function BankAccountsEdit({ bankAccount, companies }: BankAccount
                     </CardHeader>
                     <CardContent>
                         <Form
-                            action={bankAccountsRoutes.update(bankAccount.id)}
+                            action={bankAccountsRoutes.update(bankAccount.id).url()}
                             method="put"
                             onSuccess={() => {
                                 toast.success('Rekening berhasil diperbarui.');
