@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Form } from '@inertiajs/react';
 import { toast } from 'sonner';
@@ -132,16 +133,13 @@ export default function BankAccountsEdit({ bankAccount, companies }: BankAccount
 
                                     <div className="space-y-2">
                                         <Label htmlFor="status">Status</Label>
-                                        <Select name="status" defaultValue={bankAccount.status ? 'true' : 'false'}>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Pilih status" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="true">Aktif</SelectItem>
-                                                <SelectItem value="false">Tidak Aktif</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                        {errors.status && <p className="text-sm text-destructive">{errors.status}</p>}
+                                        <div className="flex items-center space-x-3">
+                                            <Switch
+                                                name="status"
+                                                defaultChecked={bankAccount.status}
+                                            />
+                                            <span className="text-sm text-muted-foreground">Aktif</span>
+                                        </div>
                                     </div>
 
                                     <div className="flex justify-end gap-3 pt-4 border-t">

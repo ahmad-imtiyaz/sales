@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
 import { Form } from '@inertiajs/react';
 import { toast } from 'sonner';
 
@@ -115,17 +116,17 @@ export default function BankAccountsCreate({ companies }: BankAccountsCreateProp
                                     </div>
 
                                     <div className="space-y-2">
+                                    <div className="space-y-2">
                                         <Label htmlFor="status">Status</Label>
-                                        <Select name="status" defaultValue="true">
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Pilih status" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem defaultValue="true">Aktif</SelectItem>
-                                                <SelectItem value="false">Tidak Aktif</SelectItem>
-                                            </SelectContent>
-                                        </Select>
+                                        <div className="flex items-center space-x-3">
+                                            <Switch
+                                                name="status"
+                                                defaultChecked={true}
+                                            />
+                                            <span className="text-sm text-muted-foreground">Aktif</span>
+                                        </div>
                                         {errors.status && <p className="text-sm text-destructive">{errors.status}</p>}
+                                    </div>
                                     </div>
 
                                     <div className="flex justify-end gap-3 pt-4 border-t">
