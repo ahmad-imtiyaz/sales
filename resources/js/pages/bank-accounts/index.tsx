@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react';
-import { Link, router } from '@inertiajs/react';
+import { Link, router, useForm } from '@inertiajs/react';
 import { Plus, Search, MoreHorizontal, Edit, Trash2, Building2, Banknote } from 'lucide-react';
 import bankAccountsRoutes from '@/routes/bank-accounts';
 import { Button } from '@/components/ui/button';
@@ -19,7 +19,6 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Form } from '@inertiajs/react';
 import { toast } from 'sonner';
 import { Pagination } from '@/components/ui/pagination';
 import { Badge } from '@/components/ui/badge';
@@ -57,6 +56,8 @@ export default function BankAccountsIndex({ bankAccounts, filters }: BankAccount
     const [search, setSearch] = useState(filters.search ?? '');
     const [deleteId, setDeleteId] = useState<number | null>(null);
 
+    const deleteForm = useForm({ _method: 'delete' });
+
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         router.visit(bankAccountsRoutes.index.url({ search }));
@@ -69,7 +70,7 @@ export default function BankAccountsIndex({ bankAccounts, filters }: BankAccount
     const confirmDelete = () => {
         if (!deleteId) return;
 
-        new Form({ _method: 'delete' }).delete(bankAccountsRoutes.destroy(deleteId), {
+        deleteForm.delete(bankAccountsRoutes.destroy(deleteId), {
             onSuccess: () => {
                 toast.success('Rekening berhasil dihapus.');
                 setDeleteId(null);

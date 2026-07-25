@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react';
-import { Link, router } from '@inertiajs/react';
+import { Link, router, useForm } from '@inertiajs/react';
 import { Plus, Search, MoreHorizontal, Edit, Trash2, Building2 } from 'lucide-react';
 import companiesRoutes from '@/routes/companies';
 import { Button } from '@/components/ui/button';
@@ -19,7 +19,6 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Form } from '@inertiajs/react';
 import { toast } from 'sonner';
 import { Pagination } from '@/components/ui/pagination';
 import { useState } from 'react';
@@ -55,6 +54,8 @@ export default function CompaniesIndex({ companies, filters }: CompaniesIndexPro
     const [search, setSearch] = useState(filters.search ?? '');
     const [deleteId, setDeleteId] = useState<number | null>(null);
 
+    const deleteForm = useForm({ _method: 'delete' });
+
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         router.visit(companiesRoutes.index.url({ search }));
@@ -67,7 +68,7 @@ export default function CompaniesIndex({ companies, filters }: CompaniesIndexPro
     const confirmDelete = () => {
         if (!deleteId) return;
 
-        new Form({ _method: 'delete' }).delete(companiesRoutes.destroy(deleteId), {
+        deleteForm.delete(companiesRoutes.destroy(deleteId), {
             onSuccess: () => {
                 toast.success('Perusahaan berhasil dihapus.');
                 setDeleteId(null);

@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react';
-import { Link, router } from '@inertiajs/react';
+import { Link, router, useForm } from '@inertiajs/react';
 import { Plus, Search, MoreHorizontal, Users } from 'lucide-react';
 import customersRoutes from '@/routes/customers';
 import { Button } from '@/components/ui/button';
@@ -19,7 +19,6 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Form } from '@inertiajs/react';
 import { toast } from 'sonner';
 import { Pagination } from '@/components/ui/pagination';
 import { useState } from 'react';
@@ -56,6 +55,8 @@ export default function CustomersIndex({ customers, filters }: CustomersIndexPro
     const [search, setSearch] = useState(filters.search ?? '');
     const [deleteId, setDeleteId] = useState<number | null>(null);
 
+    const deleteForm = useForm({ _method: 'delete' });
+
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         router.visit(customersRoutes.index.url({ search }));
@@ -68,7 +69,7 @@ export default function CustomersIndex({ customers, filters }: CustomersIndexPro
     const confirmDelete = () => {
         if (!deleteId) return;
 
-        new Form({ _method: 'delete' }).delete(customersRoutes.destroy(deleteId), {
+        deleteForm.delete(customersRoutes.destroy(deleteId), {
             onSuccess: () => {
                 toast.success('Customer berhasil dihapus.');
                 setDeleteId(null);

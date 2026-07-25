@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react';
-import { Link, router } from '@inertiajs/react';
+import { Link, router, useForm } from '@inertiajs/react';
 import { Plus, Search, MoreHorizontal, Edit, Trash2, Package } from 'lucide-react';
 import productsRoutes from '@/routes/products';
 import { Button } from '@/components/ui/button';
@@ -19,7 +19,6 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Form } from '@inertiajs/react';
 import { toast } from 'sonner';
 import { Pagination } from '@/components/ui/pagination';
 import { useState } from 'react';
@@ -66,7 +65,8 @@ export default function ProductsIndex({ products, filters }: ProductsIndexProps)
     const confirmDelete = () => {
         if (!deleteId) return;
 
-        new Form({ _method: 'delete' }).delete(productsRoutes.destroy(deleteId), {
+        const form = useForm({ _method: 'delete' });
+        form.delete(productsRoutes.destroy(deleteId), {
             onSuccess: () => {
                 toast.success('Barang berhasil dihapus.');
                 setDeleteId(null);
