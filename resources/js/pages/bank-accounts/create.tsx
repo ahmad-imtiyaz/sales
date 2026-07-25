@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react';
-import { Link, router } from '@inertiajs/react';
+import { Link, router, useForm } from '@inertiajs/react';
 import { ArrowLeft, Banknote } from 'lucide-react';
 import bankAccountsRoutes from '@/routes/bank-accounts';
 import { Button } from '@/components/ui/button';
@@ -116,12 +116,12 @@ export default function BankAccountsCreate({ companies }: BankAccountsCreateProp
 
                                     <div className="space-y-2">
                                         <Label htmlFor="status">Status</Label>
-                                        <Select name="status" value="true">
+                                        <Select name="status" defaultValue="true">
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Pilih status" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="true">Aktif</SelectItem>
+                                                <SelectItem defaultValue="true">Aktif</SelectItem>
                                                 <SelectItem value="false">Tidak Aktif</SelectItem>
                                             </SelectContent>
                                         </Select>
