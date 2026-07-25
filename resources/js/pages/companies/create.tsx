@@ -43,7 +43,7 @@ export default function CompaniesCreate() {
                             onError={() => toast.error('Gagal menambahkan perusahaan.')}
                         >
                             {({ errors, processing }) => (
-                                <form className="space-y-6">
+                                <div className="space-y-6">
                                     <div className="space-y-2">
                                         <Label htmlFor="nama">Nama Perusahaan *</Label>
                                         <Input
@@ -118,7 +118,7 @@ export default function CompaniesCreate() {
                                             {processing ? 'Menyimpan...' : 'Simpan Perusahaan'}
                                         </Button>
                                     </div>
-                                </form>
+                                </div>
                             )}
                         </Form>
                     </CardContent>

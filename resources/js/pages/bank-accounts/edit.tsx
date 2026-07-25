@@ -65,7 +65,7 @@ export default function BankAccountsEdit({ bankAccount, companies }: BankAccount
                             onError={() => toast.error('Gagal memperbarui rekening.')}
                         >
                             {({ errors, processing }) => (
-                                <form className="space-y-6">
+                                <div className="space-y-6">
                                     <div className="space-y-2">
                                         <Label htmlFor="company_id">Perusahaan *</Label>
                                         <Select
@@ -154,7 +154,7 @@ export default function BankAccountsEdit({ bankAccount, companies }: BankAccount
                                             {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
                                         </Button>
                                     </div>
-                                </form>
+                                </div>
                             )}
                         </Form>
                     </CardContent>

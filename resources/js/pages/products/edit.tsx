@@ -56,7 +56,7 @@ export default function ProductsEdit({ product }: ProductsEditProps) {
                             onError={() => toast.error('Gagal memperbarui barang.')}
                         >
                             {({ errors, processing }) => (
-                                <form className="space-y-6">
+                                <div className="space-y-6">
                                     <div className="space-y-2">
                                         <Label htmlFor="kode">Kode Barang *</Label>
                                         <Input
@@ -127,7 +127,7 @@ export default function ProductsEdit({ product }: ProductsEditProps) {
                                             {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
                                         </Button>
                                     </div>
-                                </form>
+                                </div>
                             )}
                         </Form>
                     </CardContent>

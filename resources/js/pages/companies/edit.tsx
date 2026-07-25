@@ -58,7 +58,7 @@ export default function CompaniesEdit({ company }: CompaniesEditProps) {
                             onError={() => toast.error('Gagal memperbarui perusahaan.')}
                         >
                             {({ errors, processing }) => (
-                                <form className="space-y-6">
+                                <div className="space-y-6">
                                     <div className="space-y-2">
                                         <Label htmlFor="nama">Nama Perusahaan *</Label>
                                         <Input
@@ -138,7 +138,7 @@ export default function CompaniesEdit({ company }: CompaniesEditProps) {
                                             {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
                                         </Button>
                                     </div>
-                                </form>
+                                </div>
                             )}
                         </Form>
                     </CardContent>

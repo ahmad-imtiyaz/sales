@@ -52,7 +52,7 @@ export default function BankAccountsCreate({ companies }: BankAccountsCreateProp
                             onError={() => toast.error('Gagal menambahkan rekening.')}
                         >
                             {({ errors, processing }) => (
-                                <form className="space-y-6">
+                                <div className="space-y-6">
                                     <div className="space-y-2">
                                         <Label htmlFor="company_id">Perusahaan *</Label>
                                         <Select
@@ -138,7 +138,7 @@ export default function BankAccountsCreate({ companies }: BankAccountsCreateProp
                                             {processing ? 'Menyimpan...' : 'Simpan Rekening'}
                                         </Button>
                                     </div>
-                                </form>
+                                </div>
                             )}
                         </Form>
                     </CardContent>

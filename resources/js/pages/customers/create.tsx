@@ -43,7 +43,7 @@ export default function CustomersCreate() {
                             onError={() => toast.error('Gagal menambahkan customer.')}
                         >
                             {({ errors, processing }) => (
-                                <form className="space-y-6">
+                                <div className="space-y-6">
                                     <div className="space-y-2">
                                         <Label htmlFor="nama">Nama Customer *</Label>
                                         <Input
@@ -130,7 +130,7 @@ export default function CustomersCreate() {
                                             {processing ? 'Menyimpan...' : 'Simpan Customer'}
                                         </Button>
                                     </div>
-                                </form>
+                                </div>
                             )}
                         </Form>
                     </CardContent>

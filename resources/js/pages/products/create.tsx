@@ -42,7 +42,7 @@ export default function ProductsCreate() {
                             onError={() => toast.error('Gagal menambahkan barang.')}
                         >
                             {({ errors, processing }) => (
-                                <form className="space-y-6">
+                                <div className="space-y-6">
                                     <div className="space-y-2">
                                         <Label htmlFor="kode">Kode Barang *</Label>
                                         <Input
@@ -109,7 +109,7 @@ export default function ProductsCreate() {
                                             {processing ? 'Menyimpan...' : 'Simpan Barang'}
                                         </Button>
                                     </div>
-                                </form>
+                                </div>
                             )}
                         </Form>
                     </CardContent>

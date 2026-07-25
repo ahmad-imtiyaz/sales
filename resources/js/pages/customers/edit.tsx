@@ -59,7 +59,7 @@ export default function CustomersEdit({ customer }: CustomersEditProps) {
                             onError={() => toast.error('Gagal memperbarui customer.')}
                         >
                             {({ errors, processing }) => (
-                                <form className="space-y-6">
+                                <div className="space-y-6">
                                     <div className="space-y-2">
                                         <Label htmlFor="nama">Nama Customer *</Label>
                                         <Input
@@ -152,7 +152,7 @@ export default function CustomersEdit({ customer }: CustomersEditProps) {
                                             {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
                                         </Button>
                                     </div>
-                                </form>
+                                </div>
                             )}
                         </Form>
                     </CardContent>
