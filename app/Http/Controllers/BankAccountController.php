@@ -48,8 +48,10 @@ class BankAccountController extends Controller
             'nama_bank' => ['required', 'string', 'max:255'],
             'nomor_rekening' => ['required', 'string', 'max:255'],
             'atas_nama' => ['required', 'string', 'max:255'],
-            'status' => ['boolean'],
+            'status' => ['nullable', 'boolean'],
         ]);
+
+        $validated['status'] = filter_var($validated['status'] ?? true, FILTER_VALIDATE_BOOLEAN);
 
         BankAccount::create($validated);
 
@@ -74,8 +76,10 @@ class BankAccountController extends Controller
             'nama_bank' => ['required', 'string', 'max:255'],
             'nomor_rekening' => ['required', 'string', 'max:255'],
             'atas_nama' => ['required', 'string', 'max:255'],
-            'status' => ['boolean'],
+            'status' => ['nullable', 'boolean'],
         ]);
+
+        $validated['status'] = filter_var($validated['status'] ?? true, FILTER_VALIDATE_BOOLEAN);
 
         $bankAccount->update($validated);
 
