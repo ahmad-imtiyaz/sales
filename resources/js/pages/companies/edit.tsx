@@ -148,7 +148,7 @@ export default function CompaniesEdit({ company }: CompaniesEditProps) {
     );
 }
 
-CompaniesEdit.layout = {
+CompaniesEdit.layout = (props: CompaniesEditProps) => ({
     breadcrumbs: [
         {
             title: 'Master',
@@ -160,7 +160,7 @@ CompaniesEdit.layout = {
         },
         {
             title: 'Edit',
-            href: companiesRoutes.edit(company.id).url,
+            href: companiesRoutes.edit(props.company.id).url,
         },
     ],
-};
+});

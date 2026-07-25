@@ -149,7 +149,7 @@ ProductsEdit.layout = {
         },
         {
             title: 'Edit',
-            href: productsRoutes.edit(product.id).url,
+            href: productsRoutes.edit(props.product.id).url,
         },
     ],
 };

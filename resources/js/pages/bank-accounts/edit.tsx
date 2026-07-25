@@ -176,7 +176,7 @@ BankAccountsEdit.layout = {
         },
         {
             title: 'Edit',
-            href: bankAccountsRoutes.edit(bankAccount.id).url,
+            href: bankAccountsRoutes.edit(props.bankAccount.id).url,
         },
     ],
 };

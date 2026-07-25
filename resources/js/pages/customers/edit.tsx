@@ -174,7 +174,7 @@ CustomersEdit.layout = {
         },
         {
             title: 'Edit',
-            href: customersRoutes.edit(customer.id).url,
+            href: customersRoutes.edit(props.customer.id).url,
         },
     ],
 };
