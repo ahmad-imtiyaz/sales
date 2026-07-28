@@ -1,10 +1,19 @@
 import { Head } from '@inertiajs/react';
 import { Link, router, useForm } from '@inertiajs/react';
-import { Plus, Search, MoreHorizontal, Edit, Trash2, Building2, Banknote } from 'lucide-react';
-import bankAccountsRoutes from '@/routes/bank-accounts';
+import { Plus, Search, Edit, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Pagination } from '@/components/ui/pagination';
 import {
     Table,
     TableBody,
@@ -13,16 +22,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { toast } from 'sonner';
-import { Pagination } from '@/components/ui/pagination';
-import { Badge } from '@/components/ui/badge';
-import { useState } from 'react';
+import bankAccountsRoutes from '@/routes/bank-accounts';
 
 interface BankAccount {
     id: number;
@@ -52,7 +52,10 @@ interface BankAccountsIndexProps {
     filters: { search?: string };
 }
 
-export default function BankAccountsIndex({ bankAccounts, filters }: BankAccountsIndexProps) {
+export default function BankAccountsIndex({
+    bankAccounts,
+    filters,
+}: BankAccountsIndexProps) {
     const [search, setSearch] = useState(filters.search ?? '');
     const [deleteId, setDeleteId] = useState<number | null>(null);
 
@@ -68,7 +71,9 @@ export default function BankAccountsIndex({ bankAccounts, filters }: BankAccount
     };
 
     const confirmDelete = () => {
-        if (!deleteId) return;
+        if (!deleteId) {
+            return;
+        }
 
         deleteForm.delete(bankAccountsRoutes.destroy(deleteId), {
             onSuccess: () => {
@@ -86,10 +91,14 @@ export default function BankAccountsIndex({ bankAccounts, filters }: BankAccount
         <>
             <Head title="Master Rekening" />
             <div className="space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Master Rekening</h1>
-                        <p className="text-muted-foreground">Kelola data rekening bank untuk Invoice</p>
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            Master Rekening
+                        </h1>
+                        <p className="text-muted-foreground">
+                            Kelola data rekening bank untuk Invoice
+                        </p>
                     </div>
                     <Link href={bankAccountsRoutes.create.url()}>
                         <Button>
@@ -102,25 +111,32 @@ export default function BankAccountsIndex({ bankAccounts, filters }: BankAccount
                 <Card>
                     <CardHeader>
                         <CardTitle>Daftar Rekening Bank</CardTitle>
-                        <CardDescription>Data rekening BRI, BCA, Mandiri untuk CV Agus Jaya dan CV Sumber Sukses Utama</CardDescription>
+                        <CardDescription>
+                            Data rekening BRI, BCA, Mandiri untuk CV Agus Jaya
+                            dan CV Sumber Sukses Utama
+                        </CardDescription>
                     </CardHeader>
                     <CardContent className="pt-0">
                         <form onSubmit={handleSearch} className="mb-4">
                             <div className="flex gap-2">
-                                <div className="relative flex-1 max-w-md">
-                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                                <div className="relative max-w-md flex-1">
+                                    <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                     <Input
                                         type="search"
                                         placeholder="Cari bank, no. rekening, atas nama, atau perusahaan..."
                                         value={search}
-                                        onChange={(e) => setSearch(e.target.value)}
+                                        onChange={(e) =>
+                                            setSearch(e.target.value)
+                                        }
                                         className="pl-10"
                                     />
                                 </div>
                                 <Button type="submit">Cari</Button>
                                 {search && (
                                     <Link href={bankAccountsRoutes.index.url()}>
-                                        <Button type="button" variant="outline">Reset</Button>
+                                        <Button type="button" variant="outline">
+                                            Reset
+                                        </Button>
                                     </Link>
                                 )}
                             </div>
@@ -130,64 +146,107 @@ export default function BankAccountsIndex({ bankAccounts, filters }: BankAccount
                             <Table>
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead className="w-12">#</TableHead>
+                                        <TableHead className="w-12">
+                                            #
+                                        </TableHead>
                                         <TableHead>Perusahaan</TableHead>
                                         <TableHead>Bank</TableHead>
                                         <TableHead>No. Rekening</TableHead>
                                         <TableHead>Atas Nama</TableHead>
-                                        <TableHead className="w-24">Status</TableHead>
-                                        <TableHead className="w-32 text-right">Aksi</TableHead>
+                                        <TableHead className="w-24">
+                                            Status
+                                        </TableHead>
+                                        <TableHead className="w-32 text-right">
+                                            Aksi
+                                        </TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {bankAccounts.data.length === 0 ? (
                                         <TableRow>
-                                            <TableCell colSpan={7} className="text-center py-8">
-                                                <p className="text-muted-foreground">Belum ada data rekening. Klik "Tambah Rekening" untuk memulai.</p>
+                                            <TableCell
+                                                colSpan={7}
+                                                className="py-8 text-center"
+                                            >
+                                                <p className="text-muted-foreground">
+                                                    Belum ada data rekening.
+                                                    Klik "Tambah Rekening" untuk
+                                                    memulai.
+                                                </p>
                                             </TableCell>
                                         </TableRow>
                                     ) : (
-                                        bankAccounts.data.map((bankAccount, index) => (
-                                            <TableRow key={bankAccount.id}>
-                                                <TableCell className="font-medium">
-                                                    {(bankAccounts.from ?? 0) + index}
-                                                </TableCell>
-                                                <TableCell className="font-medium">{bankAccount.company?.nama ?? '-'}</TableCell>
-                                                <TableCell>{bankAccount.nama_bank}</TableCell>
-                                                <TableCell className="font-mono">{bankAccount.nomor_rekening}</TableCell>
-                                                <TableCell>{bankAccount.atas_nama}</TableCell>
-                                                <TableCell>
-                                                    <Badge variant={bankAccount.status ? 'default' : 'secondary'}>
-                                                        {bankAccount.status ? 'Aktif' : 'Tidak Aktif'}
-                                                    </Badge>
-                                                </TableCell>
-                                                <TableCell className="text-right">
-                                                    <DropdownMenu>
-                                                        <DropdownMenuTrigger asChild>
-                                                            <Button variant="ghost" size="icon" className="h-8 w-8">
-                                                                <MoreHorizontal className="h-4 w-4" />
-                                                            </Button>
-                                                        </DropdownMenuTrigger>
-                                                        <DropdownMenuContent align="end" className="w-48">
-                                                            <DropdownMenuItem asChild>
-                                                                <Link href={bankAccountsRoutes.edit(bankAccount.id).url}>
-                                                                    <Edit className="mr-2 h-4 w-4" />
-                                                                    Edit
-                                                                </Link>
-                                                            </DropdownMenuItem>
-                                                            <DropdownMenuItem
-                                                                onClick={() => handleDelete(bankAccount.id)}
-                                                                className="text-destructive focus:text-destructive"
-                                                                inset
+                                        bankAccounts.data.map(
+                                            (bankAccount, index) => (
+                                                <TableRow key={bankAccount.id}>
+                                                    <TableCell className="font-medium">
+                                                        {(bankAccounts.from ??
+                                                            0) + index}
+                                                    </TableCell>
+                                                    <TableCell className="font-medium">
+                                                        {bankAccount.company
+                                                            ?.nama ?? '-'}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {bankAccount.nama_bank}
+                                                    </TableCell>
+                                                    <TableCell className="font-mono">
+                                                        {
+                                                            bankAccount.nomor_rekening
+                                                        }
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {bankAccount.atas_nama}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <Badge
+                                                            variant={
+                                                                bankAccount.status
+                                                                    ? 'default'
+                                                                    : 'secondary'
+                                                            }
+                                                        >
+                                                            {bankAccount.status
+                                                                ? 'Aktif'
+                                                                : 'Tidak Aktif'}
+                                                        </Badge>
+                                                    </TableCell>
+                                                    <TableCell className="text-right">
+                                                        <div className="flex items-center justify-end gap-2">
+                                                            <Link
+                                                                href={
+                                                                    bankAccountsRoutes.edit(
+                                                                        bankAccount.id,
+                                                                    ).url
+                                                                }
                                                             >
-                                                                <Trash2 className="mr-2 h-4 w-4" />
-                                                                Hapus
-                                                            </DropdownMenuItem>
-                                                        </DropdownMenuContent>
-                                                    </DropdownMenu>
-                                                </TableCell>
-                                            </TableRow>
-                                        ))
+                                                                <Button
+                                                                    variant="ghost"
+                                                                    size="icon"
+                                                                    className="h-8 w-8"
+                                                                    title="Edit"
+                                                                >
+                                                                    <Edit className="h-4 w-4" />
+                                                                </Button>
+                                                            </Link>
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="icon"
+                                                                className="h-8 w-8 text-destructive hover:text-destructive"
+                                                                title="Hapus"
+                                                                onClick={() =>
+                                                                    handleDelete(
+                                                                        bankAccount.id,
+                                                                    )
+                                                                }
+                                                            >
+                                                                <Trash2 className="h-4 w-4" />
+                                                            </Button>
+                                                        </div>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ),
+                                        )
                                     )}
                                 </TableBody>
                             </Table>
@@ -206,15 +265,33 @@ export default function BankAccountsIndex({ bankAccounts, filters }: BankAccount
             </div>
 
             {deleteId && (
-                <form onSubmit={(e) => { e.preventDefault(); confirmDelete(); }}>
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setDeleteId(null)}>
-                        <div className="bg-background w-full max-w-md rounded-lg border p-6" onClick={(e) => e.stopPropagation()}>
-                            <h3 className="text-lg font-semibold mb-2">Hapus Rekening</h3>
-                            <p className="text-muted-foreground mb-4">
-                                Apakah Anda yakin ingin menghapus rekening ini? Tindakan ini tidak dapat dibatalkan.
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        confirmDelete();
+                    }}
+                >
+                    <div
+                        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+                        onClick={() => setDeleteId(null)}
+                    >
+                        <div
+                            className="w-full max-w-md rounded-lg border bg-background p-6"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <h3 className="mb-2 text-lg font-semibold">
+                                Hapus Rekening
+                            </h3>
+                            <p className="mb-4 text-muted-foreground">
+                                Apakah Anda yakin ingin menghapus rekening ini?
+                                Tindakan ini tidak dapat dibatalkan.
                             </p>
                             <div className="flex justify-end gap-2">
-                                <Button type="button" variant="outline" onClick={() => setDeleteId(null)}>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    onClick={() => setDeleteId(null)}
+                                >
                                     Batal
                                 </Button>
                                 <Button type="submit" variant="destructive">
