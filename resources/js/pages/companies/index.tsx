@@ -153,7 +153,7 @@ export default function CompaniesIndex({
                                         <TableHead>Alamat</TableHead>
                                         <TableHead>Telepon</TableHead>
                                         <TableHead>Email</TableHead>
-                                        <TableHead className="w-32 text-right">
+                                        <TableHead className="w-32 text-center">
                                             Aksi
                                         </TableHead>
                                     </TableRow>
@@ -204,8 +204,8 @@ export default function CompaniesIndex({
                                                 <TableCell>
                                                     {company.email ?? '-'}
                                                 </TableCell>
-                                                <TableCell className="text-right">
-                                                    <div className="flex items-center justify-end gap-2">
+                                                <TableCell className="text-center">
+                                                    <div className="flex items-center justify-center gap-2">
                                                         <Link
                                                             href={
                                                                 companiesRoutes.edit(

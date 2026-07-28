@@ -150,7 +150,7 @@ export default function ProductsIndex({
                                         <TableHead className="text-right">
                                             Harga
                                         </TableHead>
-                                        <TableHead className="w-32 text-right">
+                                        <TableHead className="w-32 text-center">
                                             Aksi
                                         </TableHead>
                                     </TableRow>
@@ -197,8 +197,8 @@ export default function ProductsIndex({
                                                         Number(product.harga),
                                                     )}
                                                 </TableCell>
-                                                <TableCell className="text-right">
-                                                    <div className="flex items-center justify-end gap-2">
+                                                <TableCell className="text-center">
+                                                    <div className="flex items-center justify-center gap-2">
                                                         <Link
                                                             href={
                                                                 productsRoutes.edit(

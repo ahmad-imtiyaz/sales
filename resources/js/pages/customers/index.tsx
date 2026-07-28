@@ -153,7 +153,7 @@ export default function CustomersIndex({
                                         <TableHead>PIC</TableHead>
                                         <TableHead>Telepon</TableHead>
                                         <TableHead>Email</TableHead>
-                                        <TableHead className="w-32 text-right">
+                                        <TableHead className="w-32 text-center">
                                             Aksi
                                         </TableHead>
                                     </TableRow>
@@ -199,8 +199,8 @@ export default function CustomersIndex({
                                                     <TableCell>
                                                         {customer.email ?? '-'}
                                                     </TableCell>
-                                                    <TableCell className="text-right">
-                                                        <div className="flex items-center justify-end gap-2">
+                                                    <TableCell className="text-center">
+                                                        <div className="flex items-center justify-center gap-2">
                                                             <Link
                                                                 href={
                                                                     customersRoutes.edit(
