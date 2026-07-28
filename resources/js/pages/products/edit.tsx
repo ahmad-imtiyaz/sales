@@ -47,7 +47,7 @@ export default function ProductsEdit({ product }: ProductsEditProps) {
                     </CardHeader>
                     <CardContent>
                         <Form
-                            action={productsRoutes.update(product.id).url()}
+                            action={productsRoutes.update(product.id).url}
                             method="put"
                             onSuccess={() => {
                                 toast.success('Barang berhasil diperbarui.');
@@ -137,7 +137,7 @@ export default function ProductsEdit({ product }: ProductsEditProps) {
     );
 }
 
-ProductsEdit.layout = {
+ProductsEdit.layout = (props: ProductsEditProps) => ({
     breadcrumbs: [
         {
             title: 'Master',
@@ -152,4 +152,4 @@ ProductsEdit.layout = {
             href: productsRoutes.edit(props.product.id).url,
         },
     ],
-};
+});
