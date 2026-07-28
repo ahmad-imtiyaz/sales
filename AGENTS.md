@@ -57,6 +57,14 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 
 - You must only create documentation files if explicitly requested by the user.
 
+## Destructive Commands (NEVER RUN — causes data removal)
+
+- Do NOT run `php artisan optimize:clear`.
+- Do NOT run `php artisan migrate:fresh` or `php artisan migrate:fresh --seed`.
+- Do NOT run any command that drops/truncates tables or wipes the database (e.g. `db:wipe`, `migrate:rollback` on shared tables).
+- Do NOT run `tinker` to delete or mass-update production records.
+- Reason: these commands remove existing application data. Prefer non-destructive alternatives like `php artisan migrate` (without `:fresh`) or targeted `php artisan migrate:rollback` only on a freshly-created, unused migration. When in doubt about whether a command is destructive, stop and ask the user first.
+
 ## Replies
 
 - Be concise in your explanations - focus on what's important rather than explaining obvious details.
