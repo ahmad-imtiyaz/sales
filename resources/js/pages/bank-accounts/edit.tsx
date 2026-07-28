@@ -1,15 +1,28 @@
 import { Head } from '@inertiajs/react';
 import { Link, router } from '@inertiajs/react';
-import { ArrowLeft, Banknote } from 'lucide-react';
-import bankAccountsRoutes from '@/routes/bank-accounts';
+import { Form } from '@inertiajs/react';
+import { ArrowLeft } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Form } from '@inertiajs/react';
-import { toast } from 'sonner';
+import bankAccountsRoutes from '@/routes/bank-accounts';
 
 interface Company {
     id: number;
@@ -33,11 +46,16 @@ interface BankAccountsEditProps {
     companies: Company[];
 }
 
-export default function BankAccountsEdit({ bankAccount, companies }: BankAccountsEditProps) {
+export default function BankAccountsEdit({
+    bankAccount,
+    companies,
+}: BankAccountsEditProps) {
+    const [isActive, setIsActive] = useState(bankAccount.status);
+
     return (
         <>
             <Head title="Edit Rekening" />
-            <div className="max-w-2xl mx-auto space-y-6">
+            <div className="mx-auto max-w-2xl space-y-6">
                 <div className="flex items-center gap-4">
                     <Link href={bankAccountsRoutes.index.url()}>
                         <Button variant="ghost" size="icon" className="h-9 w-9">
@@ -45,52 +63,77 @@ export default function BankAccountsEdit({ bankAccount, companies }: BankAccount
                         </Button>
                     </Link>
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Edit Rekening</h1>
-                        <p className="text-muted-foreground">Perbarui informasi rekening di bawah ini</p>
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            Edit Rekening
+                        </h1>
+                        <p className="text-muted-foreground">
+                            Perbarui informasi rekening di bawah ini
+                        </p>
                     </div>
                 </div>
 
                 <Card>
                     <CardHeader>
                         <CardTitle>Informasi Rekening</CardTitle>
-                        <CardDescription>Data rekening akan digunakan pada footer PDF Invoice</CardDescription>
+                        <CardDescription>
+                            Data rekening akan digunakan pada footer PDF Invoice
+                        </CardDescription>
                     </CardHeader>
                     <CardContent>
                         <Form
-                            action={bankAccountsRoutes.update(bankAccount.id).url()}
+                            action={
+                                bankAccountsRoutes.update(bankAccount.id).url
+                            }
                             method="put"
                             onSuccess={() => {
                                 toast.success('Rekening berhasil diperbarui.');
                                 router.visit(bankAccountsRoutes.index.url());
                             }}
-                            onError={() => toast.error('Gagal memperbarui rekening.')}
+                            onError={() =>
+                                toast.error('Gagal memperbarui rekening.')
+                            }
                         >
                             {({ errors, processing }) => (
                                 <div className="space-y-6">
                                     <div className="space-y-2">
-                                        <Label htmlFor="company_id">Perusahaan *</Label>
+                                        <Label htmlFor="company_id">
+                                            Perusahaan *
+                                        </Label>
                                         <Select
                                             name="company_id"
                                             defaultValue={bankAccount.company_id.toString()}
                                             required
-                                            className={errors.company_id ? 'border-destructive' : ''}
+                                            className={
+                                                errors.company_id
+                                                    ? 'border-destructive'
+                                                    : ''
+                                            }
                                         >
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Pilih perusahaan" />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {companies.map((company) => (
-                                                    <SelectItem key={company.id} value={company.id.toString()}>
+                                                    <SelectItem
+                                                        key={company.id}
+                                                        value={company.id.toString()}
+                                                    >
                                                         {company.nama}
                                                     </SelectItem>
                                                 ))}
                                             </SelectContent>
                                         </Select>
-                                        {errors.company_id && <p className="text-sm text-destructive">{errors.company_id}</p>}
+                                        {errors.company_id && (
+                                            <p className="text-sm text-destructive">
+                                                {errors.company_id}
+                                            </p>
+                                        )}
                                     </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="nama_bank">Nama Bank *</Label>
+                                        <Label htmlFor="nama_bank">
+                                            Nama Bank *
+                                        </Label>
                                         <Input
                                             id="nama_bank"
                                             name="nama_bank"
@@ -98,27 +141,49 @@ export default function BankAccountsEdit({ bankAccount, companies }: BankAccount
                                             placeholder="Contoh: BRI, BCA, Mandiri, BNI"
                                             autoComplete="off"
                                             required
-                                            className={errors.nama_bank ? 'border-destructive' : ''}
+                                            className={
+                                                errors.nama_bank
+                                                    ? 'border-destructive'
+                                                    : ''
+                                            }
                                         />
-                                        {errors.nama_bank && <p className="text-sm text-destructive">{errors.nama_bank}</p>}
+                                        {errors.nama_bank && (
+                                            <p className="text-sm text-destructive">
+                                                {errors.nama_bank}
+                                            </p>
+                                        )}
                                     </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="nomor_rekening">Nomor Rekening *</Label>
+                                        <Label htmlFor="nomor_rekening">
+                                            Nomor Rekening *
+                                        </Label>
                                         <Input
                                             id="nomor_rekening"
                                             name="nomor_rekening"
-                                            defaultValue={bankAccount.nomor_rekening}
+                                            defaultValue={
+                                                bankAccount.nomor_rekening
+                                            }
                                             placeholder="Contoh: 0563-01-000400-30-3"
                                             autoComplete="off"
                                             required
-                                            className={errors.nomor_rekening ? 'border-destructive' : ''}
+                                            className={
+                                                errors.nomor_rekening
+                                                    ? 'border-destructive'
+                                                    : ''
+                                            }
                                         />
-                                        {errors.nomor_rekening && <p className="text-sm text-destructive">{errors.nomor_rekening}</p>}
+                                        {errors.nomor_rekening && (
+                                            <p className="text-sm text-destructive">
+                                                {errors.nomor_rekening}
+                                            </p>
+                                        )}
                                     </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="atas_nama">Atas Nama *</Label>
+                                        <Label htmlFor="atas_nama">
+                                            Atas Nama *
+                                        </Label>
                                         <Input
                                             id="atas_nama"
                                             name="atas_nama"
@@ -126,30 +191,57 @@ export default function BankAccountsEdit({ bankAccount, companies }: BankAccount
                                             placeholder="Contoh: CV Agus Jaya"
                                             autoComplete="off"
                                             required
-                                            className={errors.atas_nama ? 'border-destructive' : ''}
+                                            className={
+                                                errors.atas_nama
+                                                    ? 'border-destructive'
+                                                    : ''
+                                            }
                                         />
-                                        {errors.atas_nama && <p className="text-sm text-destructive">{errors.atas_nama}</p>}
+                                        {errors.atas_nama && (
+                                            <p className="text-sm text-destructive">
+                                                {errors.atas_nama}
+                                            </p>
+                                        )}
                                     </div>
 
                                     <div className="space-y-2">
                                         <Label htmlFor="status">Status</Label>
                                         <div className="flex items-center space-x-3">
                                             <Switch
-                                                name="status"
-                                                defaultChecked={bankAccount.status}
+                                                checked={isActive}
+                                                onCheckedChange={setIsActive}
                                             />
-                                            <span className="text-sm text-muted-foreground">Aktif</span>
+                                            <input
+                                                type="hidden"
+                                                name="status"
+                                                value={isActive ? '1' : '0'}
+                                            />
+                                            <span className="text-sm text-muted-foreground">
+                                                {isActive
+                                                    ? 'Aktif'
+                                                    : 'Nonaktif'}
+                                            </span>
                                         </div>
                                     </div>
 
-                                    <div className="flex justify-end gap-3 pt-4 border-t">
-                                        <Link href={bankAccountsRoutes.index.url()}>
-                                            <Button type="button" variant="outline">
+                                    <div className="flex justify-end gap-3 border-t pt-4">
+                                        <Link
+                                            href={bankAccountsRoutes.index.url()}
+                                        >
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                            >
                                                 Batal
                                             </Button>
                                         </Link>
-                                        <Button type="submit" disabled={processing}>
-                                            {processing ? 'Menyimpan...' : 'Simpan Perubahan'}
+                                        <Button
+                                            type="submit"
+                                            disabled={processing}
+                                        >
+                                            {processing
+                                                ? 'Menyimpan...'
+                                                : 'Simpan Perubahan'}
                                         </Button>
                                     </div>
                                 </div>
@@ -162,19 +254,13 @@ export default function BankAccountsEdit({ bankAccount, companies }: BankAccount
     );
 }
 
-BankAccountsEdit.layout = {
+BankAccountsEdit.layout = (props: BankAccountsEditProps) => ({
     breadcrumbs: [
-        {
-            title: 'Master',
-            href: '#',
-        },
-        {
-            title: 'Rekening',
-            href: bankAccountsRoutes.index.url(),
-        },
+        { title: 'Master', href: '#' },
+        { title: 'Rekening', href: bankAccountsRoutes.index.url() },
         {
             title: 'Edit',
             href: bankAccountsRoutes.edit(props.bankAccount.id).url,
         },
     ],
-};
+});
