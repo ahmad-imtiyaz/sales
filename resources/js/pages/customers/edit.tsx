@@ -50,7 +50,7 @@ export default function CustomersEdit({ customer }: CustomersEditProps) {
                     </CardHeader>
                     <CardContent>
                         <Form
-                            action={customersRoutes.update(customer.id).url()}
+                            action={customersRoutes.update(customer.id).url}
                             method="put"
                             onSuccess={() => {
                                 toast.success('Customer berhasil diperbarui.');
@@ -162,7 +162,7 @@ export default function CustomersEdit({ customer }: CustomersEditProps) {
     );
 }
 
-CustomersEdit.layout = {
+CustomersEdit.layout = (props: CustomersEditProps) => ({
     breadcrumbs: [
         {
             title: 'Master',
@@ -177,4 +177,4 @@ CustomersEdit.layout = {
             href: customersRoutes.edit(props.customer.id).url,
         },
     ],
-};
+});
