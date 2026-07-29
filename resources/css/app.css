@@ -2,20 +2,6 @@
 
 @import 'tw-animate-css';
 
-@layer base {
-    .rdp-new {
-        --rdp-cell-size: 36px;
-    }
-    .rdp-new button {
-        cursor: default;
-        border: 0;
-        background: transparent;
-    }
-    .rdp-new .rdp-day_button {
-        transition: background-color 0.15s ease;
-    }
-}
-
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 
