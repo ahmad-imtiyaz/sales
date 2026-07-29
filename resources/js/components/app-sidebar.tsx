@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid, Building2, Users, Banknote, Package } from 'lucide-react';
+import { BookOpen, FolderGit2, LayoutGrid, Building2, Users, Banknote, Package, Truck } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -18,6 +18,7 @@ import companies from '@/routes/companies';
 import customers from '@/routes/customers';
 import products from '@/routes/products';
 import bankAccounts from '@/routes/bank-accounts';
+import deliveryNotesRoutes from '@/routes/delivery-notes';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
@@ -45,6 +46,11 @@ const mainNavItems: NavItem[] = [
         title: 'Master Rekening',
         href: bankAccounts.index.url(),
         icon: Banknote,
+    },
+    {
+        title: 'Delivery Note',
+        href: deliveryNotesRoutes.index.url(),
+        icon: Truck,
     },
 ];
 
