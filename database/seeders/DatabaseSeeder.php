@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             CustomerSeeder::class,
             ProductSeeder::class,
             BankAccountSeeder::class,
+            DeliveryNoteSeeder::class,
         ]);
 
         User::factory()->create([

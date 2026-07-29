@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DeliveryNote extends Model
 {
@@ -18,23 +20,28 @@ class DeliveryNote extends Model
         'status',
     ];
 
-    protected $casts = [
-        'tanggal' => 'date',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
+    protected $attributes = [
+        'status' => 'available',
     ];
 
-    public function company()
+    protected function casts(): array
+    {
+        return [
+            'tanggal' => 'date',
+        ];
+    }
+
+    public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
     }
 
-    public function customer()
+    public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
     }
 
-    public function items()
+    public function items(): HasMany
     {
         return $this->hasMany(DeliveryNoteItem::class);
     }

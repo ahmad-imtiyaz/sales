@@ -28,7 +28,7 @@ test('product can be created', function () {
         'harga' => 100000,
     ];
 
-    $response = $this->post(route('products.store'), $productData);
+    $response = $this->postWithCsrf(route('products.store'), $productData);
 
     $response->assertRedirect(route('products.index'));
     $this->assertDatabaseHas('products', $productData);
@@ -40,7 +40,7 @@ test('product can be updated', function () {
         'nama_barang' => 'Produk Lama',
     ]);
 
-    $response = $this->put(route('products.update', $product), [
+    $response = $this->putWithCsrf(route('products.update', $product), [
         'kode' => 'BRG-NEW',
         'nama_barang' => 'Produk Baru',
         'satuan' => 'Pcs',
@@ -58,14 +58,14 @@ test('product can be updated', function () {
 test('product can be deleted', function () {
     $product = Product::factory()->create();
 
-    $response = $this->delete(route('products.destroy', $product));
+    $response = $this->deleteWithCsrf(route('products.destroy', $product));
 
     $response->assertRedirect(route('products.index'));
     $this->assertDatabaseMissing('products', ['id' => $product->id]);
 });
 
 test('product validation requires kode', function () {
-    $response = $this->post(route('products.store'), [
+    $response = $this->postWithCsrf(route('products.store'), [
         'kode' => '',
     ]);
 
@@ -73,7 +73,7 @@ test('product validation requires kode', function () {
 });
 
 test('product validation requires nama_barang', function () {
-    $response = $this->post(route('products.store'), [
+    $response = $this->postWithCsrf(route('products.store'), [
         'nama_barang' => '',
     ]);
 
@@ -81,7 +81,7 @@ test('product validation requires nama_barang', function () {
 });
 
 test('product validation requires satuan', function () {
-    $response = $this->post(route('products.store'), [
+    $response = $this->postWithCsrf(route('products.store'), [
         'satuan' => '',
     ]);
 
@@ -89,7 +89,7 @@ test('product validation requires satuan', function () {
 });
 
 test('product validation requires harga', function () {
-    $response = $this->post(route('products.store'), [
+    $response = $this->postWithCsrf(route('products.store'), [
         'harga' => '',
     ]);
 
@@ -97,7 +97,7 @@ test('product validation requires harga', function () {
 });
 
 test('product validation requires harga to be numeric', function () {
-    $response = $this->post(route('products.store'), [
+    $response = $this->postWithCsrf(route('products.store'), [
         'harga' => 'abc',
     ]);
 

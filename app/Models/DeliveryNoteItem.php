@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class DeliveryNoteItem extends Model
 {
@@ -17,20 +18,21 @@ class DeliveryNoteItem extends Model
         'subtotal',
     ];
 
-    protected $casts = [
-        'qty' => 'decimal:2',
-        'harga' => 'decimal:2',
-        'subtotal' => 'decimal:2',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'qty' => 'decimal:2',
+            'harga' => 'decimal:2',
+            'subtotal' => 'decimal:2',
+        ];
+    }
 
-    public function deliveryNote()
+    public function deliveryNote(): BelongsTo
     {
         return $this->belongsTo(DeliveryNote::class);
     }
 
-    public function product()
+    public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }

@@ -3,10 +3,11 @@
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DeliveryNoteController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
-Route::inertia('/', 'welcome')->name('home');
+Route::redirect('/', '/login')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
@@ -26,6 +27,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Master Rekening
     Route::resource('bank-accounts', BankAccountController::class)
         ->names('bank-accounts');
+
+    // Transaksi Delivery Note
+    Route::resource('delivery-notes', DeliveryNoteController::class)
+        ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
+        ->names('delivery-notes');
 });
 
 require __DIR__.'/settings.php';
