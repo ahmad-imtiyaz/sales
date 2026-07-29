@@ -59,7 +59,13 @@ export default function ProductsIndex({
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        router.visit(productsRoutes.index.url({ search }));
+        router.visit(
+            productsRoutes.index.url({ query: { search: search.trim() } }),
+            {
+                preserveState: true,
+                preserveScroll: true,
+            },
+        );
     };
 
     const handleDelete = (id: number) => {

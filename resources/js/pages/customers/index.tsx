@@ -62,7 +62,13 @@ export default function CustomersIndex({
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        router.visit(customersRoutes.index.url({ search }));
+        router.visit(
+            customersRoutes.index.url({ query: { search: search.trim() } }),
+            {
+                preserveState: true,
+                preserveScroll: true,
+            },
+        );
     };
 
     const handleDelete = (id: number) => {

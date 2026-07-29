@@ -63,7 +63,13 @@ export default function BankAccountsIndex({
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        router.visit(bankAccountsRoutes.index.url({ search }));
+        router.visit(
+            bankAccountsRoutes.index.url({ query: { search: search.trim() } }),
+            {
+                preserveState: true,
+                preserveScroll: true,
+            },
+        );
     };
 
     const handleDelete = (id: number) => {

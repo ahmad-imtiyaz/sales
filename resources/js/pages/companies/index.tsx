@@ -61,7 +61,13 @@ export default function CompaniesIndex({
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        router.visit(companiesRoutes.index.url({ search }));
+        router.visit(
+            companiesRoutes.index.url({ query: { search: search.trim() } }),
+            {
+                preserveState: true,
+                preserveScroll: true,
+            },
+        );
     };
 
     const handleDelete = (id: number) => {

@@ -14,14 +14,17 @@ class BankAccountController extends Controller
     {
         $query = BankAccount::query()->with('company');
 
-        if ($request->has('search')) {
-            $search = $request->get('search');
-            $query->where('nama_bank', 'like', "%{$search}%")
-                ->orWhere('nomor_rekening', 'like', "%{$search}%")
-                ->orWhere('atas_nama', 'like', "%{$search}%")
-                ->orWhereHas('company', function ($q) use ($search) {
-                    $q->where('nama', 'like', "%{$search}%");
-                });
+        if ($request->filled('search')) {
+            $search = $request->string('search')->trim()->toString();
+
+            $query->where(function ($query) use ($search): void {
+                $query->where('nama_bank', 'like', "%{$search}%")
+                    ->orWhere('nomor_rekening', 'like', "%{$search}%")
+                    ->orWhere('atas_nama', 'like', "%{$search}%")
+                    ->orWhereHas('company', function ($query) use ($search): void {
+                        $query->where('nama', 'like', "%{$search}%");
+                    });
+            });
         }
 
         $bankAccounts = $query->latest()->paginate(10)->withQueryString();

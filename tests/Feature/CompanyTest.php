@@ -29,7 +29,7 @@ test('company can be created', function () {
         'logo' => null,
     ];
 
-    $response = $this->post(route('companies.store'), $companyData);
+    $response = $this->postWithCsrf(route('companies.store'), $companyData);
 
     $response->assertRedirect(route('companies.index'));
     $this->assertDatabaseHas('companies', $companyData);
@@ -40,7 +40,7 @@ test('company can be updated', function () {
         'nama' => 'CV Old Name',
     ]);
 
-    $response = $this->put(route('companies.update', $company), [
+    $response = $this->putWithCsrf(route('companies.update', $company), [
         'nama' => 'CV New Name',
         'alamat' => 'Jl. Updated No. 456',
         'telepon' => '021-7654321',
@@ -57,14 +57,14 @@ test('company can be updated', function () {
 test('company can be deleted', function () {
     $company = Company::factory()->create();
 
-    $response = $this->delete(route('companies.destroy', $company));
+    $response = $this->deleteWithCsrf(route('companies.destroy', $company));
 
     $response->assertRedirect(route('companies.index'));
     $this->assertDatabaseMissing('companies', ['id' => $company->id]);
 });
 
 test('company validation requires nama', function () {
-    $response = $this->post(route('companies.store'), [
+    $response = $this->postWithCsrf(route('companies.store'), [
         'nama' => '',
     ]);
 
@@ -72,7 +72,7 @@ test('company validation requires nama', function () {
 });
 
 test('company validation requires valid email', function () {
-    $response = $this->post(route('companies.store'), [
+    $response = $this->postWithCsrf(route('companies.store'), [
         'nama' => 'CV Test',
         'email' => 'invalid-email',
     ]);

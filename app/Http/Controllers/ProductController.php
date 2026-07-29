@@ -13,11 +13,14 @@ class ProductController extends Controller
     {
         $query = Product::query();
 
-        if ($request->has('search')) {
-            $search = $request->get('search');
-            $query->where('kode', 'like', "%{$search}%")
-                ->orWhere('nama_barang', 'like', "%{$search}%")
-                ->orWhere('satuan', 'like', "%{$search}%");
+        if ($request->filled('search')) {
+            $search = $request->string('search')->trim()->toString();
+
+            $query->where(function ($query) use ($search): void {
+                $query->where('kode', 'like', "%{$search}%")
+                    ->orWhere('nama_barang', 'like', "%{$search}%")
+                    ->orWhere('satuan', 'like', "%{$search}%");
+            });
         }
 
         $products = $query->latest()->paginate(10)->withQueryString();

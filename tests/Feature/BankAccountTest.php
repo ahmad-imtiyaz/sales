@@ -31,7 +31,7 @@ test('bank account can be created', function () {
         'status' => true,
     ];
 
-    $response = $this->post(route('bank-accounts.store'), $bankAccountData);
+    $response = $this->postWithCsrf(route('bank-accounts.store'), $bankAccountData);
 
     $response->assertRedirect(route('bank-accounts.index'));
     $this->assertDatabaseHas('bank_accounts', $bankAccountData);
@@ -43,7 +43,7 @@ test('bank account can be updated', function () {
         'nama_bank' => 'BRI',
     ]);
 
-    $response = $this->put(route('bank-accounts.update', $bankAccount), [
+    $response = $this->putWithCsrf(route('bank-accounts.update', $bankAccount), [
         'company_id' => $this->company->id,
         'nama_bank' => 'BCA',
         'nomor_rekening' => '123456789',
@@ -62,14 +62,14 @@ test('bank account can be updated', function () {
 test('bank account can be deleted', function () {
     $bankAccount = BankAccount::factory()->create(['company_id' => $this->company->id]);
 
-    $response = $this->delete(route('bank-accounts.destroy', $bankAccount));
+    $response = $this->deleteWithCsrf(route('bank-accounts.destroy', $bankAccount));
 
     $response->assertRedirect(route('bank-accounts.index'));
     $this->assertDatabaseMissing('bank_accounts', ['id' => $bankAccount->id]);
 });
 
 test('bank account validation requires company_id', function () {
-    $response = $this->post(route('bank-accounts.store'), [
+    $response = $this->postWithCsrf(route('bank-accounts.store'), [
         'company_id' => '',
     ]);
 
@@ -77,7 +77,7 @@ test('bank account validation requires company_id', function () {
 });
 
 test('bank account validation requires nama_bank', function () {
-    $response = $this->post(route('bank-accounts.store'), [
+    $response = $this->postWithCsrf(route('bank-accounts.store'), [
         'nama_bank' => '',
     ]);
 
@@ -85,7 +85,7 @@ test('bank account validation requires nama_bank', function () {
 });
 
 test('bank account validation requires nomor_rekening', function () {
-    $response = $this->post(route('bank-accounts.store'), [
+    $response = $this->postWithCsrf(route('bank-accounts.store'), [
         'nomor_rekening' => '',
     ]);
 
@@ -93,7 +93,7 @@ test('bank account validation requires nomor_rekening', function () {
 });
 
 test('bank account validation requires atas_nama', function () {
-    $response = $this->post(route('bank-accounts.store'), [
+    $response = $this->postWithCsrf(route('bank-accounts.store'), [
         'atas_nama' => '',
     ]);
 

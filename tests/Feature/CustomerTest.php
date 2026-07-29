@@ -30,7 +30,7 @@ test('customer can be created', function () {
         'email' => 'john@test.com',
     ];
 
-    $response = $this->post(route('customers.store'), $customerData);
+    $response = $this->postWithCsrf(route('customers.store'), $customerData);
 
     $response->assertRedirect(route('customers.index'));
     $this->assertDatabaseHas('customers', $customerData);
@@ -41,7 +41,7 @@ test('customer can be updated', function () {
         'nama' => 'PT Old Name',
     ]);
 
-    $response = $this->put(route('customers.update', $customer), [
+    $response = $this->putWithCsrf(route('customers.update', $customer), [
         'nama' => 'PT New Name',
         'alamat' => 'Jl. Updated No. 456',
         'kota' => 'Bandung',
@@ -60,14 +60,14 @@ test('customer can be updated', function () {
 test('customer can be deleted', function () {
     $customer = Customer::factory()->create();
 
-    $response = $this->delete(route('customers.destroy', $customer));
+    $response = $this->deleteWithCsrf(route('customers.destroy', $customer));
 
     $response->assertRedirect(route('customers.index'));
     $this->assertDatabaseMissing('customers', ['id' => $customer->id]);
 });
 
 test('customer validation requires nama', function () {
-    $response = $this->post(route('customers.store'), [
+    $response = $this->postWithCsrf(route('customers.store'), [
         'nama' => '',
     ]);
 
@@ -75,7 +75,7 @@ test('customer validation requires nama', function () {
 });
 
 test('customer validation requires valid email', function () {
-    $response = $this->post(route('customers.store'), [
+    $response = $this->postWithCsrf(route('customers.store'), [
         'nama' => 'PT Test',
         'email' => 'invalid-email',
     ]);

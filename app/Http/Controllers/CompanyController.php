@@ -13,11 +13,14 @@ class CompanyController extends Controller
     {
         $query = Company::query();
 
-        if ($request->has('search')) {
-            $search = $request->get('search');
-            $query->where('nama', 'like', "%{$search}%")
-                ->orWhere('email', 'like', "%{$search}%")
-                ->orWhere('telepon', 'like', "%{$search}%");
+        if ($request->filled('search')) {
+            $search = $request->string('search')->trim()->toString();
+
+            $query->where(function ($query) use ($search): void {
+                $query->where('nama', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('telepon', 'like', "%{$search}%");
+            });
         }
 
         $companies = $query->latest()->paginate(10)->withQueryString();
