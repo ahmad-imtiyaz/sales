@@ -33,7 +33,7 @@ export default function DeliveryNoteForm({ companies, customers, products, deliv
     const submit = (event: FormEvent) => {
         event.preventDefault();
         const options = { onSuccess: () => { toast.success(`Delivery Note berhasil ${mode === 'create' ? 'ditambahkan' : 'diperbarui'}.`); }, onError: () => toast.error('Gagal menyimpan Delivery Note.') };
-        mode === 'create' ? form.post(deliveryNotesRoutes.store.url(), options) : form.put(deliveryNotesRoutes.update(deliveryNote!.id!).url(), options);
+        mode === 'create' ? form.post(deliveryNotesRoutes.store.url(), options) : form.put(deliveryNotesRoutes.update.url(deliveryNote!.id!), options);
     };
 
     return <form onSubmit={submit} className="space-y-6">
