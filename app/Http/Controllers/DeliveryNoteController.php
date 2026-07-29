@@ -32,7 +32,8 @@ class DeliveryNoteController extends Controller
                         ->orWhereHas('customer', fn ($query) => $query->where('nama', 'like', "%{$search}%"));
                 });
             })
-            ->latest('tanggal')
+            ->latest('updated_at')
+            ->latest('id')
             ->paginate(10)
             ->withQueryString();
 
@@ -71,7 +72,11 @@ class DeliveryNoteController extends Controller
 
         return Inertia::render('delivery-notes/edit', [
             ...$this->formOptions(),
-            'deliveryNote' => $deliveryNote,
+            'deliveryNote' => [
+                ...$deliveryNote->toArray(),
+                'tanggal' => $deliveryNote->tanggal->format('Y-m-d'),
+                'items' => $deliveryNote->items->toArray(),
+            ],
         ]);
     }
 

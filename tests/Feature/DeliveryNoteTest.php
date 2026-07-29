@@ -35,6 +35,25 @@ test('delivery note index page loads successfully', function () {
     $response->assertSuccessful()->assertInertia(fn ($page) => $page->component('delivery-notes/index'));
 });
 
+test('delivery notes are ordered by latest changes', function () {
+    $older = DeliveryNote::factory()->create(['updated_at' => now()->subDay()]);
+    $newer = DeliveryNote::factory()->create(['updated_at' => now()]);
+
+    $this->get(route('delivery-notes.index'))
+        ->assertInertia(fn ($page) => $page
+            ->component('delivery-notes/index')
+            ->where('deliveryNotes.data.0.id', $newer->id)
+            ->where('deliveryNotes.data.1.id', $older->id));
+});
+
+test('delivery note edit preserves date input format', function () {
+    $deliveryNote = DeliveryNote::factory()->create(['tanggal' => '2026-08-07']);
+
+    $this->get(route('delivery-notes.edit', $deliveryNote))
+        ->assertInertia(fn ($page) => $page
+            ->component('delivery-notes/edit')
+            ->where('deliveryNote.tanggal', '2026-08-07'));
+});
 test('delivery note can be created with items', function () {
     $payload = deliveryNotePayload();
 
