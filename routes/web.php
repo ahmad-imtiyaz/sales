@@ -4,6 +4,7 @@ use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DeliveryNoteController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,9 +29,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('bank-accounts', BankAccountController::class)
         ->names('bank-accounts');
 
+    // Transaksi Invoice
+    Route::resource('invoices', InvoiceController::class)
+        ->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])
+        ->names('invoices');
+
     // Transaksi Delivery Note
     Route::get('delivery-notes/{delivery_note}/print', [DeliveryNoteController::class, 'print'])
         ->name('delivery-notes.print');
+    Route::get('delivery-notes/{delivery_note}/json', [DeliveryNoteController::class, 'showJson'])
+        ->name('delivery-notes.showJson');
     Route::resource('delivery-notes', DeliveryNoteController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
         ->names('delivery-notes');

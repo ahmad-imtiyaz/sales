@@ -25,7 +25,7 @@ class BankAccountFactory extends Factory
             'nama_bank' => fake()->randomElement(['BRI', 'BCA', 'Mandiri', 'BNI', 'CIMB Niaga']),
             'nomor_rekening' => fake()->numerify('##########'),
             'atas_nama' => fake()->company(),
-            'status' => fake()->boolean(),
+            'status' => true,
         ];
     }
 }

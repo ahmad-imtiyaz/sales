@@ -15,6 +15,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class DeliveryNoteController extends Controller
@@ -99,6 +100,34 @@ class DeliveryNoteController extends Controller
 
         return redirect()->route('delivery-notes.index')
             ->with('success', 'Delivery Note berhasil diperbarui.');
+    }
+
+    public function showJson(DeliveryNote $deliveryNote): JsonResponse
+    {
+        $deliveryNote->load([
+            'company:id,nama',
+            'customer:id,nama,alamat,kota,pic',
+            'items.product:id,kode,nama_barang,satuan',
+        ]);
+
+        return response()->json([
+            'id' => $deliveryNote->id,
+            'nomor_dn' => $deliveryNote->nomor_dn,
+            'tanggal' => $deliveryNote->tanggal->format('Y-m-d'),
+            'no_po' => $deliveryNote->no_po,
+            'status' => $deliveryNote->status,
+            'company' => $deliveryNote->company,
+            'customer' => $deliveryNote->customer,
+            'items' => $deliveryNote->items->map(fn ($item): array => [
+                'id' => $item->id,
+                'product_id' => $item->product_id,
+                'qty' => (float) $item->qty,
+                'harga' => (float) $item->harga,
+                'subtotal' => (float) $item->subtotal,
+                'product' => $item->product,
+            ]),
+            'subtotal' => (float) $deliveryNote->items->sum('subtotal'),
+        ]);
     }
 
     public function print(DeliveryNote $deliveryNote): HttpResponse
