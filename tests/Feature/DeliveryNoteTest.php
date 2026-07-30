@@ -3,6 +3,7 @@
 use App\Models\Company;
 use App\Models\Customer;
 use App\Models\DeliveryNote;
+use App\Models\DeliveryNoteItem;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -91,6 +92,41 @@ test('delivery note can be deleted', function () {
 
     $response->assertRedirect(route('delivery-notes.index'));
     $this->assertModelMissing($deliveryNote);
+});
+
+test('delivery note PDF contains delivery data and items', function () {
+    $deliveryNote = DeliveryNote::factory()->create([
+        'nomor_dn' => 'DN-PDF-001',
+        'no_po' => 'PO-PDF-001',
+        'tanggal' => '2026-02-20',
+    ]);
+    $product = Product::factory()->create([
+        'kode' => 'BRG-PDF',
+        'nama_barang' => 'Material PDF Test',
+        'satuan' => 'Pcs',
+    ]);
+    DeliveryNoteItem::factory()->recycle($deliveryNote)->recycle($product)->create([
+        'qty' => 2,
+        'harga' => 125000,
+        'subtotal' => 250000,
+    ]);
+
+    $response = $this->get(route('delivery-notes.print', $deliveryNote));
+
+    $response->assertSuccessful()
+        ->assertHeader('content-type', 'application/pdf')
+        ->assertHeader('content-disposition', 'inline; filename=delivery-note-DN-PDF-001.pdf');
+    expect($response->getContent())->toStartWith('%PDF');
+
+    $html = view('pdf.delivery-note', [
+        'deliveryNote' => $deliveryNote->load(['company', 'customer', 'items.product']),
+    ])->render();
+
+    expect($html)
+        ->toContain('DN-PDF-001')
+        ->toContain('PO-PDF-001')
+        ->toContain('Material PDF Test')
+        ->toContain('250.000');
 });
 
 test('used delivery note cannot be edited or deleted', function () {

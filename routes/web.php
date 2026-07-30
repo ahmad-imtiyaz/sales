@@ -29,6 +29,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->names('bank-accounts');
 
     // Transaksi Delivery Note
+    Route::get('delivery-notes/{delivery_note}/print', [DeliveryNoteController::class, 'print'])
+        ->name('delivery-notes.print');
     Route::resource('delivery-notes', DeliveryNoteController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
         ->names('delivery-notes');

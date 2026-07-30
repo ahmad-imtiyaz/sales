@@ -9,7 +9,7 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Visit login page to establish session with CSRF token
         $this->get('/login');
     }
@@ -20,7 +20,7 @@ abstract class TestCase extends BaseTestCase
     protected function postWithCsrf($uri, array $data = [], array $headers = [])
     {
         $token = $this->getCsrfToken();
-        
+
         return $this->withHeaders([
             'X-CSRF-TOKEN' => $token,
             'X-Requested-With' => 'XMLHttpRequest',
@@ -33,7 +33,7 @@ abstract class TestCase extends BaseTestCase
     protected function putWithCsrf($uri, array $data = [], array $headers = [])
     {
         $token = $this->getCsrfToken();
-        
+
         return $this->withHeaders([
             'X-CSRF-TOKEN' => $token,
             'X-Requested-With' => 'XMLHttpRequest',
@@ -46,7 +46,7 @@ abstract class TestCase extends BaseTestCase
     protected function deleteWithCsrf($uri, array $headers = [])
     {
         $token = $this->getCsrfToken();
-        
+
         return $this->withHeaders([
             'X-CSRF-TOKEN' => $token,
             'X-Requested-With' => 'XMLHttpRequest',

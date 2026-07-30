@@ -8,12 +8,14 @@ use App\Models\Company;
 use App\Models\Customer;
 use App\Models\DeliveryNote;
 use App\Models\Product;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class DeliveryNoteController extends Controller
 {
@@ -97,6 +99,19 @@ class DeliveryNoteController extends Controller
 
         return redirect()->route('delivery-notes.index')
             ->with('success', 'Delivery Note berhasil diperbarui.');
+    }
+
+    public function print(DeliveryNote $deliveryNote): HttpResponse
+    {
+        $deliveryNote->load([
+            'company:id,nama,logo,alamat,telepon,email',
+            'customer:id,nama,alamat,kota,pic,telepon,email',
+            'items.product:id,kode,nama_barang,satuan',
+        ]);
+
+        return Pdf::loadView('pdf.delivery-note', [
+            'deliveryNote' => $deliveryNote,
+        ])->setPaper('a4')->stream("delivery-note-{$deliveryNote->nomor_dn}.pdf");
     }
 
     public function destroy(DeliveryNote $deliveryNote): RedirectResponse

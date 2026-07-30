@@ -1,10 +1,7 @@
 import { Link, useForm } from '@inertiajs/react';
-import { CalendarIcon, Plus, Trash2 } from 'lucide-react';
-import { format, parseISO } from 'date-fns';
+import { Plus, Trash2 } from 'lucide-react';
 import { FormEvent, useMemo, useState } from 'react';
-import { Calendar } from '@/components/ui/calendar';
 import { Field, FieldLabel } from '@/components/ui/field';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -70,7 +67,6 @@ export default function DeliveryNoteForm({
     const [items, setItems] = useState<DeliveryNoteItem[]>(
         deliveryNote?.items?.length ? deliveryNote.items : [blankItem()],
     );
-    const [calendarOpen, setCalendarOpen] = useState(false);
     const form = useForm({
         company_id: deliveryNote?.company_id ?? '',
         customer_id: deliveryNote?.customer_id ?? '',
@@ -79,9 +75,6 @@ export default function DeliveryNoteForm({
         no_po: deliveryNote?.no_po ?? '',
         items,
     });
-    const selectedDate = form.data.tanggal
-        ? parseISO(String(form.data.tanggal).slice(0, 10))
-        : undefined;
     const subtotal = useMemo(
         () =>
             items.reduce(
@@ -219,48 +212,21 @@ export default function DeliveryNoteForm({
                     </div>
                     <Field>
                         <FieldLabel htmlFor="tanggal">Tanggal *</FieldLabel>
-                        <Popover
-                            open={calendarOpen}
-                            onOpenChange={setCalendarOpen}
-                        >
-                            <PopoverTrigger asChild>
-                                <Button
-                                    id="tanggal"
-                                    type="button"
-                                    variant="outline"
-                                    className="w-full justify-start text-left font-normal"
-                                >
-                                    <CalendarIcon className="mr-2 h-4 w-4" />
-                                    {selectedDate ? (
-                                        format(selectedDate, 'PPP')
-                                    ) : (
-                                        <span className="text-muted-foreground">
-                                            Pilih tanggal
-                                        </span>
-                                    )}
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent
-                                className="w-auto overflow-hidden p-0"
-                                align="start"
-                            >
-                                <Calendar
-                                    mode="single"
-                                    selected={selectedDate}
-                                    defaultMonth={selectedDate}
-                                    captionLayout="dropdown"
-                                    onSelect={(date) => {
-                                        if (date) {
-                                            form.setData(
-                                                'tanggal',
-                                                format(date, 'yyyy-MM-dd'),
-                                            );
-                                            setCalendarOpen(false);
-                                        }
-                                    }}
-                                />
-                            </PopoverContent>
-                        </Popover>
+                        <input
+                            id="tanggal"
+                            type="date"
+                            value={form.data.tanggal}
+                            onChange={(e) =>
+                                form.setData('tanggal', e.target.value)
+                            }
+                            className="border-input file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive"
+                            required
+                        />
+                        {form.errors.tanggal && (
+                            <p className="text-sm text-destructive">
+                                {form.errors.tanggal}
+                            </p>
+                        )}
                     </Field>
                     <div className="space-y-2 md:col-span-2">
                         <Label htmlFor="no_po">Nomor PO</Label>
