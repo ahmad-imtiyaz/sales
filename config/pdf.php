@@ -48,6 +48,6 @@ return [
     'issuer_signature_name' => env('PDF_ISSUER_NAME', 'Agus Jaya'),
     'recipient_signature_name' => env('PDF_RECIPIENT_NAME', 'Muktasir'),
 
-    'item_rows' => 20,
+    'item_rows' => 10,
 
 ];

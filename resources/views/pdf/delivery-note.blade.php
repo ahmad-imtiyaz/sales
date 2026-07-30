@@ -23,39 +23,41 @@
         @page { margin: 28px 28px; }
         body { color: #000; font-family: DejaVu Sans, sans-serif; font-size: 10px; line-height: 1.35; }
         table { border-collapse: collapse; width: 100%; }
-        .header { margin-bottom: 6px; }
+        .header { margin-bottom: 0; }
         .header > tbody > tr > td { vertical-align: top; }
-        .supplier { width: 42%; padding-right: 12px; }
-        .title-block { width: 22%; text-align: center; vertical-align: top; }
-        .recipient { width: 36%; padding-left: 12px; }
+        .supplier { width: 60%; padding-right: 12px; }
+        .po-block { width: 40%; padding-left: 12px; }
+        .po-label { font-weight: bold; margin-bottom: 4px; }
+        .po-value { font-weight: bold; }
         .supplier-name { font-size: 24px; font-weight: bold; letter-spacing: 1px; margin-bottom: 4px; }
         .supplier-line { margin: 0; }
         .supplier-section { margin-top: 8px; }
         .supplier-section .supplier-line { margin: 0; }
-        .document-title { font-size: 18px; font-weight: bold; text-decoration: underline; margin-bottom: 6px; }
-        .document-number { font-size: 14px; font-weight: bold; margin-bottom: 18px; }
-        .po-line { font-weight: bold; margin-top: 4px; }
-        .recipient-label { margin-bottom: 4px; }
-        .recipient-name { font-size: 12px; font-weight: bold; margin-bottom: 8px; }
-        .info-divider { border-bottom: 1px solid #000; margin: 8px 0 0; }
-        .items { margin-top: 4px; }
-        .items th, .items td { border: 1px solid #000; padding: 6px; }
+        .title-row { text-align: center; margin: 14px 0 6px; }
+        .document-title { font-size: 18px; font-weight: bold; text-decoration: underline; letter-spacing: 1px; }
+        .document-number { font-size: 14px; font-weight: bold; margin-top: 4px; }
+        .recipient-block { text-align: right; margin-bottom: 6px; }
+        .recipient-label { margin-bottom: 2px; }
+        .recipient-name { font-size: 12px; font-weight: bold; }
+        .info-divider { border-bottom: 1px solid #000; margin: 6px 0 0; }
+        .items { margin-top: 6px; page-break-inside: auto; }
+        .items thead { display: table-header-group; }
+        .items tr { page-break-inside: avoid; }
+        .items th, .items td { border: 1px solid #000; padding: 5px; }
         .items th { text-align: center; text-transform: uppercase; font-weight: bold; }
         .center { text-align: center; }
         .right { text-align: right; }
-        .empty-row td { height: 18px; }
-        .total-row td { font-weight: bold; }
-        .total-row td.label { text-align: right; }
-        .totals { margin-top: 6px; width: 50%; margin-left: auto; }
+        .empty-row td { height: 14px; }
+        .totals { margin-top: 6px; width: 50%; margin-left: auto; page-break-inside: avoid; }
         .totals td { padding: 4px 8px; }
         .totals .label { text-align: right; font-weight: bold; }
         .totals .value { text-align: right; font-weight: bold; min-width: 110px; }
-        .footer { margin-top: 28px; }
+        .footer { margin-top: 18px; page-break-inside: avoid; }
         .footer > tbody > tr > td { vertical-align: top; }
         .footer-receipt { width: 50%; padding-right: 24px; }
         .footer-issuer { width: 50%; padding-left: 24px; }
-        .footer-note { font-style: italic; margin-bottom: 60px; }
-        .signature-line { border-top: 1px solid #000; display: inline-block; min-width: 150px; padding-top: 2px; margin-top: 60px; }
+        .footer-note { font-style: italic; margin-bottom: 50px; }
+        .signature-line { border-top: 1px solid #000; display: inline-block; min-width: 150px; padding-top: 2px; margin-top: 50px; }
     </style>
 </head>
 <body>
@@ -80,17 +82,22 @@
                     <div class="supplier-line"><strong>{{ $supplier['email_label'] }}</strong> {{ $supplier['email'] }}</div>
                 </div>
             </td>
-            <td class="title-block">
-                <div class="document-title">{{ $config['document_title'] }}</div>
-                <div class="document-number">{{ $deliveryNote->nomor_dn }}</div>
-                <div class="po-line">{{ $config['po_label'] }} {{ $deliveryNote->no_po ?: '-' }}</div>
-            </td>
-            <td class="recipient">
-                <div class="recipient-label">{{ $config['recipient_label'] }}</div>
-                <div class="recipient-name">{{ $deliveryNote->customer->nama }}</div>
+            <td class="po-block">
+                <div class="po-label">{{ $config['po_label'] }}</div>
+                <div class="po-value">{{ $deliveryNote->no_po ?: '-' }}</div>
             </td>
         </tr>
     </table>
+
+    <div class="title-row">
+        <div class="document-title">{{ $config['document_title'] }}</div>
+        <div class="document-number">{{ $deliveryNote->nomor_dn }}</div>
+    </div>
+
+    <div class="recipient-block">
+        <div class="recipient-label">{{ $config['recipient_label'] }}</div>
+        <div class="recipient-name">{{ $deliveryNote->customer->nama }}</div>
+    </div>
 
     <div class="info-divider"></div>
 
