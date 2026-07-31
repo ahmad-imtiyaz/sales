@@ -21,7 +21,7 @@ export default function Login({ status }: Props) {
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        form.post(ziggyRoute('login'), {
+        form.post(ziggyRoute('login.store'), {
             onError: () => {},
         });
     };
