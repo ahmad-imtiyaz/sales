@@ -1,10 +1,11 @@
 import { Head } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
-import { Package, Users, FileText, TrendingUp, ArrowRight } from 'lucide-react';
+import { Package, Users, FileText, TrendingUp, ArrowRight, Truck } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { dashboard } from '@/routes';
 import invoicesRoutes from '@/routes/invoices';
+import deliveryNotesRoutes from '@/routes/delivery-notes';
 
 interface DashboardStats {
     delivery_notes: {
@@ -29,9 +30,20 @@ interface LatestInvoice {
     customer: string;
 }
 
+interface LatestDeliveryNote {
+    id: number;
+    nomor_dn: string;
+    tanggal: string;
+    status: 'available' | 'used';
+    company: string;
+    customer: string;
+    items_count: number;
+}
+
 interface Props {
     stats: DashboardStats;
     latest_invoices: LatestInvoice[];
+    latest_delivery_notes: LatestDeliveryNote[];
 }
 
 const money = (value: string | number) =>
@@ -105,6 +117,59 @@ export default function Dashboard({ stats, latest_invoices }: Props) {
                         </CardContent>
                     </Card>
                 </div>
+
+                <Card>
+                    <CardHeader>
+                        <div className="flex items-center justify-between">
+                            <CardTitle>5 Delivery Note Terbaru</CardTitle>
+                            <Link href={deliveryNotesRoutes.index.url()} className="text-sm text-primary hover:underline">
+                                Lihat semua <ArrowRight className="ml-1 h-3 w-3 inline" />
+                            </Link>
+                        </div>
+                    </CardHeader>
+                    <CardContent>
+                        {latest_delivery_notes.length === 0 ? (
+                            <p className="text-center text-muted-foreground py-8">Belum ada Delivery Note.</p>
+                        ) : (
+                            <div className="rounded-md border">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Nomor DN</TableHead>
+                                            <TableHead>Tanggal</TableHead>
+                                            <TableHead>Status</TableHead>
+                                            <TableHead>Perusahaan</TableHead>
+                                            <TableHead>Customer</TableHead>
+                                            <TableHead className="text-center">Item</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {latest_delivery_notes.map((dn) => (
+                                            <TableRow key={dn.id}>
+                                                <TableCell className="font-mono font-medium">
+                                                    {dn.nomor_dn}
+                                                </TableCell>
+                                                <TableCell>{date(dn.tanggal)}</TableCell>
+                                                <TableCell>
+                                                    <span className={
+                                                        dn.status === 'available'
+                                                            ? 'inline-flex rounded-full px-3 py-1 text-xs font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300'
+                                                            : 'inline-flex rounded-full px-3 py-1 text-xs font-semibold bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300'
+                                                    }>
+                                                        {dn.status === 'available' ? 'AVAILABLE' : 'USED'}
+                                                    </span>
+                                                </TableCell>
+                                                <TableCell>{dn.company}</TableCell>
+                                                <TableCell>{dn.customer}</TableCell>
+                                                <TableCell className="text-center">{dn.items_count}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
 
                 <Card>
                     <CardHeader>

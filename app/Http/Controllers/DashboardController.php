@@ -50,6 +50,23 @@ class DashboardController extends Controller
                 'customer' => $invoice->customer->nama,
             ]);
 
+        // 5 Delivery Note terbaru
+        $latestDeliveryNotes = DeliveryNote::query()
+            ->with(['company:id,nama', 'customer:id,nama'])
+            ->latest('tanggal')
+            ->latest('id')
+            ->limit(5)
+            ->get()
+            ->map(fn ($dn) => [
+                'id' => $dn->id,
+                'nomor_dn' => $dn->nomor_dn,
+                'tanggal' => $dn->tanggal->format('Y-m-d'),
+                'status' => $dn->status,
+                'company' => $dn->company->nama,
+                'customer' => $dn->customer->nama,
+                'items_count' => $dn->items_count,
+            ]);
+
         return Inertia::render('dashboard', [
             'stats' => [
                 'delivery_notes' => [
@@ -65,6 +82,7 @@ class DashboardController extends Controller
                 'companies' => $totalCompanies,
             ],
             'latest_invoices' => $latestInvoices,
+            'latest_delivery_notes' => $latestDeliveryNotes,
         ]);
     }
 }
