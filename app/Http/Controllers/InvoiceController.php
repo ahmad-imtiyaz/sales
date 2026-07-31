@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\NumberToIndonesianWords;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
 use App\Models\BankAccount;
@@ -157,7 +158,7 @@ class InvoiceController extends Controller
             ->with('success', 'Invoice berhasil dihapus.');
     }
 
-    public function print(Invoice $invoice): HttpResponse
+    public function print(Invoice $invoice, NumberToIndonesianWords $numberToWords): HttpResponse
     {
         $invoice->load([
             'company:id,nama,logo,alamat,telepon,email',
@@ -169,6 +170,7 @@ class InvoiceController extends Controller
 
         return Pdf::loadView('pdf.invoice', [
             'invoice' => $invoice,
+            'terbilang' => $numberToWords->convert($invoice->grand_total).' Rupiah',
         ])->setPaper('a4')->stream("invoice-{$invoice->nomor_invoice}.pdf");
     }
 

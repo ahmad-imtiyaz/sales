@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\NumberToIndonesianWords;
 use App\Models\BankAccount;
 use App\Models\Company;
 use App\Models\Customer;
@@ -151,4 +152,68 @@ test('delivery note JSON endpoint exposes customer and items', function () {
         ->assertJsonPath('customer.nama', $context['customer']->nama)
         ->assertJsonPath('subtotal', 827000)
         ->assertJsonCount(1, 'items');
+});
+
+test('invoice PDF footer follows selected bank account', function () {
+    $context = invoiceContext();
+    $deliveryNote = buildDeliveryNote($context, [['qty' => 1, 'harga' => 413500]]);
+    $bca = BankAccount::factory()->create([
+        'company_id' => $context['company']->id,
+        'nama_bank' => 'BCA',
+        'nomor_rekening' => '123456789',
+        'atas_nama' => 'CV Agus Jaya',
+    ]);
+    $invoice = Invoice::factory()->recycle($deliveryNote)->recycle($context['bankAccount'])->create([
+        'nomor_invoice' => 'INV-PDF-BANK',
+        'subtotal' => 413500,
+        'ppn' => 45485,
+        'grand_total' => 458985,
+    ]);
+    $invoice->load(['company', 'customer', 'bankAccount', 'deliveryNote.items.product']);
+    $terbilang = app(NumberToIndonesianWords::class)->convert($invoice->grand_total).' Rupiah';
+    $briHtml = view('pdf.invoice', compact('invoice', 'terbilang'))->render();
+
+    $invoice->bank_account_id = $bca->id;
+    $invoice->setRelation('bankAccount', $bca);
+    $bcaHtml = view('pdf.invoice', compact('invoice', 'terbilang'))->render();
+
+    expect($briHtml)
+        ->toContain('Bank BRI')
+        ->toContain('0563-01-000400-30-3')
+        ->not->toContain('123456789')
+        ->and($bcaHtml)
+        ->toContain('Bank BCA')
+        ->toContain('123456789')
+        ->not->toContain('0563-01-000400-30-3');
+});
+
+test('invoice PDF contains totals terbilang and selected bank account', function () {
+    $context = invoiceContext();
+    $deliveryNote = buildDeliveryNote($context, [['qty' => 1, 'harga' => 413500]]);
+    $invoice = Invoice::factory()->recycle($deliveryNote)->recycle($context['bankAccount'])->create([
+        'nomor_invoice' => 'INV-PDF-001',
+        'subtotal' => 413500,
+        'ppn' => 45485,
+        'grand_total' => 458985,
+    ]);
+
+    $response = $this->get(route('invoices.print', $invoice));
+
+    $response->assertSuccessful()
+        ->assertHeader('content-type', 'application/pdf')
+        ->assertHeader('content-disposition', 'inline; filename=invoice-INV-PDF-001.pdf');
+    expect($response->getContent())->toStartWith('%PDF');
+
+    $invoice->load(['company', 'customer', 'bankAccount', 'deliveryNote.items.product']);
+    $terbilang = app(NumberToIndonesianWords::class)->convert($invoice->grand_total).' Rupiah';
+    $html = view('pdf.invoice', compact('invoice', 'terbilang'))->render();
+
+    expect($html)
+        ->toContain('INV-PDF-001')
+        ->toContain('413.500')
+        ->toContain('45.485')
+        ->toContain('458.985')
+        ->toContain('Empat Ratus Lima Puluh Delapan Ribu Sembilan Ratus Delapan Puluh Lima Rupiah')
+        ->toContain('Bank BRI')
+        ->toContain('0563-01-000400-30-3');
 });
