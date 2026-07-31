@@ -74,16 +74,14 @@ export default function LaporanDeliveryNotes({ deliveryNotes, filters }: Props) 
 
     const handlePrint = () => {
         setPrintMode(true);
-        setTimeout(() => {
-            window.print();
-            setPrintMode(false);
-        }, 100);
+        window.print();
+        setPrintMode(false);
     };
 
     return (
         <>
             <Head title="Laporan Delivery Note" />
-            <style jsx global>{`
+            <style>{`
                 @media print {
                     .no-print { display: none !important; }
                     .print-only { display: block !important; }

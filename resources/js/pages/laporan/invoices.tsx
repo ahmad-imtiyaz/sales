@@ -81,16 +81,14 @@ export default function LaporanInvoices({ invoices, filters, totalGrandTotal, co
 
     const handlePrint = () => {
         setPrintMode(true);
-        setTimeout(() => {
-            window.print();
-            setPrintMode(false);
-        }, 100);
+        window.print();
+        setPrintMode(false);
     };
 
     return (
         <>
             <Head title="Laporan Invoice" />
-            <style jsx global>{`
+            <style>{`
                 @media print {
                     .no-print { display: none !important; }
                     .print-only { display: block !important; }
