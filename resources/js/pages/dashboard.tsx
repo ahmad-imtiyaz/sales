@@ -1,36 +1,158 @@
 import { Head } from '@inertiajs/react';
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
+import { Link } from '@inertiajs/react';
+import { Package, Users, FileText, TrendingUp, ArrowRight } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { dashboard } from '@/routes';
+import invoicesRoutes from '@/routes/invoices';
 
-export default function Dashboard() {
+interface DashboardStats {
+    delivery_notes: {
+        total: number;
+        available: number;
+        used: number;
+    };
+    invoices_this_month: {
+        count: number;
+        grand_total: string | number;
+    };
+    customers: number;
+    companies: number;
+}
+
+interface LatestInvoice {
+    id: number;
+    nomor_invoice: string;
+    tanggal_invoice: string;
+    grand_total: string | number;
+    company: string;
+    customer: string;
+}
+
+interface Props {
+    stats: DashboardStats;
+    latest_invoices: LatestInvoice[];
+}
+
+const money = (value: string | number) =>
+    new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0,
+    }).format(Number(value));
+
+const date = (value: string) =>
+    new Intl.DateTimeFormat('id-ID').format(new Date(value));
+
+export default function Dashboard({ stats, latest_invoices }: Props) {
     return (
         <>
             <Head title="Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
+            <div className="space-y-6">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+                    <p className="text-muted-foreground">
+                        Ringkasan aktivitas Delivery Note & Invoice
+                    </p>
                 </div>
-                <div className="relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
-                    <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                    <Card>
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Total Delivery Note</CardTitle>
+                            <Package className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{stats.delivery_notes.total}</div>
+                            <p className="text-xs text-muted-foreground">
+                                {stats.delivery_notes.available} Available · {stats.delivery_notes.used} Used
+                            </p>
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Invoice Bulan Ini</CardTitle>
+                            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{stats.invoices_this_month.count}</div>
+                            <p className="text-xs text-muted-foreground">
+                                Total: {money(stats.invoices_this_month.grand_total)}
+                            </p>
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Customer</CardTitle>
+                            <Users className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{stats.customers}</div>
+                            <p className="text-xs text-muted-foreground">Total customer terdaftar</p>
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Perusahaan</CardTitle>
+                            <Package className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{stats.companies}</div>
+                            <p className="text-xs text-muted-foreground">Total perusahaan aktif</p>
+                        </CardContent>
+                    </Card>
                 </div>
+
+                <Card>
+                    <CardHeader>
+                        <div className="flex items-center justify-between">
+                            <CardTitle>5 Invoice Terbaru</CardTitle>
+                            <Link href={invoicesRoutes.index.url()} className="text-sm text-primary hover:underline">
+                                Lihat semua <ArrowRight className="ml-1 h-3 w-3 inline" />
+                            </Link>
+                        </div>
+                    </CardHeader>
+                    <CardContent>
+                        {latest_invoices.length === 0 ? (
+                            <p className="text-center text-muted-foreground py-8">Belum ada Invoice.</p>
+                        ) : (
+                            <div className="rounded-md border">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Nomor Invoice</TableHead>
+                                            <TableHead>Tanggal</TableHead>
+                                            <TableHead>Perusahaan</TableHead>
+                                            <TableHead>Customer</TableHead>
+                                            <TableHead className="text-right">Grand Total</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {latest_invoices.map((inv) => (
+                                            <TableRow key={inv.id}>
+                                                <TableCell className="font-mono font-medium">
+                                                    {inv.nomor_invoice}
+                                                </TableCell>
+                                                <TableCell>{date(inv.tanggal_invoice)}</TableCell>
+                                                <TableCell>{inv.company}</TableCell>
+                                                <TableCell>{inv.customer}</TableCell>
+                                                <TableCell className="text-right font-mono">{money(inv.grand_total)}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
             </div>
         </>
     );
 }
 
 Dashboard.layout = {
-    breadcrumbs: [
-        {
-            title: 'Dashboard',
-            href: dashboard(),
-        },
-    ],
+    breadcrumbs: [{ title: 'Dashboard', href: dashboard() }],
 };

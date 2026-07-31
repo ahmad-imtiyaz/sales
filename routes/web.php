@@ -3,6 +3,7 @@
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryNoteController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LaporanController;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/', '/login')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'dashboard')->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Master Perusahaan
     Route::resource('companies', CompanyController::class)
