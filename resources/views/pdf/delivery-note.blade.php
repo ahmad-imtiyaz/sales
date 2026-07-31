@@ -11,8 +11,6 @@
     $fmtQty = fn (float $value): string => number_format($value, fmod($value, 1.0) === 0.0 ? 0 : 2, ',', '.');
 
     $recipientCity = $deliveryNote->customer->kota ?: 'Sangatta';
-    $documentDate = $deliveryNote->tanggal->locale('id')->translatedFormat('d F Y');
-    $signedAt = "{$recipientCity}, {$documentDate}";
 @endphp
 <!DOCTYPE html>
 <html lang="id">
@@ -23,24 +21,29 @@
         @page { margin: 28px 28px; }
         body { color: #000; font-family: DejaVu Sans, sans-serif; font-size: 10px; line-height: 1.35; }
         table { border-collapse: collapse; width: 100%; }
+
+        /* Top row: supplier (left) + customer (right) */
         .header { margin-bottom: 0; }
         .header > tbody > tr > td { vertical-align: top; }
-        .supplier { width: 60%; padding-right: 12px; }
-        .po-block { width: 40%; padding-left: 12px; }
-        .po-label { font-weight: bold; margin-bottom: 4px; }
-        .po-value { font-weight: bold; }
+        .supplier { width: 58%; padding-right: 12px; }
+        .customer-header { width: 42%; padding-left: 12px; text-align: right; }
+        .customer-header .recipient-label { margin-bottom: 2px; }
+        .customer-header .recipient-name { font-size: 12px; font-weight: bold; }
+
         .supplier-name { font-size: 24px; font-weight: bold; letter-spacing: 1px; margin-bottom: 4px; }
         .supplier-line { margin: 0; }
         .supplier-section { margin-top: 8px; }
         .supplier-section .supplier-line { margin: 0; }
-        .title-row { text-align: center; margin: 14px 0 6px; }
+
+        /* Title row: centered document title + number */
+        .title-row { text-align: center; margin: 14px 0 2px; }
         .document-title { font-size: 18px; font-weight: bold; text-decoration: underline; letter-spacing: 1px; }
         .document-number { font-size: 14px; font-weight: bold; margin-top: 4px; }
-        .recipient-block { text-align: right; margin-bottom: 6px; }
-        .recipient-label { margin-bottom: 2px; }
-        .recipient-name { font-size: 12px; font-weight: bold; }
-        .info-divider { border-bottom: 1px solid #000; margin: 6px 0 0; }
-        .items { margin-top: 6px; page-break-inside: auto; }
+
+        /* PO row: right-aligned, same block as title, below it */
+        .po-row { text-align: right; font-weight: bold; margin: 2px 0 8px; }
+
+        .items { margin-top: 4px; page-break-inside: auto; }
         .items thead { display: table-header-group; }
         .items tr { page-break-inside: avoid; }
         .items th, .items td { border: 1px solid #000; padding: 5px; }
@@ -48,10 +51,10 @@
         .center { text-align: center; }
         .right { text-align: right; }
         .empty-row td { height: 14px; }
-        .totals { margin-top: 6px; width: 50%; margin-left: auto; page-break-inside: avoid; }
-        .totals td { padding: 4px 8px; }
-        .totals .label { text-align: right; font-weight: bold; }
-        .totals .value { text-align: right; font-weight: bold; min-width: 110px; }
+
+        .total-label-cell { font-weight: bold; text-align: right; line-height: 1.2; }
+        .total-value-cell { font-weight: bold; text-align: right; }
+
         .footer { margin-top: 18px; page-break-inside: avoid; }
         .footer > tbody > tr > td { vertical-align: top; }
         .footer-receipt { width: 50%; padding-right: 24px; }
@@ -79,12 +82,13 @@
                         <div class="supplier-line">{{ $line }}</div>
                     @endforeach
                     <div class="supplier-line">{{ $supplier['phone'] }}</div>
-                    <div class="supplier-line"><strong>{{ $supplier['email_label'] }}</strong> {{ $supplier['email'] }}</div>
+                    <div class="supplier-line"><strong>{{ $supplier['email_label'] }}</strong></div>
+                    <div class="supplier-line">{{ $supplier['email'] }}</div>
                 </div>
             </td>
-            <td class="po-block">
-                <div class="po-label">{{ $config['po_label'] }}</div>
-                <div class="po-value">{{ $deliveryNote->no_po ?: '-' }}</div>
+            <td class="customer-header">
+                <div class="recipient-label">{{ $config['recipient_label'] }}</div>
+                <div class="recipient-name">{{ $deliveryNote->customer->nama }}</div>
             </td>
         </tr>
     </table>
@@ -94,12 +98,9 @@
         <div class="document-number">{{ $deliveryNote->nomor_dn }}</div>
     </div>
 
-    <div class="recipient-block">
-        <div class="recipient-label">{{ $config['recipient_label'] }}</div>
-        <div class="recipient-name">{{ $deliveryNote->customer->nama }}</div>
+    <div class="po-row">
+        {{ $config['po_label'] }} {{ $deliveryNote->no_po ?: '-' }}
     </div>
-
-    <div class="info-divider"></div>
 
     <table class="items">
         <thead>
@@ -132,14 +133,15 @@
                     @endif
                 </tr>
             @endfor
+            <tr>
+                <td colspan="4"></td>
+                <td class="total-label-cell">
+                    <div>TOTAL</div>
+                    <div>AMOUNT</div>
+                </td>
+                <td class="total-value-cell">{{ $fmtMoney($totalAmount) }}</td>
+            </tr>
         </tbody>
-    </table>
-
-    <table class="totals">
-        <tr>
-            <td class="label">{{ $config['total_label'] }}</td>
-            <td class="value">{{ $fmtMoney($totalAmount) }}</td>
-        </tr>
     </table>
 
     <table class="footer">
@@ -151,9 +153,9 @@
                 <span class="signature-line">{{ $config['recipient_signature_name'] }}</span>
             </td>
             <td class="footer-issuer">
-                <div class="footer-note">{{ $signedAt }}</div>
-                <div class="footer-note"><strong>{{ $config['issuer_label'] }}</strong></div>
-                <span class="signature-line">{{ $config['issuer_signature_name'] }}</span>
+                <div class="footer-note" style="margin-bottom: 4px;">{{ $recipientCity }},</div>
+                <div class="footer-note" style="margin-bottom: 50px;"><strong>{{ $config['issuer_label'] }}</strong></div>
+                <div>{{ $config['issuer_signature_name'] }}</div>
             </td>
         </tr>
     </table>

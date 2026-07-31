@@ -23,7 +23,7 @@
         @page { margin: 24px 32px; }
         body { color: #000; font-family: DejaVu Sans, sans-serif; font-size: 9px; line-height: 1.3; }
         table { border-collapse: collapse; width: 100%; }
-        .company-header { border-bottom: 4px double #000; padding-bottom: 7px; text-align: center; }
+        .company-header { border-bottom: 2px solid #000; padding-bottom: 7px; text-align: center; }
         .company-name { font-size: 19px; font-weight: bold; letter-spacing: .7px; }
         .company-line { margin: 1px 0; }
         .company-email { text-decoration: underline; }
@@ -34,6 +34,7 @@
         .customer { width: 55%; padding-left: 18px; }
         .meta-label { display: inline-block; font-weight: bold; width: 78px; }
         .customer-name { font-size: 10px; font-weight: bold; text-transform: uppercase; }
+        .customer-address { margin-top: 1px; }
         .items { table-layout: fixed; }
         .items th, .items td { border: 1px solid #000; padding: 4px 5px; }
         .items th { font-weight: bold; }
@@ -82,7 +83,10 @@
             </td>
             <td class="customer">
                 <div class="customer-name">{{ $invoice->customer->nama }}</div>
-                <div>{{ $invoice->customer->alamat }}</div>
+                {{-- alamat may contain multiple lines (as in the source document, e.g.
+                     "PONDOK INDAH OFFICE TOWER 3 LT.12\nJL. SULTAN ISKANDAR MUDA KAV.V-TA\n...")
+                     preserve line breaks instead of forcing it into one line --}}
+                <div class="customer-address">{!! nl2br(e($invoice->customer->alamat)) !!}</div>
                 @if ($invoice->customer->kota)
                     <div>{{ $invoice->customer->kota }}</div>
                 @endif

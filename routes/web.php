@@ -5,6 +5,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DeliveryNoteController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +45,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('delivery-notes', DeliveryNoteController::class)
         ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
         ->names('delivery-notes');
+
+    // Laporan
+    Route::get('laporan/delivery-notes', [LaporanController::class, 'deliveryNotes'])
+        ->name('laporan.delivery-notes');
+    Route::get('laporan/invoices', [LaporanController::class, 'invoices'])
+        ->name('laporan.invoices');
 });
 
 require __DIR__.'/settings.php';

@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid, Building2, Users, Banknote, Package, Truck, FileText } from 'lucide-react';
+import { BookOpen, FolderGit2, LayoutGrid, Building2, Users, Banknote, Package, Truck, FileText, FileBarChart } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -20,6 +20,7 @@ import products from '@/routes/products';
 import bankAccounts from '@/routes/bank-accounts';
 import deliveryNotesRoutes from '@/routes/delivery-notes';
 import invoicesRoutes from '@/routes/invoices';
+import laporanRoutes from '@/routes/laporan';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
@@ -57,6 +58,16 @@ const mainNavItems: NavItem[] = [
         title: 'Invoice',
         href: invoicesRoutes.index.url(),
         icon: FileText,
+    },
+    {
+        title: 'Laporan Delivery Note',
+        href: laporanRoutes.deliveryNotes.url(),
+        icon: FileBarChart,
+    },
+    {
+        title: 'Laporan Invoice',
+        href: laporanRoutes.invoices.url(),
+        icon: FileBarChart,
     },
 ];
 
