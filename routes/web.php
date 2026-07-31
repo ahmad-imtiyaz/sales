@@ -8,6 +8,7 @@ use App\Http\Controllers\DeliveryNoteController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/login')->name('home');
@@ -52,6 +53,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('laporan.delivery-notes');
     Route::get('laporan/invoices', [LaporanController::class, 'invoices'])
         ->name('laporan.invoices');
+
+    // Pengaturan
+    Route::get('settings', [SettingController::class, 'index'])
+        ->name('settings.index');
+    Route::put('settings', [SettingController::class, 'update'])
+        ->name('settings.update');
 });
 
 require __DIR__.'/settings.php';

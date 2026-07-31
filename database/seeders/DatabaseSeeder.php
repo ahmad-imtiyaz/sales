@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             BankAccountSeeder::class,
             DeliveryNoteSeeder::class,
             InvoiceSeeder::class,
+            SettingSeeder::class,
         ]);
 
         User::factory()->create([

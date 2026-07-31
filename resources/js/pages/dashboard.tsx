@@ -56,7 +56,7 @@ const money = (value: string | number) =>
 const date = (value: string) =>
     new Intl.DateTimeFormat('id-ID').format(new Date(value));
 
-export default function Dashboard({ stats, latest_invoices }: Props) {
+export default function Dashboard({ stats, latest_invoices, latest_delivery_notes }: Props) {
     return (
         <>
             <Head title="Dashboard" />
@@ -140,7 +140,6 @@ export default function Dashboard({ stats, latest_invoices }: Props) {
                                             <TableHead>Status</TableHead>
                                             <TableHead>Perusahaan</TableHead>
                                             <TableHead>Customer</TableHead>
-                                            <TableHead className="text-center">Item</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -161,7 +160,6 @@ export default function Dashboard({ stats, latest_invoices }: Props) {
                                                 </TableCell>
                                                 <TableCell>{dn.company}</TableCell>
                                                 <TableCell>{dn.customer}</TableCell>
-                                                <TableCell className="text-center">{dn.items_count}</TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>

@@ -35,9 +35,22 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $siteName = config('app.name');
+        $logo = null;
+
+        try {
+            if (\Schema::hasTable('settings')) {
+                $siteName = \App\Models\Setting::getValue('site_name', config('app.name'));
+                $logo = \App\Models\Setting::getValue('logo');
+            }
+        } catch (\Throwable) {
+            // Ignore if settings table doesn't exist (e.g., during tests)
+        }
+
         return [
             ...parent::share($request),
-            'name' => config('app.name'),
+            'name' => $siteName,
+            'logo' => $logo,
             'auth' => [
                 'user' => $request->user(),
             ],
