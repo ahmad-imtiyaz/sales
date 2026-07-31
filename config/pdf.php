@@ -31,6 +31,16 @@ return [
         'email' => 'agusjaya74040@gmail.com',
     ],
 
+    'invoice_supplier' => [
+        'name' => 'CV. AGUS JAYA',
+        'address_lines' => [
+            'Jln. APT. Pranoto, RT 30. No. 68',
+            'Sangatta, Kutai Timur, Kalimantan Timur.',
+        ],
+        'phone' => 'Phone 0811 53 7404 / 0811 58 9404',
+        'email' => 'email : agusjaya7404@gmail.com',
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Document Defaults
@@ -45,7 +55,8 @@ return [
         'Tanda terima barang, Barang diatas telah kami terima dalam keadaan cukup dan baik.',
     ],
     'issuer_label' => 'Hormat Kami,',
-    'issuer_signature_name' => env('PDF_ISSUER_NAME', 'Agus Jaya'),
+    'issuer_signature_name' => env('PDF_ISSUER_NAME', 'Agus Sumanto'),
+    'issuer_position' => 'Direktur',
     'recipient_signature_name' => env('PDF_RECIPIENT_NAME', 'Muktasir'),
 
     'item_rows' => 10,
@@ -59,7 +70,12 @@ return [
     |
     */
 
-    'invoice_title' => 'INVOICE',
+    'invoice_title' => 'SALES INVOICE',
+    'invoice_item_rows' => 16,
+    'invoice_issuer_city' => 'Sangatta',
+    'invoice_bank_branch' => 'Sangatta',
+    'invoice_stamp' => env('PDF_INVOICE_STAMP'),
+    'invoice_signature' => env('PDF_INVOICE_SIGNATURE'),
     'payment_label' => 'INFORMASI PEMBAYARAN',
     'ppn_rate' => 0.11,
 
