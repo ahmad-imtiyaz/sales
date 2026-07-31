@@ -37,7 +37,6 @@ interface LatestDeliveryNote {
     status: 'available' | 'used';
     company: string;
     customer: string;
-    items_count: number;
 }
 
 interface Props {
