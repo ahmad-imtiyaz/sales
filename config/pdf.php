@@ -50,4 +50,17 @@ return [
 
     'item_rows' => 10,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Invoice — Specific
+    |--------------------------------------------------------------------------
+    |
+    | Additional config for Invoice PDF that differs from Delivery Note.
+    |
+    */
+
+    'invoice_title' => 'INVOICE',
+    'payment_label' => 'INFORMASI PEMBAYARAN',
+    'ppn_rate' => 0.11,
+
 ];

@@ -8,11 +8,13 @@ use App\Models\BankAccount;
 use App\Models\Company;
 use App\Models\DeliveryNote;
 use App\Models\Invoice;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class InvoiceController extends Controller
 {
@@ -153,6 +155,21 @@ class InvoiceController extends Controller
 
         return redirect()->route('invoices.index')
             ->with('success', 'Invoice berhasil dihapus.');
+    }
+
+    public function print(Invoice $invoice): HttpResponse
+    {
+        $invoice->load([
+            'company:id,nama,logo,alamat,telepon,email',
+            'customer:id,nama,alamat,kota,pic,telepon,email',
+            'bankAccount:id,nama_bank,nomor_rekening,atas_nama',
+            'deliveryNote:id,nomor_dn,tanggal,no_po',
+            'deliveryNote.items.product:id,kode,nama_barang,satuan',
+        ]);
+
+        return Pdf::loadView('pdf.invoice', [
+            'invoice' => $invoice,
+        ])->setPaper('a4')->stream("invoice-{$invoice->nomor_invoice}.pdf");
     }
 
     /** @return array{companies: mixed, deliveryNotes: mixed, bankAccounts: mixed} */

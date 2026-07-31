@@ -1,5 +1,5 @@
 import { Head, Link, router, useForm } from '@inertiajs/react';
-import { Pencil, Plus, Search, Trash2 } from 'lucide-react';
+import { Pencil, Plus, Printer, Search, Trash2 } from 'lucide-react';
 import { FormEvent, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -158,6 +158,11 @@ export default function InvoicesIndex({ invoices, filters }: Props) {
                                                                 <Pencil className="h-4 w-4" />
                                                             </Button>
                                                         </Link>
+                                                        <a href={invoicesRoutes.print.url(invoice.id)} target="_blank" rel="noreferrer">
+                                                            <Button variant="ghost" size="icon" title="Cetak PDF">
+                                                                <Printer className="h-4 w-4" />
+                                                            </Button>
+                                                        </a>
                                                         <Button
                                                             variant="ghost"
                                                             size="icon"

@@ -30,6 +30,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->names('bank-accounts');
 
     // Transaksi Invoice
+    Route::get('invoices/{invoice}/print', [InvoiceController::class, 'print'])
+        ->name('invoices.print');
     Route::resource('invoices', InvoiceController::class)
         ->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])
         ->names('invoices');

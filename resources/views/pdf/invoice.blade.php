@@ -1,0 +1,182 @@
+@php
+    use Illuminate\Support\Number;
+
+    $config = config('pdf');
+    $supplier = $config['supplier'];
+    $items = $invoice->deliveryNote->items;
+    $itemRows = (int) $config['item_rows'];
+    $subtotal = (float) $invoice->subtotal;
+    $ppn = (float) $invoice->ppn;
+    $grandTotal = (float) $invoice->grand_total;
+
+    $fmtMoney = fn (float $value): string => number_format($value, 0, ',', '.');
+    $fmtQty = fn (float $value): string => number_format($value, fmod($value, 1.0) === 0.0 ? 0 : 2, ',', '.');
+
+    $recipientCity = $invoice->customer->kota ?: 'Sangatta';
+    $documentDate = $invoice->tanggal_invoice->locale('id')->translatedFormat('d F Y');
+    $signedAt = "{$recipientCity}, {$documentDate}";
+
+    // Payment info from selected bank account
+    $bankAccount = $invoice->bankAccount;
+    $paymentLines = [
+        'Pembayaran agar ditransfer ke rekening',
+        $invoice->company->nama,
+        'Bank ' . $bankAccount->nama_bank,
+        $bankAccount->nomor_rekening,
+    ];
+@endphp
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice {{ $invoice->nomor_invoice }}</title>
+    <style>
+        @page { margin: 28px 28px; }
+        body { color: #000; font-family: DejaVu Sans, sans-serif; font-size: 10px; line-height: 1.35; }
+        table { border-collapse: collapse; width: 100%; }
+        .header { margin-bottom: 0; }
+        .header > tbody > tr > td { vertical-align: top; }
+        .supplier { width: 60%; padding-right: 12px; }
+        .po-block { width: 40%; padding-left: 12px; }
+        .po-label { font-weight: bold; margin-bottom: 4px; }
+        .po-value { font-weight: bold; }
+        .supplier-name { font-size: 24px; font-weight: bold; letter-spacing: 1px; margin-bottom: 4px; }
+        .supplier-line { margin: 0; }
+        .supplier-section { margin-top: 8px; }
+        .supplier-section .supplier-line { margin: 0; }
+        .title-row { text-align: center; margin: 14px 0 6px; }
+        .document-title { font-size: 18px; font-weight: bold; text-decoration: underline; letter-spacing: 1px; }
+        .document-number { font-size: 14px; font-weight: bold; margin-top: 4px; }
+        .recipient-block { text-align: right; margin-bottom: 6px; }
+        .recipient-label { margin-bottom: 2px; }
+        .recipient-name { font-size: 12px; font-weight: bold; }
+        .info-divider { border-bottom: 1px solid #000; margin: 6px 0 0; }
+        .items { margin-top: 6px; page-break-inside: auto; }
+        .items thead { display: table-header-group; }
+        .items tr { page-break-inside: avoid; }
+        .items th, .items td { border: 1px solid #000; padding: 5px; }
+        .items th { text-align: center; text-transform: uppercase; font-weight: bold; }
+        .center { text-align: center; }
+        .right { text-align: right; }
+        .empty-row td { height: 14px; }
+        .totals { margin-top: 6px; width: 50%; margin-left: auto; page-break-inside: avoid; }
+        .totals td { padding: 4px 8px; }
+        .totals .label { text-align: right; font-weight: bold; }
+        .totals .value { text-align: right; font-weight: bold; min-width: 110px; }
+        .footer { margin-top: 18px; page-break-inside: avoid; }
+        .footer > tbody > tr > td { vertical-align: top; }
+        .footer-receipt { width: 50%; padding-right: 24px; }
+        .footer-issuer { width: 50%; padding-left: 24px; }
+        .footer-note { font-style: italic; margin-bottom: 50px; }
+        .signature-line { border-top: 1px solid #000; display: inline-block; min-width: 150px; padding-top: 2px; margin-top: 50px; }
+    </style>
+</head>
+<body>
+    <table class="header">
+        <tr>
+            <td class="supplier">
+                <div class="supplier-name">{{ $supplier['name'] }}</div>
+
+                <div class="supplier-section">
+                    <div class="supplier-line"><strong>{{ $supplier['tagline'] }}</strong></div>
+                    @foreach ($supplier['tagline_lines'] as $line)
+                        <div class="supplier-line">{{ $line }}</div>
+                    @endforeach
+                </div>
+
+                <div class="supplier-section">
+                    <div class="supplier-line"><strong>{{ $supplier['office_label'] }}</strong></div>
+                    @foreach ($supplier['office_lines'] as $line)
+                        <div class="supplier-line">{{ $line }}</div>
+                    @endforeach
+                    <div class="supplier-line">{{ $supplier['phone'] }}</div>
+                    <div class="supplier-line"><strong>{{ $supplier['email_label'] }}</strong> {{ $supplier['email'] }}</div>
+                </div>
+            </td>
+            <td class="po-block">
+                <div class="po-label">{{ $config['po_label'] }}</div>
+                <div class="po-value">{{ $invoice->no_po ?: '-' }}</div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="title-row">
+        <div class="document-title">{{ $config['document_title'] }}</div>
+        <div class="document-number">{{ $invoice->nomor_invoice }}</div>
+    </div>
+
+    <div class="recipient-block">
+        <div class="recipient-label">{{ $config['recipient_label'] }}</div>
+        <div class="recipient-name">{{ $invoice->customer->nama }}</div>
+    </div>
+
+    <div class="info-divider"></div>
+
+    <table class="items">
+        <thead>
+            <tr>
+                <th style="width: 5%">No.</th>
+                <th>Description</th>
+                <th style="width: 10%">Quantity</th>
+                <th style="width: 8%">Unit</th>
+                <th style="width: 14%">Unit Price</th>
+                <th style="width: 14%">Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for ($i = 0; $i < $itemRows; $i++)
+                @php $item = $items[$i] ?? null; @endphp
+                <tr @class(['empty-row' => $item === null])>
+                    <td class="center">{{ $i + 1 }}</td>
+                    @if ($item)
+                        <td>{{ $item->product->nama_barang }}</td>
+                        <td class="right">{{ $fmtQty((float) $item->qty) }}</td>
+                        <td class="center">{{ $item->product->satuan }}</td>
+                        <td class="right">{{ $fmtMoney((float) $item->harga) }}</td>
+                        <td class="right">{{ $fmtMoney((float) $item->subtotal) }}</td>
+                    @else
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    @endif
+                </tr>
+            @endfor
+        </tbody>
+    </table>
+
+    <table class="totals">
+        <tr>
+            <td class="label">Subtotal</td>
+            <td class="value">{{ $fmtMoney($subtotal) }}</td>
+        </tr>
+        <tr>
+            <td class="label">PPN (11%)</td>
+            <td class="value">{{ $fmtMoney($ppn) }}</td>
+        </tr>
+        <tr>
+            <td class="label">Grand Total</td>
+            <td class="value">{{ $fmtMoney($grandTotal) }}</td>
+        </tr>
+    </table>
+
+    <table class="footer">
+        <tr>
+            <td class="footer-receipt">
+                @foreach ($config['received_copies'] as $line)
+                    <div class="footer-note">{{ $line }}</div>
+                @endforeach
+                <span class="signature-line">{{ $config['recipient_signature_name'] }}</span>
+            </td>
+            <td class="footer-issuer">
+                @foreach ($paymentLines as $line)
+                    <div class="footer-note">{{ $line }}</div>
+                @endforeach
+                <div class="footer-note"><strong>{{ $config['issuer_label'] }}</strong></div>
+                <span class="signature-line">{{ $config['issuer_signature_name'] }}</span>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
