@@ -26,7 +26,7 @@ class SettingController extends Controller
     {
         $validated = $request->validate([
             'site_name' => ['required', 'string', 'max:255'],
-            'logo' => ['nullable', 'file', 'image', 'max:2048'],
+            'logo' => ['nullable', 'file', 'mimes:svg,png,jpg,jpeg,gif,webp', 'max:2048'],
         ]);
 
         Setting::setValue('site_name', $validated['site_name']);

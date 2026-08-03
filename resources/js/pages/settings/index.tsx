@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Form, useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import settingsRoutes from '@/routes/settings';
 
 interface SettingsIndexProps {
@@ -19,7 +19,7 @@ export default function SettingsIndex({ siteName, logo }: SettingsIndexProps) {
     const [preview, setPreview] = useState<string | null>(logo ? `/storage/${logo}` : null);
 
     const form = useForm({
-        siteName,
+        site_name: siteName,
         logo: null,
     });
 
@@ -33,11 +33,13 @@ export default function SettingsIndex({ siteName, logo }: SettingsIndexProps) {
 
     const submit = (event: React.FormEvent) => {
         event.preventDefault();
-        form.post(settingsRoutes.update.url(), {
+        form.put(settingsRoutes.update.url(), {
             onSuccess: () => toast.success('Pengaturan berhasil disimpan.'),
             onError: () => toast.error('Gagal menyimpan pengaturan.'),
         });
     };
+
+    const { errors, processing } = form;
 
     return (
         <>
@@ -57,14 +59,13 @@ export default function SettingsIndex({ siteName, logo }: SettingsIndexProps) {
                     </div>
                 </div>
 
-                <Form onSubmit={submit}>
-                    {({ errors, processing }) => (
+                <form onSubmit={submit}>
                         <div className="space-y-6">
                             <Card>
                                 <CardHeader>
                                     <CardTitle>Logo Website</CardTitle>
                                     <CardDescription>
-                                        Format: PNG/JPG, maksimal 2MB. Kosongkan untuk hapus logo.
+                                        Format: SVG/PNG/JPG, maksimal 2MB. Kosongkan untuk hapus logo.
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent className="space-y-4">
@@ -87,7 +88,7 @@ export default function SettingsIndex({ siteName, logo }: SettingsIndexProps) {
                                             <Input
                                                 id="logo"
                                                 type="file"
-                                                accept="image/*"
+                                                accept="image/svg+xml,image/png,image/jpeg,image/gif,image/webp"
                                                 onChange={handleLogoChange}
                                                 className={errors.logo ? 'border-destructive' : ''}
                                             />
@@ -111,9 +112,9 @@ export default function SettingsIndex({ siteName, logo }: SettingsIndexProps) {
                                         <Label htmlFor="siteName">Nama Website</Label>
                                         <Input
                                             id="siteName"
-                                            name="siteName"
-                                            value={form.data.siteName}
-                                            onChange={(e) => form.setData('siteName', e.target.value)}
+                                            name="site_name"
+                                            value={form.data.site_name}
+                                            onChange={(e) => form.setData('site_name', e.target.value)}
                                             placeholder="Contoh: CV Agus Jaya"
                                             required
                                             className={errors.siteName ? 'border-destructive' : ''}
@@ -137,8 +138,7 @@ export default function SettingsIndex({ siteName, logo }: SettingsIndexProps) {
                                 </Button>
                             </div>
                         </div>
-                    )}
-                </Form>
+                    </form>
             </div>
         </>
     );
