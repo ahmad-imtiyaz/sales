@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Setting;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -17,8 +17,8 @@ class SettingController extends Controller
             ->keyBy('key');
 
         return Inertia::render('settings/index', [
-            'siteName' => $settings['site_name']?->value ?? config('app.name'),
-            'logo' => $settings['logo']?->value ?? null,
+            'siteName' => $settings['site_name']->value ?? config('app.name'),
+            'logo' => $settings['logo']->value ?? null,
         ]);
     }
 

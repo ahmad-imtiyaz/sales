@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -40,8 +41,8 @@ class HandleInertiaRequests extends Middleware
 
         try {
             if (\Schema::hasTable('settings')) {
-                $siteName = \App\Models\Setting::getValue('site_name', config('app.name'));
-                $logo = \App\Models\Setting::getValue('logo');
+                $siteName = Setting::getValue('site_name', config('app.name'));
+                $logo = Setting::getValue('logo');
             }
         } catch (\Throwable) {
             // Ignore if settings table doesn't exist (e.g., during tests)

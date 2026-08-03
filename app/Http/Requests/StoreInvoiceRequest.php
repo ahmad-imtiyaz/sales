@@ -12,9 +12,12 @@ class StoreInvoiceRequest extends FormRequest
         return true;
     }
 
+    /**
+     * @return array<string, array<int, string>>
+     */
     public function rules(): array
     {
-        return [
+        $rules = [
             'delivery_note_id' => [
                 'required',
                 'integer',
@@ -25,5 +28,7 @@ class StoreInvoiceRequest extends FormRequest
             'tanggal_invoice' => ['required', 'date'],
             'no_po' => ['nullable', 'string', 'max:255'],
         ];
+
+        return $rules;
     }
 }

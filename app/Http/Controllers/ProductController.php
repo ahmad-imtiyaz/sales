@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -36,7 +37,7 @@ class ProductController extends Controller
         return Inertia::render('products/create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'kode' => ['required', 'string', 'max:50', 'unique:products,kode'],
@@ -58,7 +59,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function update(Request $request, Product $product)
+    public function update(Request $request, Product $product): RedirectResponse
     {
         $validated = $request->validate([
             'kode' => ['required', 'string', 'max:50', 'unique:products,kode,'.$product->id],
@@ -73,7 +74,7 @@ class ProductController extends Controller
             ->with('success', 'Barang berhasil diperbarui.');
     }
 
-    public function destroy(Product $product)
+    public function destroy(Product $product): RedirectResponse
     {
         $product->delete();
 

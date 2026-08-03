@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -36,7 +37,7 @@ class CompanyController extends Controller
         return Inertia::render('companies/create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'nama' => ['required', 'string', 'max:255'],
@@ -59,7 +60,7 @@ class CompanyController extends Controller
         ]);
     }
 
-    public function update(Request $request, Company $company)
+    public function update(Request $request, Company $company): RedirectResponse
     {
         $validated = $request->validate([
             'nama' => ['required', 'string', 'max:255'],
@@ -75,7 +76,7 @@ class CompanyController extends Controller
             ->with('success', 'Perusahaan berhasil diperbarui.');
     }
 
-    public function destroy(Company $company)
+    public function destroy(Company $company): RedirectResponse
     {
         $company->delete();
 

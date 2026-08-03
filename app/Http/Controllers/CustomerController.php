@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -37,7 +38,7 @@ class CustomerController extends Controller
         return Inertia::render('customers/create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'nama' => ['required', 'string', 'max:255'],
@@ -61,7 +62,7 @@ class CustomerController extends Controller
         ]);
     }
 
-    public function update(Request $request, Customer $customer)
+    public function update(Request $request, Customer $customer): RedirectResponse
     {
         $validated = $request->validate([
             'nama' => ['required', 'string', 'max:255'],
@@ -78,7 +79,7 @@ class CustomerController extends Controller
             ->with('success', 'Customer berhasil diperbarui.');
     }
 
-    public function destroy(Customer $customer)
+    public function destroy(Customer $customer): RedirectResponse
     {
         $customer->delete();
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BankAccount;
 use App\Models\Company;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -44,7 +45,7 @@ class BankAccountController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'company_id' => ['required', 'exists:companies,id'],
@@ -72,7 +73,7 @@ class BankAccountController extends Controller
         ]);
     }
 
-    public function update(Request $request, BankAccount $bankAccount)
+    public function update(Request $request, BankAccount $bankAccount): RedirectResponse
     {
         $validated = $request->validate([
             'company_id' => ['required', 'exists:companies,id'],
@@ -90,7 +91,7 @@ class BankAccountController extends Controller
             ->with('success', 'Rekening berhasil diperbarui.');
     }
 
-    public function destroy(BankAccount $bankAccount)
+    public function destroy(BankAccount $bankAccount): RedirectResponse
     {
         $bankAccount->delete();
 

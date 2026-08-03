@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\Customer;
 use App\Models\DeliveryNote;
 use App\Models\Invoice;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -41,14 +42,19 @@ class DashboardController extends Controller
             ->latest('id')
             ->limit(5)
             ->get()
-            ->map(fn ($invoice) => [
-                'id' => $invoice->id,
-                'nomor_invoice' => $invoice->nomor_invoice,
-                'tanggal_invoice' => $invoice->tanggal_invoice->format('Y-m-d'),
-                'grand_total' => $invoice->grand_total,
-                'company' => $invoice->company->nama,
-                'customer' => $invoice->customer->nama,
-            ]);
+            ->map(function ($invoice): array {
+                /** @var Invoice $invoice */
+                return [
+                    'id' => $invoice->id,
+                    'nomor_invoice' => $invoice->nomor_invoice,
+                    'tanggal_invoice' => $invoice->tanggal_invoice
+                        ? Carbon::parse($invoice->tanggal_invoice)->format('Y-m-d')
+                        : null,
+                    'grand_total' => $invoice->grand_total,
+                    'company' => $invoice->company->nama ?? '',
+                    'customer' => $invoice->customer->nama ?? '',
+                ];
+            });
 
         // 5 Delivery Note terbaru
         $latestDeliveryNotes = DeliveryNote::query()
@@ -57,15 +63,20 @@ class DashboardController extends Controller
             ->latest('id')
             ->limit(5)
             ->get()
-            ->map(fn ($dn) => [
-                'id' => $dn->id,
-                'nomor_dn' => $dn->nomor_dn,
-                'tanggal' => $dn->tanggal->format('Y-m-d'),
-                'status' => $dn->status,
-                'company' => $dn->company->nama,
-                'customer' => $dn->customer->nama,
-                'items_count' => $dn->items_count,
-            ]);
+            ->map(function ($dn): array {
+                /** @var DeliveryNote $dn */
+                return [
+                    'id' => $dn->id,
+                    'nomor_dn' => $dn->nomor_dn,
+                    'tanggal' => $dn->tanggal
+                        ? Carbon::parse($dn->tanggal)->format('Y-m-d')
+                        : null,
+                    'status' => $dn->status,
+                    'company' => $dn->company->nama ?? '',
+                    'customer' => $dn->customer->nama ?? '',
+                    'items_count' => $dn->items_count,
+                ];
+            });
 
         return Inertia::render('dashboard', [
             'stats' => [

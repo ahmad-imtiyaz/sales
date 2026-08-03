@@ -7,8 +7,10 @@ use App\Http\Requests\UpdateDeliveryNoteRequest;
 use App\Models\Company;
 use App\Models\Customer;
 use App\Models\DeliveryNote;
+use App\Models\DeliveryNoteItem;
 use App\Models\Product;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -77,7 +79,9 @@ class DeliveryNoteController extends Controller
             ...$this->formOptions(),
             'deliveryNote' => [
                 ...$deliveryNote->toArray(),
-                'tanggal' => $deliveryNote->tanggal->format('Y-m-d'),
+                'tanggal' => $deliveryNote->tanggal
+                    ? Carbon::parse($deliveryNote->tanggal)->format('Y-m-d')
+                    : null,
                 'items' => $deliveryNote->items->toArray(),
             ],
         ]);
@@ -113,19 +117,24 @@ class DeliveryNoteController extends Controller
         return response()->json([
             'id' => $deliveryNote->id,
             'nomor_dn' => $deliveryNote->nomor_dn,
-            'tanggal' => $deliveryNote->tanggal->format('Y-m-d'),
+            'tanggal' => $deliveryNote->tanggal
+                ? Carbon::parse($deliveryNote->tanggal)->format('Y-m-d')
+                : null,
             'no_po' => $deliveryNote->no_po,
             'status' => $deliveryNote->status,
             'company' => $deliveryNote->company,
             'customer' => $deliveryNote->customer,
-            'items' => $deliveryNote->items->map(fn ($item): array => [
-                'id' => $item->id,
-                'product_id' => $item->product_id,
-                'qty' => (float) $item->qty,
-                'harga' => (float) $item->harga,
-                'subtotal' => (float) $item->subtotal,
-                'product' => $item->product,
-            ]),
+            'items' => $deliveryNote->items->map(function ($item): array {
+                /** @var DeliveryNoteItem $item */
+                return [
+                    'id' => $item->id,
+                    'product_id' => $item->product_id,
+                    'qty' => (float) $item->qty,
+                    'harga' => (float) $item->harga,
+                    'subtotal' => (float) $item->subtotal,
+                    'product' => $item->product,
+                ];
+            }),
             'subtotal' => (float) $deliveryNote->items->sum('subtotal'),
         ]);
     }

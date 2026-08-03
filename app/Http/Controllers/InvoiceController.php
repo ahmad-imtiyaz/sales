@@ -8,8 +8,10 @@ use App\Http\Requests\UpdateInvoiceRequest;
 use App\Models\BankAccount;
 use App\Models\Company;
 use App\Models\DeliveryNote;
+use App\Models\DeliveryNoteItem;
 use App\Models\Invoice;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,6 +56,7 @@ class InvoiceController extends Controller
         $validated = $request->validated();
 
         $invoice = DB::transaction(function () use ($validated): Invoice {
+            /** @var DeliveryNote $deliveryNote */
             $deliveryNote = DeliveryNote::query()
                 ->with('items')
                 ->lockForUpdate()
@@ -64,7 +67,10 @@ class InvoiceController extends Controller
             }
 
             $subtotal = round((float) $deliveryNote->items->sum(
-                fn ($item): float => (float) $item->qty * (float) $item->harga,
+                function ($item): float {
+                    /** @var DeliveryNoteItem $item */
+                    return (float) $item->qty * (float) $item->harga;
+                },
             ), 2);
             $ppn = round($subtotal * Invoice::PPN_RATE, 2);
             $grandTotal = round($subtotal + $ppn, 2);
@@ -114,7 +120,9 @@ class InvoiceController extends Controller
         return Inertia::render('invoices/edit', [
             'invoice' => [
                 ...$invoice->toArray(),
-                'tanggal_invoice' => $invoice->tanggal_invoice->format('Y-m-d'),
+                'tanggal_invoice' => $invoice->tanggal_invoice
+                    ? Carbon::parse($invoice->tanggal_invoice)->format('Y-m-d')
+                    : null,
             ],
             'bankAccounts' => BankAccount::query()
                 ->where('status', true)

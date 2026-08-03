@@ -11,9 +11,12 @@ class StoreDeliveryNoteRequest extends FormRequest
         return true;
     }
 
+    /**
+     * @return array<string, array<int, string>>
+     */
     public function rules(): array
     {
-        return [
+        $rules = [
             'company_id' => ['required', 'exists:companies,id'],
             'customer_id' => ['required', 'exists:customers,id'],
             'nomor_dn' => ['required', 'string', 'max:255', 'unique:delivery_notes,nomor_dn'],
@@ -24,5 +27,7 @@ class StoreDeliveryNoteRequest extends FormRequest
             'items.*.qty' => ['required', 'numeric', 'gt:0'],
             'items.*.harga' => ['required', 'numeric', 'min:0'],
         ];
+
+        return $rules;
     }
 }

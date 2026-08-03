@@ -12,11 +12,14 @@ class UpdateInvoiceRequest extends FormRequest
         return true;
     }
 
+    /**
+     * @return array<string, array<int, string>>
+     */
     public function rules(): array
     {
         $invoice = $this->route('invoice');
 
-        return [
+        $rules = [
             'bank_account_id' => ['required', 'integer', 'exists:bank_accounts,id'],
             'nomor_invoice' => [
                 'required',
@@ -27,5 +30,7 @@ class UpdateInvoiceRequest extends FormRequest
             'tanggal_invoice' => ['required', 'date'],
             'no_po' => ['nullable', 'string', 'max:255'],
         ];
+
+        return $rules;
     }
 }
