@@ -24,14 +24,14 @@ export default function AuthSimpleLayout({
                                     <img
                                         src={`/storage/${logo}`}
                                         alt="Logo"
-                                        className="w-14 h-14 object-cover rounded-lg"
+                                        className="h-14 w-14 rounded-lg object-cover"
                                     />
                                 ) : (
                                     <AppLogoIcon className="size-14 fill-current text-[var(--foreground)] dark:text-white" />
                                 )}
                             </div>
                             {name && (
-                                <span className="text-lg font-semibold text-center">
+                                <span className="text-center text-lg font-semibold">
                                     {name}
                                 </span>
                             )}

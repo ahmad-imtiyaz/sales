@@ -68,7 +68,8 @@ export default function InvoicesShow({ invoice }: InvoiceShowProps) {
                                 Invoice {invoice.nomor_invoice}
                             </h1>
                             <p className="text-muted-foreground">
-                                {date(invoice.tanggal_invoice)} - {invoice.company.nama}
+                                {date(invoice.tanggal_invoice)} -{' '}
+                                {invoice.company.nama}
                             </p>
                         </div>
                     </div>
@@ -86,10 +87,14 @@ export default function InvoicesShow({ invoice }: InvoiceShowProps) {
                             <CardTitle>Customer</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-1 text-sm">
-                            <p className="font-medium">{invoice.customer.nama}</p>
+                            <p className="font-medium">
+                                {invoice.customer.nama}
+                            </p>
                             <p className="text-muted-foreground">
                                 {invoice.customer.alamat ?? '-'}
-                                {invoice.customer.kota ? `, ${invoice.customer.kota}` : ''}
+                                {invoice.customer.kota
+                                    ? `, ${invoice.customer.kota}`
+                                    : ''}
                             </p>
                         </CardContent>
                     </Card>
@@ -123,49 +128,68 @@ export default function InvoicesShow({ invoice }: InvoiceShowProps) {
                                     <tr>
                                         <th className="px-3 py-2">No.</th>
                                         <th className="px-3 py-2">Barang</th>
-                                        <th className="px-3 py-2 text-right">Qty</th>
+                                        <th className="px-3 py-2 text-right">
+                                            Qty
+                                        </th>
                                         <th className="px-3 py-2">Satuan</th>
-                                        <th className="px-3 py-2 text-right">Harga</th>
-                                        <th className="px-3 py-2 text-right">Total</th>
+                                        <th className="px-3 py-2 text-right">
+                                            Harga
+                                        </th>
+                                        <th className="px-3 py-2 text-right">
+                                            Total
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {invoice.delivery_note.items.map((item, index) => (
-                                        <tr key={item.id} className="border-t">
-                                            <td className="px-3 py-2">{index + 1}</td>
-                                            <td className="px-3 py-2">
-                                                {item.product.kode} -{' '}
-                                                {item.product.nama_barang}
-                                            </td>
-                                            <td className="px-3 py-2 text-right font-mono">
-                                                {item.qty}
-                                            </td>
-                                            <td className="px-3 py-2">
-                                                {item.product.satuan}
-                                            </td>
-                                            <td className="px-3 py-2 text-right font-mono">
-                                                {money(item.harga)}
-                                            </td>
-                                            <td className="px-3 py-2 text-right font-mono">
-                                                {money(item.subtotal)}
-                                            </td>
-                                        </tr>
-                                    ))}
+                                    {invoice.delivery_note.items.map(
+                                        (item, index) => (
+                                            <tr
+                                                key={item.id}
+                                                className="border-t"
+                                            >
+                                                <td className="px-3 py-2">
+                                                    {index + 1}
+                                                </td>
+                                                <td className="px-3 py-2">
+                                                    {item.product.kode} -{' '}
+                                                    {item.product.nama_barang}
+                                                </td>
+                                                <td className="px-3 py-2 text-right font-mono">
+                                                    {item.qty}
+                                                </td>
+                                                <td className="px-3 py-2">
+                                                    {item.product.satuan}
+                                                </td>
+                                                <td className="px-3 py-2 text-right font-mono">
+                                                    {money(item.harga)}
+                                                </td>
+                                                <td className="px-3 py-2 text-right font-mono">
+                                                    {money(item.subtotal)}
+                                                </td>
+                                            </tr>
+                                        ),
+                                    )}
                                 </tbody>
                             </table>
                         </div>
                         <div className="mt-4 ml-auto w-full max-w-sm space-y-1 text-sm">
                             <div className="flex justify-between">
                                 <span>Subtotal</span>
-                                <span className="font-mono">{money(invoice.subtotal)}</span>
+                                <span className="font-mono">
+                                    {money(invoice.subtotal)}
+                                </span>
                             </div>
                             <div className="flex justify-between">
                                 <span>PPN (11%)</span>
-                                <span className="font-mono">{money(invoice.ppn)}</span>
+                                <span className="font-mono">
+                                    {money(invoice.ppn)}
+                                </span>
                             </div>
                             <div className="flex justify-between border-t pt-2 text-base font-semibold">
                                 <span>Grand Total</span>
-                                <span className="font-mono">{money(invoice.grand_total)}</span>
+                                <span className="font-mono">
+                                    {money(invoice.grand_total)}
+                                </span>
                             </div>
                         </div>
                     </CardContent>

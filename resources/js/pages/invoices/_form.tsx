@@ -1,5 +1,5 @@
 import { Link, router, useForm } from '@inertiajs/react';
-import type { FormEvent} from 'react';
+import type { FormEvent } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -70,19 +70,24 @@ export default function InvoiceForm({
     invoice,
     mode,
 }: Props) {
-    const [selectedDeliveryNoteId, setSelectedDeliveryNoteId] = useState<number | null>(
-        invoice?.delivery_note_id ?? null,
-    );
-    const [deliveryNoteSnapshot, setDeliveryNoteSnapshot] = useState<DeliveryNoteOption | null>(
-        () => deliveryNotes.find((dn) => dn.id === invoice?.delivery_note_id) ?? null,
-    );
+    const [selectedDeliveryNoteId, setSelectedDeliveryNoteId] = useState<
+        number | null
+    >(invoice?.delivery_note_id ?? null);
+    const [deliveryNoteSnapshot, setDeliveryNoteSnapshot] =
+        useState<DeliveryNoteOption | null>(
+            () =>
+                deliveryNotes.find(
+                    (dn) => dn.id === invoice?.delivery_note_id,
+                ) ?? null,
+        );
     const [loadingDeliveryNote, setLoadingDeliveryNote] = useState(false);
 
     const form = useForm({
         delivery_note_id: invoice?.delivery_note_id ?? ('' as number | ''),
         bank_account_id: invoice?.bank_account_id ?? ('' as number | ''),
         nomor_invoice: invoice?.nomor_invoice ?? '',
-        tanggal_invoice: invoice?.tanggal_invoice ?? new Date().toISOString().slice(0, 10),
+        tanggal_invoice:
+            invoice?.tanggal_invoice ?? new Date().toISOString().slice(0, 10),
         no_po: invoice?.no_po ?? '',
     });
 
@@ -114,7 +119,9 @@ export default function InvoiceForm({
             return;
         }
 
-        const cached = deliveryNotes.find((dn) => dn.id === selectedDeliveryNoteId);
+        const cached = deliveryNotes.find(
+            (dn) => dn.id === selectedDeliveryNoteId,
+        );
 
         if (cached) {
             setDeliveryNoteSnapshot(cached);
@@ -133,14 +140,20 @@ export default function InvoiceForm({
 
                 return response.json();
             })
-            .then((data: DeliveryNoteOption & { items: DeliveryNoteOptionItem[] }) => {
-                if (cancelled) {
-                    return;
-                }
+            .then(
+                (
+                    data: DeliveryNoteOption & {
+                        items: DeliveryNoteOptionItem[];
+                    },
+                ) => {
+                    if (cancelled) {
+                        return;
+                    }
 
-                setDeliveryNoteSnapshot(data);
-                form.setData('no_po', data.no_po ?? '');
-            })
+                    setDeliveryNoteSnapshot(data);
+                    form.setData('no_po', data.no_po ?? '');
+                },
+            )
             .catch(() => {
                 if (cancelled) {
                     return;
@@ -199,7 +212,11 @@ export default function InvoiceForm({
                         <Label>Delivery Note *</Label>
                         <Select
                             name="delivery_note_id"
-                            value={selectedDeliveryNoteId === null ? '' : String(selectedDeliveryNoteId)}
+                            value={
+                                selectedDeliveryNoteId === null
+                                    ? ''
+                                    : String(selectedDeliveryNoteId)
+                            }
                             onValueChange={updateDeliveryNote}
                             disabled={mode === 'edit'}
                             required
@@ -210,11 +227,15 @@ export default function InvoiceForm({
                             <SelectContent>
                                 {deliveryNotes.length === 0 ? (
                                     <SelectItem value="__empty" disabled>
-                                        Belum ada Delivery Note berstatus available.
+                                        Belum ada Delivery Note berstatus
+                                        available.
                                     </SelectItem>
                                 ) : (
                                     deliveryNotes.map((dn) => (
-                                        <SelectItem key={dn.id} value={String(dn.id)}>
+                                        <SelectItem
+                                            key={dn.id}
+                                            value={String(dn.id)}
+                                        >
                                             {dn.nomor_dn} - {dn.customer.nama}
                                         </SelectItem>
                                     ))
@@ -249,7 +270,9 @@ export default function InvoiceForm({
                         )}
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="tanggal_invoice">Tanggal Invoice *</Label>
+                        <Label htmlFor="tanggal_invoice">
+                            Tanggal Invoice *
+                        </Label>
                         <input
                             id="tanggal_invoice"
                             type="date"
@@ -257,7 +280,7 @@ export default function InvoiceForm({
                             onChange={(e) =>
                                 form.setData('tanggal_invoice', e.target.value)
                             }
-                            className="border-input bg-transparent flex h-9 w-full rounded-md border px-3 py-1 text-sm shadow-xs focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
+                            className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
                             required
                         />
                         {form.errors.tanggal_invoice && (
@@ -271,7 +294,9 @@ export default function InvoiceForm({
                         <Input
                             id="no_po"
                             value={form.data.no_po}
-                            onChange={(e) => form.setData('no_po', e.target.value)}
+                            onChange={(e) =>
+                                form.setData('no_po', e.target.value)
+                            }
                         />
                     </div>
                     <div className="space-y-2">
@@ -293,8 +318,12 @@ export default function InvoiceForm({
                             </SelectTrigger>
                             <SelectContent>
                                 {bankAccounts.map((bank) => (
-                                    <SelectItem key={bank.id} value={String(bank.id)}>
-                                        {bank.nama_bank} - {bank.nomor_rekening} ({bank.company.nama})
+                                    <SelectItem
+                                        key={bank.id}
+                                        value={String(bank.id)}
+                                    >
+                                        {bank.nama_bank} - {bank.nomor_rekening}{' '}
+                                        ({bank.company.nama})
                                     </SelectItem>
                                 ))}
                             </SelectContent>
@@ -315,13 +344,14 @@ export default function InvoiceForm({
                 <CardContent className="space-y-4">
                     {selectedDeliveryNote === null ? (
                         <p className="text-sm text-muted-foreground">
-                            Pilih Delivery Note untuk menampilkan customer dan barang.
+                            Pilih Delivery Note untuk menampilkan customer dan
+                            barang.
                         </p>
                     ) : (
                         <>
                             <div className="grid gap-3 md:grid-cols-2">
                                 <div>
-                                    <p className="text-xs uppercase text-muted-foreground">
+                                    <p className="text-xs text-muted-foreground uppercase">
                                         Perusahaan
                                     </p>
                                     <p className="font-medium">
@@ -329,14 +359,15 @@ export default function InvoiceForm({
                                     </p>
                                 </div>
                                 <div>
-                                    <p className="text-xs uppercase text-muted-foreground">
+                                    <p className="text-xs text-muted-foreground uppercase">
                                         Customer
                                     </p>
                                     <p className="font-medium">
                                         {selectedDeliveryNote.customer.nama}
                                     </p>
                                     <p className="text-sm text-muted-foreground">
-                                        {selectedDeliveryNote.customer.alamat ?? '-'}
+                                        {selectedDeliveryNote.customer.alamat ??
+                                            '-'}
                                         {selectedDeliveryNote.customer.kota
                                             ? `, ${selectedDeliveryNote.customer.kota}`
                                             : ''}
@@ -348,33 +379,55 @@ export default function InvoiceForm({
                                     <thead className="bg-muted text-left">
                                         <tr>
                                             <th className="px-3 py-2">No.</th>
-                                            <th className="px-3 py-2">Barang</th>
-                                            <th className="px-3 py-2 text-right">Qty</th>
-                                            <th className="px-3 py-2">Satuan</th>
-                                            <th className="px-3 py-2 text-right">Harga</th>
-                                            <th className="px-3 py-2 text-right">Total</th>
+                                            <th className="px-3 py-2">
+                                                Barang
+                                            </th>
+                                            <th className="px-3 py-2 text-right">
+                                                Qty
+                                            </th>
+                                            <th className="px-3 py-2">
+                                                Satuan
+                                            </th>
+                                            <th className="px-3 py-2 text-right">
+                                                Harga
+                                            </th>
+                                            <th className="px-3 py-2 text-right">
+                                                Total
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {selectedDeliveryNote.items.map((item, index) => (
-                                            <tr key={item.id} className="border-t">
-                                                <td className="px-3 py-2">{index + 1}</td>
-                                                <td className="px-3 py-2">
-                                                    {item.product.kode} -{' '}
-                                                    {item.product.nama_barang}
-                                                </td>
-                                                <td className="px-3 py-2 text-right font-mono">
-                                                    {item.qty}
-                                                </td>
-                                                <td className="px-3 py-2">{item.product.satuan}</td>
-                                                <td className="px-3 py-2 text-right font-mono">
-                                                    {money(item.harga)}
-                                                </td>
-                                                <td className="px-3 py-2 text-right font-mono">
-                                                    {money(item.subtotal)}
-                                                </td>
-                                            </tr>
-                                        ))}
+                                        {selectedDeliveryNote.items.map(
+                                            (item, index) => (
+                                                <tr
+                                                    key={item.id}
+                                                    className="border-t"
+                                                >
+                                                    <td className="px-3 py-2">
+                                                        {index + 1}
+                                                    </td>
+                                                    <td className="px-3 py-2">
+                                                        {item.product.kode} -{' '}
+                                                        {
+                                                            item.product
+                                                                .nama_barang
+                                                        }
+                                                    </td>
+                                                    <td className="px-3 py-2 text-right font-mono">
+                                                        {item.qty}
+                                                    </td>
+                                                    <td className="px-3 py-2">
+                                                        {item.product.satuan}
+                                                    </td>
+                                                    <td className="px-3 py-2 text-right font-mono">
+                                                        {money(item.harga)}
+                                                    </td>
+                                                    <td className="px-3 py-2 text-right font-mono">
+                                                        {money(item.subtotal)}
+                                                    </td>
+                                                </tr>
+                                            ),
+                                        )}
                                     </tbody>
                                 </table>
                             </div>

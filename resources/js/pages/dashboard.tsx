@@ -2,7 +2,14 @@ import { Head } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
 import { Package, Users, TrendingUp, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
 import { dashboard } from '@/routes';
 import deliveryNotesRoutes from '@/routes/delivery-notes';
 import invoicesRoutes from '@/routes/invoices';
@@ -55,13 +62,19 @@ const money = (value: string | number) =>
 const date = (value: string) =>
     new Intl.DateTimeFormat('id-ID').format(new Date(value));
 
-export default function Dashboard({ stats, latest_invoices, latest_delivery_notes }: Props) {
+export default function Dashboard({
+    stats,
+    latest_invoices,
+    latest_delivery_notes,
+}: Props) {
     return (
         <>
             <Head title="Dashboard" />
             <div className="space-y-6">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+                    <h1 className="text-3xl font-bold tracking-tight">
+                        Dashboard
+                    </h1>
                     <p className="text-muted-foreground">
                         Ringkasan aktivitas Delivery Note & Invoice
                     </p>
@@ -70,49 +83,71 @@ export default function Dashboard({ stats, latest_invoices, latest_delivery_note
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total Delivery Note</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Total Delivery Note
+                            </CardTitle>
                             <Package className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{stats.delivery_notes.total}</div>
+                            <div className="text-2xl font-bold">
+                                {stats.delivery_notes.total}
+                            </div>
                             <p className="text-xs text-muted-foreground">
-                                {stats.delivery_notes.available} Available · {stats.delivery_notes.used} Used
+                                {stats.delivery_notes.available} Available ·{' '}
+                                {stats.delivery_notes.used} Used
                             </p>
                         </CardContent>
                     </Card>
 
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Invoice Bulan Ini</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Invoice Bulan Ini
+                            </CardTitle>
                             <TrendingUp className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{stats.invoices_this_month.count}</div>
+                            <div className="text-2xl font-bold">
+                                {stats.invoices_this_month.count}
+                            </div>
                             <p className="text-xs text-muted-foreground">
-                                Total: {money(stats.invoices_this_month.grand_total)}
+                                Total:{' '}
+                                {money(stats.invoices_this_month.grand_total)}
                             </p>
                         </CardContent>
                     </Card>
 
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Customer</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Customer
+                            </CardTitle>
                             <Users className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{stats.customers}</div>
-                            <p className="text-xs text-muted-foreground">Total customer terdaftar</p>
+                            <div className="text-2xl font-bold">
+                                {stats.customers}
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                                Total customer terdaftar
+                            </p>
                         </CardContent>
                     </Card>
 
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Perusahaan</CardTitle>
+                            <CardTitle className="text-sm font-medium">
+                                Perusahaan
+                            </CardTitle>
                             <Package className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold">{stats.companies}</div>
-                            <p className="text-xs text-muted-foreground">Total perusahaan aktif</p>
+                            <div className="text-2xl font-bold">
+                                {stats.companies}
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                                Total perusahaan aktif
+                            </p>
                         </CardContent>
                     </Card>
                 </div>
@@ -121,14 +156,20 @@ export default function Dashboard({ stats, latest_invoices, latest_delivery_note
                     <CardHeader>
                         <div className="flex items-center justify-between">
                             <CardTitle>5 Delivery Note Terbaru</CardTitle>
-                            <Link href={deliveryNotesRoutes.index.url()} className="text-sm text-primary hover:underline">
-                                Lihat semua <ArrowRight className="ml-1 h-3 w-3 inline" />
+                            <Link
+                                href={deliveryNotesRoutes.index.url()}
+                                className="text-sm text-primary hover:underline"
+                            >
+                                Lihat semua{' '}
+                                <ArrowRight className="ml-1 inline h-3 w-3" />
                             </Link>
                         </div>
                     </CardHeader>
                     <CardContent>
                         {latest_delivery_notes.length === 0 ? (
-                            <p className="text-center text-muted-foreground py-8">Belum ada Delivery Note.</p>
+                            <p className="py-8 text-center text-muted-foreground">
+                                Belum ada Delivery Note.
+                            </p>
                         ) : (
                             <div className="rounded-md border">
                                 <Table>
@@ -147,18 +188,30 @@ export default function Dashboard({ stats, latest_invoices, latest_delivery_note
                                                 <TableCell className="font-mono font-medium">
                                                     {dn.nomor_dn}
                                                 </TableCell>
-                                                <TableCell>{date(dn.tanggal)}</TableCell>
                                                 <TableCell>
-                                                    <span className={
-                                                        dn.status === 'available'
-                                                            ? 'inline-flex rounded-full px-3 py-1 text-xs font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300'
-                                                            : 'inline-flex rounded-full px-3 py-1 text-xs font-semibold bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300'
-                                                    }>
-                                                        {dn.status === 'available' ? 'AVAILABLE' : 'USED'}
+                                                    {date(dn.tanggal)}
+                                                </TableCell>
+                                                <TableCell>
+                                                    <span
+                                                        className={
+                                                            dn.status ===
+                                                            'available'
+                                                                ? 'inline-flex rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300'
+                                                                : 'inline-flex rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700 dark:bg-amber-900/40 dark:text-amber-300'
+                                                        }
+                                                    >
+                                                        {dn.status ===
+                                                        'available'
+                                                            ? 'AVAILABLE'
+                                                            : 'USED'}
                                                     </span>
                                                 </TableCell>
-                                                <TableCell>{dn.company}</TableCell>
-                                                <TableCell>{dn.customer}</TableCell>
+                                                <TableCell>
+                                                    {dn.company}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {dn.customer}
+                                                </TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>
@@ -172,14 +225,20 @@ export default function Dashboard({ stats, latest_invoices, latest_delivery_note
                     <CardHeader>
                         <div className="flex items-center justify-between">
                             <CardTitle>5 Invoice Terbaru</CardTitle>
-                            <Link href={invoicesRoutes.index.url()} className="text-sm text-primary hover:underline">
-                                Lihat semua <ArrowRight className="ml-1 h-3 w-3 inline" />
+                            <Link
+                                href={invoicesRoutes.index.url()}
+                                className="text-sm text-primary hover:underline"
+                            >
+                                Lihat semua{' '}
+                                <ArrowRight className="ml-1 inline h-3 w-3" />
                             </Link>
                         </div>
                     </CardHeader>
                     <CardContent>
                         {latest_invoices.length === 0 ? (
-                            <p className="text-center text-muted-foreground py-8">Belum ada Invoice.</p>
+                            <p className="py-8 text-center text-muted-foreground">
+                                Belum ada Invoice.
+                            </p>
                         ) : (
                             <div className="rounded-md border">
                                 <Table>
@@ -189,7 +248,9 @@ export default function Dashboard({ stats, latest_invoices, latest_delivery_note
                                             <TableHead>Tanggal</TableHead>
                                             <TableHead>Perusahaan</TableHead>
                                             <TableHead>Customer</TableHead>
-                                            <TableHead className="text-right">Grand Total</TableHead>
+                                            <TableHead className="text-right">
+                                                Grand Total
+                                            </TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -198,10 +259,18 @@ export default function Dashboard({ stats, latest_invoices, latest_delivery_note
                                                 <TableCell className="font-mono font-medium">
                                                     {inv.nomor_invoice}
                                                 </TableCell>
-                                                <TableCell>{date(inv.tanggal_invoice)}</TableCell>
-                                                <TableCell>{inv.company}</TableCell>
-                                                <TableCell>{inv.customer}</TableCell>
-                                                <TableCell className="text-right font-mono">{money(inv.grand_total)}</TableCell>
+                                                <TableCell>
+                                                    {date(inv.tanggal_invoice)}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {inv.company}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {inv.customer}
+                                                </TableCell>
+                                                <TableCell className="text-right font-mono">
+                                                    {money(inv.grand_total)}
+                                                </TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>

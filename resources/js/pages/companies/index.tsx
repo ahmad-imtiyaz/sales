@@ -79,7 +79,7 @@ export default function CompaniesIndex({
             return;
         }
 
-        deleteForm.delete(companiesRoutes.destroy(deleteId), {
+        deleteForm.delete(companiesRoutes.destroy.url(deleteId), {
             onSuccess: () => {
                 toast.success('Perusahaan berhasil dihapus.');
                 setDeleteId(null);

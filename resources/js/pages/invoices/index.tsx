@@ -1,13 +1,20 @@
 import { Head, Link, router, useForm } from '@inertiajs/react';
 import { Pencil, Plus, Printer, Search, Trash2 } from 'lucide-react';
-import type { FormEvent} from 'react';
+import type { FormEvent } from 'react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Pagination } from '@/components/ui/pagination';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
 import invoicesRoutes from '@/routes/invoices';
 
 interface Invoice {
@@ -74,7 +81,9 @@ export default function InvoicesIndex({ invoices, filters }: Props) {
             <div className="space-y-6">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Invoice</h1>
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            Invoice
+                        </h1>
                         <p className="text-muted-foreground">
                             Daftar invoice dari Delivery Note yang tersedia.
                         </p>
@@ -91,14 +100,19 @@ export default function InvoicesIndex({ invoices, filters }: Props) {
                         <CardTitle>Daftar Invoice</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <form onSubmit={submitSearch} className="mb-4 flex max-w-xl gap-2">
+                        <form
+                            onSubmit={submitSearch}
+                            className="mb-4 flex max-w-xl gap-2"
+                        >
                             <div className="relative flex-1">
                                 <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                 <Input
                                     className="pl-10"
                                     placeholder="Cari nomor invoice, PO, perusahaan, customer..."
                                     value={search}
-                                    onChange={(event) => setSearch(event.target.value)}
+                                    onChange={(event) =>
+                                        setSearch(event.target.value)
+                                    }
                                 />
                             </div>
                             <Button type="submit">Cari</Button>
@@ -120,48 +134,99 @@ export default function InvoicesIndex({ invoices, filters }: Props) {
                                         <TableHead>Perusahaan</TableHead>
                                         <TableHead>Customer</TableHead>
                                         <TableHead>Rekening</TableHead>
-                                        <TableHead className="text-right">Grand Total</TableHead>
-                                        <TableHead className="text-center">Aksi</TableHead>
+                                        <TableHead className="text-right">
+                                            Grand Total
+                                        </TableHead>
+                                        <TableHead className="text-center">
+                                            Aksi
+                                        </TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {invoices.data.length === 0 ? (
                                         <TableRow>
-                                            <TableCell colSpan={8} className="py-8 text-center text-muted-foreground">
+                                            <TableCell
+                                                colSpan={8}
+                                                className="py-8 text-center text-muted-foreground"
+                                            >
                                                 Belum ada Invoice.
                                             </TableCell>
                                         </TableRow>
                                     ) : (
                                         invoices.data.map((invoice, index) => (
                                             <TableRow key={invoice.id}>
-                                                <TableCell>{(invoices.from ?? 0) + index}</TableCell>
+                                                <TableCell>
+                                                    {(invoices.from ?? 0) +
+                                                        index}
+                                                </TableCell>
                                                 <TableCell className="font-mono font-medium">
                                                     {invoice.nomor_invoice}
                                                 </TableCell>
-                                                <TableCell>{date(invoice.tanggal_invoice)}</TableCell>
-                                                <TableCell>{invoice.company.nama}</TableCell>
-                                                <TableCell>{invoice.customer.nama}</TableCell>
+                                                <TableCell>
+                                                    {date(
+                                                        invoice.tanggal_invoice,
+                                                    )}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {invoice.company.nama}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {invoice.customer.nama}
+                                                </TableCell>
                                                 <TableCell className="font-mono text-xs">
-                                                    {invoice.bank_account.nama_bank} -{' '}
-                                                    {invoice.bank_account.nomor_rekening}
+                                                    {
+                                                        invoice.bank_account
+                                                            .nama_bank
+                                                    }{' '}
+                                                    -{' '}
+                                                    {
+                                                        invoice.bank_account
+                                                            .nomor_rekening
+                                                    }
                                                 </TableCell>
                                                 <TableCell className="text-right font-mono">
                                                     {money(invoice.grand_total)}
                                                 </TableCell>
                                                 <TableCell className="text-center">
                                                     <div className="flex justify-center gap-2">
-                                                        <Link href={invoicesRoutes.show.url(invoice.id)}>
-                                                            <Button variant="ghost" size="icon" title="Detail">
+                                                        <Link
+                                                            href={invoicesRoutes.show.url(
+                                                                invoice.id,
+                                                            )}
+                                                        >
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="icon"
+                                                                title="Detail"
+                                                            >
                                                                 <Search className="h-4 w-4" />
                                                             </Button>
                                                         </Link>
-                                                        <Link href={invoicesRoutes.edit.url(invoice.id)}>
-                                                            <Button variant="ghost" size="icon" title="Edit">
+                                                        <Link
+                                                            href={invoicesRoutes.edit.url(
+                                                                invoice.id,
+                                                            )}
+                                                        >
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="icon"
+                                                                title="Edit"
+                                                            >
                                                                 <Pencil className="h-4 w-4" />
                                                             </Button>
                                                         </Link>
-                                                        <a href={invoicesRoutes.print.url(invoice.id)} target="_blank" rel="noreferrer">
-                                                            <Button variant="ghost" size="icon" title="Cetak PDF">
+                                                        <a
+                                                            href={invoicesRoutes.print.url(
+                                                                invoice.id,
+                                                            )}
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                        >
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="icon"
+                                                                title="Cetak PDF"
+                                                            >
                                                                 <Printer className="h-4 w-4" />
                                                             </Button>
                                                         </a>
@@ -170,7 +235,11 @@ export default function InvoicesIndex({ invoices, filters }: Props) {
                                                             size="icon"
                                                             className="text-destructive"
                                                             title="Hapus"
-                                                            onClick={() => setDeleteId(invoice.id)}
+                                                            onClick={() =>
+                                                                setDeleteId(
+                                                                    invoice.id,
+                                                                )
+                                                            }
                                                         >
                                                             <Trash2 className="h-4 w-4" />
                                                         </Button>
@@ -202,15 +271,25 @@ export default function InvoicesIndex({ invoices, filters }: Props) {
                         className="w-full max-w-md rounded-lg border bg-background p-6"
                         onClick={(event) => event.stopPropagation()}
                     >
-                        <h3 className="mb-2 text-lg font-semibold">Hapus Invoice?</h3>
+                        <h3 className="mb-2 text-lg font-semibold">
+                            Hapus Invoice?
+                        </h3>
                         <p className="mb-4 text-muted-foreground">
-                            Invoice akan dihapus dan Delivery Note terkait dikembalikan ke status available.
+                            Invoice akan dihapus dan Delivery Note terkait
+                            dikembalikan ke status available.
                         </p>
                         <div className="flex justify-end gap-2">
-                            <Button variant="outline" onClick={() => setDeleteId(null)}>
+                            <Button
+                                variant="outline"
+                                onClick={() => setDeleteId(null)}
+                            >
                                 Batal
                             </Button>
-                            <Button variant="destructive" onClick={confirmDelete} disabled={deleteForm.processing}>
+                            <Button
+                                variant="destructive"
+                                onClick={confirmDelete}
+                                disabled={deleteForm.processing}
+                            >
                                 Hapus
                             </Button>
                         </div>

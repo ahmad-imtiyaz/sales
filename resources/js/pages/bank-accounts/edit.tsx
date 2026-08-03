@@ -103,13 +103,14 @@ export default function BankAccountsEdit({
                                             name="company_id"
                                             defaultValue={bankAccount.company_id.toString()}
                                             required
-                                            className={
-                                                errors.company_id
-                                                    ? 'border-destructive'
-                                                    : ''
-                                            }
                                         >
-                                            <SelectTrigger>
+                                            <SelectTrigger
+                                                className={
+                                                    errors.company_id
+                                                        ? 'border-destructive'
+                                                        : ''
+                                                }
+                                            >
                                                 <SelectValue placeholder="Pilih perusahaan" />
                                             </SelectTrigger>
                                             <SelectContent>

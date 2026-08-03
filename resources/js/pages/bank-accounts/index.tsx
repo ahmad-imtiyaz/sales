@@ -81,7 +81,7 @@ export default function BankAccountsIndex({
             return;
         }
 
-        deleteForm.delete(bankAccountsRoutes.destroy(deleteId), {
+        deleteForm.delete(bankAccountsRoutes.destroy.url(deleteId), {
             onSuccess: () => {
                 toast.success('Rekening berhasil dihapus.');
                 setDeleteId(null);

@@ -4,7 +4,13 @@ import { Form } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import productsRoutes from '@/routes/products';
@@ -13,7 +19,7 @@ export default function ProductsCreate() {
     return (
         <>
             <Head title="Tambah Barang" />
-            <div className="max-w-2xl mx-auto space-y-6">
+            <div className="mx-auto max-w-2xl space-y-6">
                 <div className="flex items-center gap-4">
                     <Link href={productsRoutes.index.url()}>
                         <Button variant="ghost" size="icon" className="h-9 w-9">
@@ -21,15 +27,22 @@ export default function ProductsCreate() {
                         </Button>
                     </Link>
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Tambah Barang</h1>
-                        <p className="text-muted-foreground">Isi form di bawah untuk menambahkan barang baru</p>
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            Tambah Barang
+                        </h1>
+                        <p className="text-muted-foreground">
+                            Isi form di bawah untuk menambahkan barang baru
+                        </p>
                     </div>
                 </div>
 
                 <Card>
                     <CardHeader>
                         <CardTitle>Informasi Barang</CardTitle>
-                        <CardDescription>Data barang akan digunakan untuk Delivery Note dan Invoice</CardDescription>
+                        <CardDescription>
+                            Data barang akan digunakan untuk Delivery Note dan
+                            Invoice
+                        </CardDescription>
                     </CardHeader>
                     <CardContent>
                         <Form
@@ -39,51 +52,85 @@ export default function ProductsCreate() {
                                 toast.success('Barang berhasil ditambahkan.');
                                 router.visit(productsRoutes.index.url());
                             }}
-                            onError={() => toast.error('Gagal menambahkan barang.')}
+                            onError={() =>
+                                toast.error('Gagal menambahkan barang.')
+                            }
                         >
                             {({ errors, processing }) => (
                                 <div className="space-y-6">
                                     <div className="space-y-2">
-                                        <Label htmlFor="kode">Kode Barang *</Label>
+                                        <Label htmlFor="kode">
+                                            Kode Barang *
+                                        </Label>
                                         <Input
                                             id="kode"
                                             name="kode"
                                             placeholder="Contoh: BRG-001"
                                             autoComplete="off"
                                             required
-                                            className={errors.kode ? 'border-destructive' : ''}
+                                            className={
+                                                errors.kode
+                                                    ? 'border-destructive'
+                                                    : ''
+                                            }
                                         />
-                                        {errors.kode && <p className="text-sm text-destructive">{errors.kode}</p>}
+                                        {errors.kode && (
+                                            <p className="text-sm text-destructive">
+                                                {errors.kode}
+                                            </p>
+                                        )}
                                     </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="nama_barang">Nama Barang *</Label>
+                                        <Label htmlFor="nama_barang">
+                                            Nama Barang *
+                                        </Label>
                                         <Input
                                             id="nama_barang"
                                             name="nama_barang"
                                             placeholder="Contoh: Material Renovasi Ruang TBT"
                                             autoComplete="off"
                                             required
-                                            className={errors.nama_barang ? 'border-destructive' : ''}
+                                            className={
+                                                errors.nama_barang
+                                                    ? 'border-destructive'
+                                                    : ''
+                                            }
                                         />
-                                        {errors.nama_barang && <p className="text-sm text-destructive">{errors.nama_barang}</p>}
+                                        {errors.nama_barang && (
+                                            <p className="text-sm text-destructive">
+                                                {errors.nama_barang}
+                                            </p>
+                                        )}
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div className="space-y-2">
-                                            <Label htmlFor="satuan">Satuan *</Label>
+                                            <Label htmlFor="satuan">
+                                                Satuan *
+                                            </Label>
                                             <Input
                                                 id="satuan"
                                                 name="satuan"
                                                 placeholder="Contoh: Unit, Meter, Kg, Pcs"
                                                 autoComplete="off"
                                                 required
-                                                className={errors.satuan ? 'border-destructive' : ''}
+                                                className={
+                                                    errors.satuan
+                                                        ? 'border-destructive'
+                                                        : ''
+                                                }
                                             />
-                                            {errors.satuan && <p className="text-sm text-destructive">{errors.satuan}</p>}
+                                            {errors.satuan && (
+                                                <p className="text-sm text-destructive">
+                                                    {errors.satuan}
+                                                </p>
+                                            )}
                                         </div>
                                         <div className="space-y-2">
-                                            <Label htmlFor="harga">Harga *</Label>
+                                            <Label htmlFor="harga">
+                                                Harga *
+                                            </Label>
                                             <Input
                                                 id="harga"
                                                 name="harga"
@@ -93,20 +140,36 @@ export default function ProductsCreate() {
                                                 placeholder="Contoh: 413500"
                                                 autoComplete="off"
                                                 required
-                                                className={errors.harga ? 'border-destructive' : ''}
+                                                className={
+                                                    errors.harga
+                                                        ? 'border-destructive'
+                                                        : ''
+                                                }
                                             />
-                                            {errors.harga && <p className="text-sm text-destructive">{errors.harga}</p>}
+                                            {errors.harga && (
+                                                <p className="text-sm text-destructive">
+                                                    {errors.harga}
+                                                </p>
+                                            )}
                                         </div>
                                     </div>
 
-                                    <div className="flex justify-end gap-3 pt-4 border-t">
+                                    <div className="flex justify-end gap-3 border-t pt-4">
                                         <Link href={productsRoutes.index.url()}>
-                                            <Button type="button" variant="outline">
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                            >
                                                 Batal
                                             </Button>
                                         </Link>
-                                        <Button type="submit" disabled={processing}>
-                                            {processing ? 'Menyimpan...' : 'Simpan Barang'}
+                                        <Button
+                                            type="submit"
+                                            disabled={processing}
+                                        >
+                                            {processing
+                                                ? 'Menyimpan...'
+                                                : 'Simpan Barang'}
                                         </Button>
                                     </div>
                                 </div>

@@ -1,6 +1,6 @@
 import { Head, router } from '@inertiajs/react';
 import { Filter, Printer, X } from 'lucide-react';
-import type { FormEvent} from 'react';
+import type { FormEvent } from 'react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,7 +14,14 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
 import laporanRoutes from '@/routes/laporan';
 
 interface Invoice {
@@ -40,7 +47,11 @@ interface CompanyOption {
 }
 interface Props {
     invoices: PaginatedInvoices;
-    filters: { tanggal_dari?: string; tanggal_sampai?: string; company_id?: string };
+    filters: {
+        tanggal_dari?: string;
+        tanggal_sampai?: string;
+        company_id?: string;
+    };
     totalGrandTotal: string;
     companies: CompanyOption[];
 }
@@ -51,11 +62,19 @@ const money = (value: string | number) =>
         currency: 'IDR',
         minimumFractionDigits: 0,
     }).format(Number(value));
-const date = (value: string) => new Intl.DateTimeFormat('id-ID').format(new Date(value));
+const date = (value: string) =>
+    new Intl.DateTimeFormat('id-ID').format(new Date(value));
 
-export default function LaporanInvoices({ invoices, filters, totalGrandTotal, companies }: Props) {
+export default function LaporanInvoices({
+    invoices,
+    filters,
+    totalGrandTotal,
+    companies,
+}: Props) {
     const [tanggalDari, setTanggalDari] = useState(filters.tanggal_dari ?? '');
-    const [tanggalSampai, setTanggalSampai] = useState(filters.tanggal_sampai ?? '');
+    const [tanggalSampai, setTanggalSampai] = useState(
+        filters.tanggal_sampai ?? '',
+    );
     const [companyId, setCompanyId] = useState(filters.company_id ?? '');
     const [printMode, setPrintMode] = useState(false);
 
@@ -77,7 +96,10 @@ export default function LaporanInvoices({ invoices, filters, totalGrandTotal, co
         setTanggalDari('');
         setTanggalSampai('');
         setCompanyId('');
-        router.visit(laporanRoutes.invoices.url(), { preserveState: true, preserveScroll: true });
+        router.visit(laporanRoutes.invoices.url(), {
+            preserveState: true,
+            preserveScroll: true,
+        });
     };
 
     const handlePrint = () => {
@@ -103,9 +125,11 @@ export default function LaporanInvoices({ invoices, filters, totalGrandTotal, co
                 }
             `}</style>
             <div className="space-y-6">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between no-print">
+                <div className="no-print flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Laporan Invoice</h1>
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            Laporan Invoice
+                        </h1>
                         <p className="text-muted-foreground">
                             Filter dan cetak laporan Invoice
                         </p>
@@ -123,33 +147,46 @@ export default function LaporanInvoices({ invoices, filters, totalGrandTotal, co
                         <CardTitle>Filter</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <form onSubmit={submitFilter} className="flex flex-col gap-4 sm:flex-row sm:items-end">
-                            <div className="space-y-2 w-full sm:w-64">
+                        <form
+                            onSubmit={submitFilter}
+                            className="flex flex-col gap-4 sm:flex-row sm:items-end"
+                        >
+                            <div className="w-full space-y-2 sm:w-64">
                                 <Label>Tanggal Dari</Label>
                                 <Input
                                     type="date"
                                     value={tanggalDari}
-                                    onChange={(e) => setTanggalDari(e.target.value)}
+                                    onChange={(e) =>
+                                        setTanggalDari(e.target.value)
+                                    }
                                 />
                             </div>
-                            <div className="space-y-2 w-full sm:w-64">
+                            <div className="w-full space-y-2 sm:w-64">
                                 <Label>Tanggal Sampai</Label>
                                 <Input
                                     type="date"
                                     value={tanggalSampai}
-                                    onChange={(e) => setTanggalSampai(e.target.value)}
+                                    onChange={(e) =>
+                                        setTanggalSampai(e.target.value)
+                                    }
                                 />
                             </div>
-                            <div className="space-y-2 w-full sm:w-64">
+                            <div className="w-full space-y-2 sm:w-64">
                                 <Label>Perusahaan</Label>
-                                <Select value={companyId} onValueChange={setCompanyId}>
+                                <Select
+                                    value={companyId}
+                                    onValueChange={setCompanyId}
+                                >
                                     <SelectTrigger>
                                         <SelectValue placeholder="Semua Perusahaan" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="">Semua</SelectItem>
                                         {companies.map((company) => (
-                                            <SelectItem key={company.id} value={company.id.toString()}>
+                                            <SelectItem
+                                                key={company.id}
+                                                value={company.id.toString()}
+                                            >
                                                 {company.nama}
                                             </SelectItem>
                                         ))}
@@ -161,8 +198,14 @@ export default function LaporanInvoices({ invoices, filters, totalGrandTotal, co
                                     <Filter className="mr-2 h-4 w-4" />
                                     Filter
                                 </Button>
-                                {(tanggalDari || tanggalSampai || companyId) && (
-                                    <Button type="button" variant="outline" onClick={resetFilter}>
+                                {(tanggalDari ||
+                                    tanggalSampai ||
+                                    companyId) && (
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        onClick={resetFilter}
+                                    >
                                         <X className="mr-2 h-4 w-4" />
                                         Reset
                                     </Button>
@@ -188,30 +231,54 @@ export default function LaporanInvoices({ invoices, filters, totalGrandTotal, co
                                         <TableHead>Perusahaan</TableHead>
                                         <TableHead>Customer</TableHead>
                                         <TableHead>Rekening</TableHead>
-                                        <TableHead className="text-right">Grand Total</TableHead>
+                                        <TableHead className="text-right">
+                                            Grand Total
+                                        </TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {invoices.data.length === 0 ? (
                                         <TableRow>
-                                            <TableCell colSpan={8} className="py-8 text-center text-muted-foreground">
+                                            <TableCell
+                                                colSpan={8}
+                                                className="py-8 text-center text-muted-foreground"
+                                            >
                                                 Belum ada data Invoice.
                                             </TableCell>
                                         </TableRow>
                                     ) : (
                                         invoices.data.map((inv, index) => (
                                             <TableRow key={inv.id}>
-                                                <TableCell>{(invoices.from ?? 0) + index}</TableCell>
-                                                <TableCell className="font-mono font-medium">{inv.nomor_invoice}</TableCell>
-                                                <TableCell>{date(inv.tanggal_invoice)}</TableCell>
-                                                <TableCell>{inv.no_po ?? '-'}</TableCell>
-                                                <TableCell>{inv.company.nama}</TableCell>
-                                                <TableCell>{inv.customer.nama}</TableCell>
-                                                <TableCell className="font-mono text-xs">
-                                                    {inv.bank_account.nama_bank} -{' '}
-                                                    {inv.bank_account.nomor_rekening}
+                                                <TableCell>
+                                                    {(invoices.from ?? 0) +
+                                                        index}
                                                 </TableCell>
-                                                <TableCell className="text-right font-mono">{money(inv.grand_total)}</TableCell>
+                                                <TableCell className="font-mono font-medium">
+                                                    {inv.nomor_invoice}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {date(inv.tanggal_invoice)}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {inv.no_po ?? '-'}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {inv.company.nama}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {inv.customer.nama}
+                                                </TableCell>
+                                                <TableCell className="font-mono text-xs">
+                                                    {inv.bank_account.nama_bank}{' '}
+                                                    -{' '}
+                                                    {
+                                                        inv.bank_account
+                                                            .nomor_rekening
+                                                    }
+                                                </TableCell>
+                                                <TableCell className="text-right font-mono">
+                                                    {money(inv.grand_total)}
+                                                </TableCell>
                                             </TableRow>
                                         ))
                                     )}
@@ -223,7 +290,11 @@ export default function LaporanInvoices({ invoices, filters, totalGrandTotal, co
                                 currentPage={invoices.current_page}
                                 totalPages={invoices.last_page}
                                 baseUrl={laporanRoutes.invoices.url()}
-                                searchParams={{ tanggal_dari: tanggalDari, tanggal_sampai: tanggalSampai, company_id: companyId }}
+                                searchParams={{
+                                    tanggal_dari: tanggalDari,
+                                    tanggal_sampai: tanggalSampai,
+                                    company_id: companyId,
+                                }}
                             />
                         )}
 
@@ -237,43 +308,199 @@ export default function LaporanInvoices({ invoices, filters, totalGrandTotal, co
 
                 {printMode && (
                     <div className="print-only">
-                        <div className="print-header" style={{ textAlign: 'center', marginBottom: '20px' }}>
-                            <h2 style={{ margin: 0, fontSize: '18px' }}>Laporan Invoice</h2>
+                        <div
+                            className="print-header"
+                            style={{
+                                textAlign: 'center',
+                                marginBottom: '20px',
+                            }}
+                        >
+                            <h2 style={{ margin: 0, fontSize: '18px' }}>
+                                Laporan Invoice
+                            </h2>
                             <p style={{ margin: '4px 0', fontSize: '12px' }}>
-                                Periode: {tanggalDari ? date(tanggalDari) : 'Awal'} s/d {tanggalSampai ? date(tanggalSampai) : 'Akhir'}
-                                {companyId ? ` | Perusahaan: ${companies.find(c => c.id.toString() === companyId)?.nama}` : ''}
+                                Periode:{' '}
+                                {tanggalDari ? date(tanggalDari) : 'Awal'} s/d{' '}
+                                {tanggalSampai ? date(tanggalSampai) : 'Akhir'}
+                                {companyId
+                                    ? ` | Perusahaan: ${companies.find((c) => c.id.toString() === companyId)?.nama}`
+                                    : ''}
                             </p>
-                            <p style={{ margin: '4px 0', fontSize: '12px' }}>Dicetak pada: {new Date().toLocaleString('id-ID')}</p>
+                            <p style={{ margin: '4px 0', fontSize: '12px' }}>
+                                Dicetak pada:{' '}
+                                {new Date().toLocaleString('id-ID')}
+                            </p>
                         </div>
-                        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '10px' }}>
+                        <table
+                            style={{
+                                width: '100%',
+                                borderCollapse: 'collapse',
+                                fontSize: '10px',
+                            }}
+                        >
                             <thead>
                                 <tr style={{ background: '#f3f4f6' }}>
-                                    <th style={{ border: '1px solid #000', padding: '4px' }}>No</th>
-                                    <th style={{ border: '1px solid #000', padding: '4px' }}>Nomor Invoice</th>
-                                    <th style={{ border: '1px solid #000', padding: '4px' }}>Tanggal</th>
-                                    <th style={{ border: '1px solid #000', padding: '4px' }}>No. PO</th>
-                                    <th style={{ border: '1px solid #000', padding: '4px' }}>Perusahaan</th>
-                                    <th style={{ border: '1px solid #000', padding: '4px' }}>Customer</th>
-                                    <th style={{ border: '1px solid #000', padding: '4px' }}>Rekening</th>
-                                    <th style={{ border: '1px solid #000', padding: '4px', textAlign: 'right' }}>Grand Total</th>
+                                    <th
+                                        style={{
+                                            border: '1px solid #000',
+                                            padding: '4px',
+                                        }}
+                                    >
+                                        No
+                                    </th>
+                                    <th
+                                        style={{
+                                            border: '1px solid #000',
+                                            padding: '4px',
+                                        }}
+                                    >
+                                        Nomor Invoice
+                                    </th>
+                                    <th
+                                        style={{
+                                            border: '1px solid #000',
+                                            padding: '4px',
+                                        }}
+                                    >
+                                        Tanggal
+                                    </th>
+                                    <th
+                                        style={{
+                                            border: '1px solid #000',
+                                            padding: '4px',
+                                        }}
+                                    >
+                                        No. PO
+                                    </th>
+                                    <th
+                                        style={{
+                                            border: '1px solid #000',
+                                            padding: '4px',
+                                        }}
+                                    >
+                                        Perusahaan
+                                    </th>
+                                    <th
+                                        style={{
+                                            border: '1px solid #000',
+                                            padding: '4px',
+                                        }}
+                                    >
+                                        Customer
+                                    </th>
+                                    <th
+                                        style={{
+                                            border: '1px solid #000',
+                                            padding: '4px',
+                                        }}
+                                    >
+                                        Rekening
+                                    </th>
+                                    <th
+                                        style={{
+                                            border: '1px solid #000',
+                                            padding: '4px',
+                                            textAlign: 'right',
+                                        }}
+                                    >
+                                        Grand Total
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {invoices.data.map((inv, index) => (
                                     <tr key={inv.id}>
-                                        <td style={{ border: '1px solid #000', padding: '4px', textAlign: 'center' }}>{(invoices.from ?? 0) + index}</td>
-                                        <td style={{ border: '1px solid #000', padding: '4px' }}>{inv.nomor_invoice}</td>
-                                        <td style={{ border: '1px solid #000', padding: '4px' }}>{date(inv.tanggal_invoice)}</td>
-                                        <td style={{ border: '1px solid #000', padding: '4px' }}>{inv.no_po ?? '-'}</td>
-                                        <td style={{ border: '1px solid #000', padding: '4px' }}>{inv.company.nama}</td>
-                                        <td style={{ border: '1px solid #000', padding: '4px' }}>{inv.customer.nama}</td>
-                                        <td style={{ border: '1px solid #000', padding: '4px' }}>{inv.bank_account.nama_bank} - {inv.bank_account.nomor_rekening}</td>
-                                        <td style={{ border: '1px solid #000', padding: '4px', textAlign: 'right' }}>{money(inv.grand_total)}</td>
+                                        <td
+                                            style={{
+                                                border: '1px solid #000',
+                                                padding: '4px',
+                                                textAlign: 'center',
+                                            }}
+                                        >
+                                            {(invoices.from ?? 0) + index}
+                                        </td>
+                                        <td
+                                            style={{
+                                                border: '1px solid #000',
+                                                padding: '4px',
+                                            }}
+                                        >
+                                            {inv.nomor_invoice}
+                                        </td>
+                                        <td
+                                            style={{
+                                                border: '1px solid #000',
+                                                padding: '4px',
+                                            }}
+                                        >
+                                            {date(inv.tanggal_invoice)}
+                                        </td>
+                                        <td
+                                            style={{
+                                                border: '1px solid #000',
+                                                padding: '4px',
+                                            }}
+                                        >
+                                            {inv.no_po ?? '-'}
+                                        </td>
+                                        <td
+                                            style={{
+                                                border: '1px solid #000',
+                                                padding: '4px',
+                                            }}
+                                        >
+                                            {inv.company.nama}
+                                        </td>
+                                        <td
+                                            style={{
+                                                border: '1px solid #000',
+                                                padding: '4px',
+                                            }}
+                                        >
+                                            {inv.customer.nama}
+                                        </td>
+                                        <td
+                                            style={{
+                                                border: '1px solid #000',
+                                                padding: '4px',
+                                            }}
+                                        >
+                                            {inv.bank_account.nama_bank} -{' '}
+                                            {inv.bank_account.nomor_rekening}
+                                        </td>
+                                        <td
+                                            style={{
+                                                border: '1px solid #000',
+                                                padding: '4px',
+                                                textAlign: 'right',
+                                            }}
+                                        >
+                                            {money(inv.grand_total)}
+                                        </td>
                                     </tr>
                                 ))}
                                 <tr>
-                                    <td colSpan={7} style={{ border: '1px solid #000', padding: '4px', textAlign: 'right', fontWeight: 'bold' }}>Total Grand Total</td>
-                                    <td style={{ border: '1px solid #000', padding: '4px', textAlign: 'right', fontWeight: 'bold' }}>{money(totalGrandTotal)}</td>
+                                    <td
+                                        colSpan={7}
+                                        style={{
+                                            border: '1px solid #000',
+                                            padding: '4px',
+                                            textAlign: 'right',
+                                            fontWeight: 'bold',
+                                        }}
+                                    >
+                                        Total Grand Total
+                                    </td>
+                                    <td
+                                        style={{
+                                            border: '1px solid #000',
+                                            padding: '4px',
+                                            textAlign: 'right',
+                                            fontWeight: 'bold',
+                                        }}
+                                    >
+                                        {money(totalGrandTotal)}
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

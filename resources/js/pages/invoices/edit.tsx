@@ -3,7 +3,7 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import invoicesRoutes from '@/routes/invoices';
 import InvoiceForm from './_form';
-import type {BankAccountOption, InvoiceData} from './_form';
+import type { BankAccountOption, InvoiceData } from './_form';
 
 interface Props {
     invoice: InvoiceData & { delivery_note?: { id: number; nomor_dn: string } };
@@ -20,12 +20,21 @@ interface Props {
             qty: number;
             harga: number;
             subtotal: number;
-            product: { id: number; kode: string; nama_barang: string; satuan: string };
+            product: {
+                id: number;
+                kode: string;
+                nama_barang: string;
+                satuan: string;
+            };
         }>;
     }>;
 }
 
-export default function InvoicesEdit({ invoice, bankAccounts, deliveryNotes }: Props) {
+export default function InvoicesEdit({
+    invoice,
+    bankAccounts,
+    deliveryNotes,
+}: Props) {
     return (
         <>
             <Head title="Edit Invoice" />
@@ -37,7 +46,9 @@ export default function InvoicesEdit({ invoice, bankAccounts, deliveryNotes }: P
                         </Button>
                     </Link>
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Edit Invoice</h1>
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            Edit Invoice
+                        </h1>
                         <p className="text-muted-foreground">
                             Perbarui Invoice {invoice.nomor_invoice}.
                         </p>

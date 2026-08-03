@@ -3,7 +3,7 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import invoicesRoutes from '@/routes/invoices';
 import InvoiceForm from './_form';
-import type {BankAccountOption, DeliveryNoteOption} from './_form';
+import type { BankAccountOption, DeliveryNoteOption } from './_form';
 
 interface Props {
     deliveryNotes: DeliveryNoteOption[];
@@ -22,9 +22,12 @@ export default function InvoicesCreate({ deliveryNotes, bankAccounts }: Props) {
                         </Button>
                     </Link>
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Tambah Invoice</h1>
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            Tambah Invoice
+                        </h1>
                         <p className="text-muted-foreground">
-                            Pilih Delivery Note berstatus available. Data barang otomatis dari DN.
+                            Pilih Delivery Note berstatus available. Data barang
+                            otomatis dari DN.
                         </p>
                     </div>
                 </div>

@@ -87,14 +87,15 @@ export default function BankAccountsCreate({
                                         <Select
                                             name="company_id"
                                             required
-                                            className={
-                                                errors.company_id
-                                                    ? 'border-destructive'
-                                                    : ''
-                                            }
                                             defaultValue=""
                                         >
-                                            <SelectTrigger>
+                                            <SelectTrigger
+                                                className={
+                                                    errors.company_id
+                                                        ? 'border-destructive'
+                                                        : ''
+                                                }
+                                            >
                                                 <SelectValue placeholder="Pilih perusahaan" />
                                             </SelectTrigger>
                                             <SelectContent>

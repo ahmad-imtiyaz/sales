@@ -80,7 +80,7 @@ export default function CustomersIndex({
             return;
         }
 
-        deleteForm.delete(customersRoutes.destroy(deleteId), {
+        deleteForm.delete(customersRoutes.destroy.url(deleteId), {
             onSuccess: () => {
                 toast.success('Customer berhasil dihapus.');
                 setDeleteId(null);

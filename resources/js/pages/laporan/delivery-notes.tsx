@@ -1,6 +1,6 @@
 import { Head, router } from '@inertiajs/react';
 import { Filter, Printer, X } from 'lucide-react';
-import type { FormEvent} from 'react';
+import type { FormEvent } from 'react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,7 +14,14 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
 import laporanRoutes from '@/routes/laporan';
 
 interface DeliveryNote {
@@ -36,19 +43,30 @@ interface PaginatedDeliveryNotes {
 }
 interface Props {
     deliveryNotes: PaginatedDeliveryNotes;
-    filters: { tanggal_dari?: string; tanggal_sampai?: string; status?: string };
+    filters: {
+        tanggal_dari?: string;
+        tanggal_sampai?: string;
+        status?: string;
+    };
 }
 
-const date = (value: string) => new Intl.DateTimeFormat('id-ID').format(new Date(value));
+const date = (value: string) =>
+    new Intl.DateTimeFormat('id-ID').format(new Date(value));
 const statusBadge = (status: string) =>
     status === 'available'
         ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300'
         : 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300';
-const statusLabel = (status: string) => (status === 'available' ? 'AVAILABLE' : 'USED');
+const statusLabel = (status: string) =>
+    status === 'available' ? 'AVAILABLE' : 'USED';
 
-export default function LaporanDeliveryNotes({ deliveryNotes, filters }: Props) {
+export default function LaporanDeliveryNotes({
+    deliveryNotes,
+    filters,
+}: Props) {
     const [tanggalDari, setTanggalDari] = useState(filters.tanggal_dari ?? '');
-    const [tanggalSampai, setTanggalSampai] = useState(filters.tanggal_sampai ?? '');
+    const [tanggalSampai, setTanggalSampai] = useState(
+        filters.tanggal_sampai ?? '',
+    );
     const [status, setStatus] = useState(filters.status ?? '');
     const [printMode, setPrintMode] = useState(false);
 
@@ -70,7 +88,10 @@ export default function LaporanDeliveryNotes({ deliveryNotes, filters }: Props) 
         setTanggalDari('');
         setTanggalSampai('');
         setStatus('');
-        router.visit(laporanRoutes.deliveryNotes.url(), { preserveState: true, preserveScroll: true });
+        router.visit(laporanRoutes.deliveryNotes.url(), {
+            preserveState: true,
+            preserveScroll: true,
+        });
     };
 
     const handlePrint = () => {
@@ -97,9 +118,11 @@ export default function LaporanDeliveryNotes({ deliveryNotes, filters }: Props) 
                 }
             `}</style>
             <div className="space-y-6">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between no-print">
+                <div className="no-print flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Laporan Delivery Note</h1>
+                        <h1 className="text-3xl font-bold tracking-tight">
+                            Laporan Delivery Note
+                        </h1>
                         <p className="text-muted-foreground">
                             Filter dan cetak laporan Delivery Note
                         </p>
@@ -117,33 +140,47 @@ export default function LaporanDeliveryNotes({ deliveryNotes, filters }: Props) 
                         <CardTitle>Filter</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <form onSubmit={submitFilter} className="flex flex-col gap-4 sm:flex-row sm:items-end">
-                            <div className="space-y-2 w-full sm:w-64">
+                        <form
+                            onSubmit={submitFilter}
+                            className="flex flex-col gap-4 sm:flex-row sm:items-end"
+                        >
+                            <div className="w-full space-y-2 sm:w-64">
                                 <Label>Tanggal Dari</Label>
                                 <Input
                                     type="date"
                                     value={tanggalDari}
-                                    onChange={(e) => setTanggalDari(e.target.value)}
+                                    onChange={(e) =>
+                                        setTanggalDari(e.target.value)
+                                    }
                                 />
                             </div>
-                            <div className="space-y-2 w-full sm:w-64">
+                            <div className="w-full space-y-2 sm:w-64">
                                 <Label>Tanggal Sampai</Label>
                                 <Input
                                     type="date"
                                     value={tanggalSampai}
-                                    onChange={(e) => setTanggalSampai(e.target.value)}
+                                    onChange={(e) =>
+                                        setTanggalSampai(e.target.value)
+                                    }
                                 />
                             </div>
-                            <div className="space-y-2 w-full sm:w-48">
+                            <div className="w-full space-y-2 sm:w-48">
                                 <Label>Status</Label>
-                                <Select value={status} onValueChange={setStatus}>
+                                <Select
+                                    value={status}
+                                    onValueChange={setStatus}
+                                >
                                     <SelectTrigger>
                                         <SelectValue placeholder="Semua Status" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="">Semua</SelectItem>
-                                        <SelectItem value="available">Available</SelectItem>
-                                        <SelectItem value="used">Used</SelectItem>
+                                        <SelectItem value="available">
+                                            Available
+                                        </SelectItem>
+                                        <SelectItem value="used">
+                                            Used
+                                        </SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -153,7 +190,11 @@ export default function LaporanDeliveryNotes({ deliveryNotes, filters }: Props) 
                                     Filter
                                 </Button>
                                 {(tanggalDari || tanggalSampai || status) && (
-                                    <Button type="button" variant="outline" onClick={resetFilter}>
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        onClick={resetFilter}
+                                    >
                                         <X className="mr-2 h-4 w-4" />
                                         Reset
                                     </Button>
@@ -185,25 +226,45 @@ export default function LaporanDeliveryNotes({ deliveryNotes, filters }: Props) 
                                 <TableBody>
                                     {deliveryNotes.data.length === 0 ? (
                                         <TableRow>
-                                            <TableCell colSpan={8} className="py-8 text-center text-muted-foreground">
+                                            <TableCell
+                                                colSpan={8}
+                                                className="py-8 text-center text-muted-foreground"
+                                            >
                                                 Belum ada data Delivery Note.
                                             </TableCell>
                                         </TableRow>
                                     ) : (
                                         deliveryNotes.data.map((dn, index) => (
                                             <TableRow key={dn.id}>
-                                                <TableCell>{(deliveryNotes.from ?? 0) + index}</TableCell>
-                                                <TableCell className="font-mono font-medium">{dn.nomor_dn}</TableCell>
-                                                <TableCell>{date(dn.tanggal)}</TableCell>
-                                                <TableCell>{dn.no_po ?? '-'}</TableCell>
-                                                <TableCell>{dn.company.nama}</TableCell>
-                                                <TableCell>{dn.customer.nama}</TableCell>
                                                 <TableCell>
-                                                    <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${statusBadge(dn.status)}`}>
+                                                    {(deliveryNotes.from ?? 0) +
+                                                        index}
+                                                </TableCell>
+                                                <TableCell className="font-mono font-medium">
+                                                    {dn.nomor_dn}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {date(dn.tanggal)}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {dn.no_po ?? '-'}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {dn.company.nama}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {dn.customer.nama}
+                                                </TableCell>
+                                                <TableCell>
+                                                    <span
+                                                        className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${statusBadge(dn.status)}`}
+                                                    >
                                                         {statusLabel(dn.status)}
                                                     </span>
                                                 </TableCell>
-                                                <TableCell className="text-center">{dn.items_count}</TableCell>
+                                                <TableCell className="text-center">
+                                                    {dn.items_count}
+                                                </TableCell>
                                             </TableRow>
                                         ))
                                     )}
@@ -215,7 +276,11 @@ export default function LaporanDeliveryNotes({ deliveryNotes, filters }: Props) 
                                 currentPage={deliveryNotes.current_page}
                                 totalPages={deliveryNotes.last_page}
                                 baseUrl={laporanRoutes.deliveryNotes.url()}
-                                searchParams={{ tanggal_dari: tanggalDari, tanggal_sampai: tanggalSampai, status }}
+                                searchParams={{
+                                    tanggal_dari: tanggalDari,
+                                    tanggal_sampai: tanggalSampai,
+                                    status,
+                                }}
                             />
                         )}
                     </CardContent>
@@ -226,10 +291,17 @@ export default function LaporanDeliveryNotes({ deliveryNotes, filters }: Props) 
                         <div className="print-header">
                             <h2>Laporan Delivery Note</h2>
                             <p>
-                                Periode: {tanggalDari ? date(tanggalDari) : 'Awal'} s/d {tanggalSampai ? date(tanggalSampai) : 'Akhir'}
-                                {status ? ` | Status: ${statusLabel(status)}` : ''}
+                                Periode:{' '}
+                                {tanggalDari ? date(tanggalDari) : 'Awal'} s/d{' '}
+                                {tanggalSampai ? date(tanggalSampai) : 'Akhir'}
+                                {status
+                                    ? ` | Status: ${statusLabel(status)}`
+                                    : ''}
                             </p>
-                            <p>Dicetak pada: {new Date().toLocaleString('id-ID')}</p>
+                            <p>
+                                Dicetak pada:{' '}
+                                {new Date().toLocaleString('id-ID')}
+                            </p>
                         </div>
                         <table>
                             <thead>
@@ -247,14 +319,20 @@ export default function LaporanDeliveryNotes({ deliveryNotes, filters }: Props) 
                             <tbody>
                                 {deliveryNotes.data.map((dn, index) => (
                                     <tr key={dn.id}>
-                                        <td style={{ textAlign: 'center' }}>{(deliveryNotes.from ?? 0) + index}</td>
+                                        <td style={{ textAlign: 'center' }}>
+                                            {(deliveryNotes.from ?? 0) + index}
+                                        </td>
                                         <td>{dn.nomor_dn}</td>
                                         <td>{date(dn.tanggal)}</td>
                                         <td>{dn.no_po ?? '-'}</td>
                                         <td>{dn.company.nama}</td>
                                         <td>{dn.customer.nama}</td>
-                                        <td style={{ textAlign: 'center' }}>{statusLabel(dn.status)}</td>
-                                        <td style={{ textAlign: 'center' }}>{dn.items_count}</td>
+                                        <td style={{ textAlign: 'center' }}>
+                                            {statusLabel(dn.status)}
+                                        </td>
+                                        <td style={{ textAlign: 'center' }}>
+                                            {dn.items_count}
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>

@@ -77,7 +77,7 @@ export default function ProductsIndex({
             return;
         }
 
-        deleteForm.delete(productsRoutes.destroy(deleteId), {
+        deleteForm.delete(productsRoutes.destroy.url(deleteId), {
             onSuccess: () => {
                 toast.success('Barang berhasil dihapus.');
                 setDeleteId(null);
