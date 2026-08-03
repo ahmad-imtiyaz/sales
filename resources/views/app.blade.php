@@ -30,6 +30,13 @@
             }
         </style>
 
+        @php
+            $logo = null;
+            if (\Schema::hasTable('settings')) {
+                $logo = \App\Models\Setting::getValue('logo');
+            }
+        @endphp
+
         <link rel="icon" href="{{ $logo ? '/storage/' . $logo : '/favicon.ico' }}" sizes="any">
         <link rel="icon" href="{{ $logo ? '/storage/' . $logo : '/favicon.svg' }}" type="image/svg+xml">
         <link rel="apple-touch-icon" href="{{ $logo ? '/storage/' . $logo : '/apple-touch-icon.png' }}">
