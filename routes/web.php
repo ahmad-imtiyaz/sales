@@ -5,6 +5,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeliveryNoteController;
+use App\Http\Controllers\DocumentationController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ProductController;
@@ -53,6 +54,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('laporan.delivery-notes');
     Route::get('laporan/invoices', [LaporanController::class, 'invoices'])
         ->name('laporan.invoices');
+
+    // Dokumentasi
+    Route::get('documentation', [DocumentationController::class, 'index'])
+        ->name('documentation.index');
 
     // Pengaturan
     Route::get('settings', [SettingController::class, 'index'])

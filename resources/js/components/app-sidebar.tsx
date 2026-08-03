@@ -21,6 +21,7 @@ import bankAccounts from '@/routes/bank-accounts';
 import deliveryNotesRoutes from '@/routes/delivery-notes';
 import invoicesRoutes from '@/routes/invoices';
 import laporanRoutes from '@/routes/laporan';
+import documentation from '@/routes/documentation';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
@@ -78,8 +79,8 @@ const footerNavItems: NavItem[] = [
         icon: FolderGit2,
     },
     {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
+        title: 'Dokumentasi',
+        href: documentation.index.url(),
         icon: BookOpen,
     },
 ];
