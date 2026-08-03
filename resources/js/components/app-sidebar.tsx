@@ -14,14 +14,14 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import bankAccounts from '@/routes/bank-accounts';
 import companies from '@/routes/companies';
 import customers from '@/routes/customers';
-import products from '@/routes/products';
-import bankAccounts from '@/routes/bank-accounts';
 import deliveryNotesRoutes from '@/routes/delivery-notes';
+import documentation from '@/routes/documentation';
 import invoicesRoutes from '@/routes/invoices';
 import laporanRoutes from '@/routes/laporan';
-import documentation from '@/routes/documentation';
+import products from '@/routes/products';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [

@@ -1,14 +1,14 @@
 import { Head } from '@inertiajs/react';
 import { Link, router } from '@inertiajs/react';
-import { ArrowLeft, Building2 } from 'lucide-react';
-import companiesRoutes from '@/routes/companies';
+import { Form } from '@inertiajs/react';
+import { ArrowLeft } from 'lucide-react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Form } from '@inertiajs/react';
-import { toast } from 'sonner';
+import companiesRoutes from '@/routes/companies';
 
 export default function CompaniesCreate() {
     return (

@@ -1,5 +1,6 @@
 import { Head } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import { ArrowLeft, Image, Save } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -7,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useForm } from '@inertiajs/react';
 import settingsRoutes from '@/routes/settings';
 
 interface SettingsIndexProps {
@@ -25,6 +25,7 @@ export default function SettingsIndex({ siteName, logo }: SettingsIndexProps) {
 
     const handleLogoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
+
         if (file) {
             form.setData('logo', file);
             setPreview(URL.createObjectURL(file));

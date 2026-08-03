@@ -1,6 +1,7 @@
 import { Head, Link, router, useForm } from '@inertiajs/react';
 import { Pencil, Plus, Printer, Search, Trash2 } from 'lucide-react';
-import { FormEvent, useState } from 'react';
+import type { FormEvent} from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -57,6 +58,7 @@ export default function InvoicesIndex({ invoices, filters }: Props) {
         if (deleteId === null) {
             return;
         }
+
         deleteForm.delete(invoicesRoutes.destroy.url(deleteId), {
             onSuccess: () => {
                 toast.success('Invoice berhasil dihapus.');

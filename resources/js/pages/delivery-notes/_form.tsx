@@ -1,13 +1,13 @@
 import { Link, useForm } from '@inertiajs/react';
 import { Plus, Trash2 } from 'lucide-react';
-import { FormEvent, useMemo, useState } from 'react';
-import { Field, FieldLabel } from '@/components/ui/field';
+import type { FormEvent} from 'react';
+import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Field, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import deliveryNotesRoutes from '@/routes/delivery-notes';
 import {
     Select,
     SelectContent,
@@ -15,6 +15,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import deliveryNotesRoutes from '@/routes/delivery-notes';
 
 export interface ProductOption {
     id: number;
@@ -95,6 +96,7 @@ export default function DeliveryNoteForm({
         value: string,
     ) => {
         const nextItems = [...items];
+
         if (key === 'product_id') {
             const product = products.find(
                 (option) => option.id === Number(value),
@@ -107,6 +109,7 @@ export default function DeliveryNoteForm({
         } else {
             nextItems[index] = { ...nextItems[index], [key]: value };
         }
+
         updateItems(nextItems);
     };
     const submit = (event: FormEvent) => {
@@ -119,12 +122,15 @@ export default function DeliveryNoteForm({
             },
             onError: () => toast.error('Gagal menyimpan Delivery Note.'),
         };
-        mode === 'create'
-            ? form.post(deliveryNotesRoutes.store.url(), options)
-            : form.put(
-                  deliveryNotesRoutes.update.url(deliveryNote!.id!),
-                  options,
-              );
+
+        if (mode === 'create') {
+            form.post(deliveryNotesRoutes.store.url(), options);
+        } else {
+            form.put(
+                deliveryNotesRoutes.update.url(deliveryNote!.id!),
+                options,
+            );
+        }
     };
 
     return (

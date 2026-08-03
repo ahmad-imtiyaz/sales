@@ -1,8 +1,9 @@
 import { Head, Link } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import DeliveryNoteForm, { DeliveryNoteData, ProductOption } from './_form';
 import deliveryNotesRoutes from '@/routes/delivery-notes';
+import type { DeliveryNoteData, ProductOption } from './_form';
+import DeliveryNoteForm from './_form';
 
 interface Props { companies: { id: number; nama: string }[]; customers: { id: number; nama: string }[]; products: ProductOption[]; deliveryNote: DeliveryNoteData }
 

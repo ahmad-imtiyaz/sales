@@ -1,11 +1,9 @@
 import { Head, Link } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import InvoiceForm, {
-    type BankAccountOption,
-    type DeliveryNoteOption,
-} from './_form';
 import invoicesRoutes from '@/routes/invoices';
+import InvoiceForm from './_form';
+import type {BankAccountOption, DeliveryNoteOption} from './_form';
 
 interface Props {
     deliveryNotes: DeliveryNoteOption[];

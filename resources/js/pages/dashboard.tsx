@@ -1,11 +1,11 @@
 import { Head } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
-import { Package, Users, FileText, TrendingUp, ArrowRight, Truck } from 'lucide-react';
+import { Package, Users, TrendingUp, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { dashboard } from '@/routes';
-import invoicesRoutes from '@/routes/invoices';
 import deliveryNotesRoutes from '@/routes/delivery-notes';
+import invoicesRoutes from '@/routes/invoices';
 
 interface DashboardStats {
     delivery_notes: {

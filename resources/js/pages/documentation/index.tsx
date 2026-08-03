@@ -1,10 +1,9 @@
 import { Head } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
 import { ArrowLeft, BookOpen, Settings, User, Key, Image, Building2, Users, Package, Banknote, Truck, FileText, FileBarChart, HelpCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { useState } from 'react';
 import { dashboard } from '@/routes';
 
 interface Section {
@@ -409,6 +408,7 @@ export default function Documentation() {
                 <div className="space-y-4">
                     {sections.map((section) => {
                         const isOpen = openSections.includes(section.id);
+
                         return (
                             <Card key={section.id} className="overflow-hidden">
                                 <CardHeader className="py-3 cursor-pointer" onClick={() => toggleSection(section.id)}>

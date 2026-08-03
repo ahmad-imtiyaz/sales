@@ -1,13 +1,13 @@
 import { Head } from '@inertiajs/react';
 import { Link, router } from '@inertiajs/react';
-import { ArrowLeft, Package } from 'lucide-react';
-import productsRoutes from '@/routes/products';
+import { Form } from '@inertiajs/react';
+import { ArrowLeft } from 'lucide-react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Form } from '@inertiajs/react';
-import { toast } from 'sonner';
+import productsRoutes from '@/routes/products';
 
 export default function ProductsCreate() {
     return (

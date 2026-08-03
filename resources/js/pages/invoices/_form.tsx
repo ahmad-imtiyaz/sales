@@ -1,5 +1,6 @@
 import { Link, router, useForm } from '@inertiajs/react';
-import { FormEvent, useEffect, useMemo, useState } from 'react';
+import type { FormEvent} from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,8 +13,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import invoicesRoutes from '@/routes/invoices';
 import deliveryNotesRoutes from '@/routes/delivery-notes';
+import invoicesRoutes from '@/routes/invoices';
 
 export interface DeliveryNoteOptionItem {
     id: number;
@@ -105,15 +106,21 @@ export default function InvoiceForm({
         if (mode === 'edit') {
             return;
         }
+
         if (selectedDeliveryNoteId === null) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setDeliveryNoteSnapshot(null);
+
             return;
         }
+
         const cached = deliveryNotes.find((dn) => dn.id === selectedDeliveryNoteId);
+
         if (cached) {
             setDeliveryNoteSnapshot(cached);
             form.setData('no_po', cached.no_po ?? '');
         }
+
         let cancelled = false;
         setLoadingDeliveryNote(true);
         fetch(deliveryNotesRoutes.showJson(selectedDeliveryNoteId).url, {
@@ -123,12 +130,14 @@ export default function InvoiceForm({
                 if (!response.ok) {
                     throw new Error('Failed to load delivery note');
                 }
+
                 return response.json();
             })
             .then((data: DeliveryNoteOption & { items: DeliveryNoteOptionItem[] }) => {
                 if (cancelled) {
                     return;
                 }
+
                 setDeliveryNoteSnapshot(data);
                 form.setData('no_po', data.no_po ?? '');
             })
@@ -136,6 +145,7 @@ export default function InvoiceForm({
                 if (cancelled) {
                     return;
                 }
+
                 toast.error('Gagal memuat detail Delivery Note.');
             })
             .finally(() => {
@@ -143,10 +153,11 @@ export default function InvoiceForm({
                     setLoadingDeliveryNote(false);
                 }
             });
+
         return () => {
             cancelled = true;
         };
-    }, [selectedDeliveryNoteId]);
+    }, [selectedDeliveryNoteId, deliveryNotes, form, mode]);
 
     const updateDeliveryNote = (value: string) => {
         const parsed = value === '' ? null : Number(value);
@@ -167,10 +178,13 @@ export default function InvoiceForm({
                     `Gagal ${mode === 'create' ? 'membuat' : 'memperbarui'} Invoice.`,
                 ),
         };
+
         if (mode === 'create') {
             form.post(invoicesRoutes.store.url(), options);
+
             return;
         }
+
         router.put(invoicesRoutes.update.url(invoice!.id!), form.data, options);
     };
 
